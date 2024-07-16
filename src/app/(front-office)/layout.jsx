@@ -1,10 +1,11 @@
 import Footer from "@/components/frontOffice/Footer";
+import Navbar from "@/components/frontOffice/Navbar";
 import React from "react";
 
 export default function Layout({ children }) {
   return (
     <div>
-      {/* <Navbar /> */}
+      <Navbar />
       <div className="">{children}</div>
       <Footer />
     </div>

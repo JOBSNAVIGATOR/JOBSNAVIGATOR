@@ -7,6 +7,7 @@ import React, { useState } from "react";
 import UserAvatar from "./UserAvatar";
 import Loading from "@/app/loading";
 import { generateInitials } from "@/lib/generateInitials";
+import ThemeSwitcherBtn from "../ui/ThemeSwitcherBtn";
 
 export default function Navbar() {
   const router = useRouter();
@@ -44,7 +45,7 @@ export default function Navbar() {
   //   ];
 
   return (
-    <nav className="bg-white border-gray-200 dark:bg-gray-900">
+    <nav className="bg-white border-gray-200 dark:bg-gray-900 fixed w-full z-20 top-0 start-0">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         {/* Logo */}
         <Link
@@ -52,18 +53,19 @@ export default function Navbar() {
           className="flex items-center space-x-3 rtl:space-x-reverse"
         >
           <Image
-            src="https://flowbite.com/docs/images/logo.svg"
+            src="/jobsnavigatorLogo.webp"
             alt="Flowbite Logo"
-            height={25}
-            width={25}
+            height={175}
+            width={175}
           />
-          <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
+          {/* <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
             JOBSNAVIGATOR
-          </span>
+          </span> */}
         </Link>
 
         <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
           <div className="flex gap-8">
+            <ThemeSwitcherBtn />
             {/* login */}
             {status === "unauthenticated" ? (
               <Link
@@ -89,21 +91,6 @@ export default function Navbar() {
           >
             <span className="sr-only">Open main menu</span>
             <AlignJustify className="w-5 h-5" aria-hidden="true" />
-            {/* <svg
-              className="w-5 h-5"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 17 14"
-            >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M1 1h15M1 7h15M1 13h15"
-              />
-            </svg> */}
           </button>
         </div>
 
