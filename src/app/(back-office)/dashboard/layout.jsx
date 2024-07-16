@@ -8,7 +8,7 @@ export default function Layout({ children }) {
       <Navbar />
       <Sidebar />
 
-      <div className="">{children}</div>
+      <div className="min-h-screen p-4 sm:ml-64 mt-16">{children}</div>
     </div>
   );
 }

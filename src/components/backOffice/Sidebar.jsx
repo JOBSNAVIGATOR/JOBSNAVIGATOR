@@ -2,13 +2,14 @@
 import {
   Book,
   Briefcase,
+  LogOut,
   PieChart,
   User2,
   UserCheck,
   UserCog2,
 } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 import {
   MdOutlineWork,
@@ -21,6 +22,10 @@ import {
 
 export default function Sidebar() {
   const pathname = usePathname();
+  //   const { data: session, status } = useSession();
+  //   if (status === "loading") {
+  //     <Loading />;
+  //   }
 
   const sideNavMenuItems = [
     { title: "Dashboard", href: "/dashboard", icon: PieChart },
@@ -30,6 +35,13 @@ export default function Sidebar() {
     { title: "Clients", href: "/dashboard/clients", icon: UserCheck },
     { title: "Learning", href: "/dashboard/learning", icon: Book },
   ];
+
+  const router = useRouter();
+  async function handleLogout() {
+    // await signOut();
+    console.log("logged out");
+    router.push("/");
+  }
 
   return (
     <aside
@@ -57,6 +69,15 @@ export default function Sidebar() {
             );
           })}
         </ul>
+        <div className="py-2">
+          <button
+            onClick={handleLogout}
+            className="bg-lime-600 rounded-full flex items-center space-x-3 px-6 py-3"
+          >
+            <LogOut />
+            <span>Logout</span>
+          </button>
+        </div>
       </div>
     </aside>
   );
