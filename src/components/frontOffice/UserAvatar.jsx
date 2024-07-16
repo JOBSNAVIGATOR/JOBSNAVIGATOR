@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 // import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { generateInitials } from "@/lib/generateInitials";
+import { Button } from "../ui/button";
 
 export default function UserAvatar({ user = {} }) {
   const { name, image } = user;
@@ -43,23 +44,23 @@ export default function UserAvatar({ user = {} }) {
         )}
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent className="px-4 py-2 pr-8">
+      <DropdownMenuContent className="px-4 py-2 pr-8 dark:bg-slate-700">
         <DropdownMenuLabel>{name}</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem className="rounded-full hover:bg-lime-600 focus:bg-lime-600 transition-all duration-200 ">
           <Link href="/" className="flex items-center space-x-2">
             <LayoutDashboard className="mr-2 h-4 w-4" />
             <span>Home</span>
           </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem>
+        <DropdownMenuItem className="rounded-full hover:bg-lime-600 focus:bg-lime-600 transition-all duration-200 ">
           <Link href="/" className="flex items-center space-x-2">
             <Settings className="mr-2 h-4 w-4" />
             <span>Edit Profile</span>
           </Link>
         </DropdownMenuItem>
         {role === "CONSULTANT" && (
-          <DropdownMenuItem>
+          <DropdownMenuItem className="rounded-full hover:bg-lime-600 focus:bg-lime-600 transition-all duration-200 ">
             <Link href="/" className="flex items-center space-x-2">
               <Settings className="mr-2 h-4 w-4" />
               <span>Consultant</span>
@@ -67,14 +68,14 @@ export default function UserAvatar({ user = {} }) {
           </DropdownMenuItem>
         )}
         {role === "CLIENT" && (
-          <DropdownMenuItem>
+          <DropdownMenuItem className="rounded-full hover:bg-lime-600 focus:bg-lime-600 transition-all duration-200 ">
             <Link href="/" className="flex items-center space-x-2">
               <Settings className="mr-2 h-4 w-4" />
               <span>Consultant</span>
             </Link>
           </DropdownMenuItem>
         )}
-        <DropdownMenuItem>
+        <DropdownMenuItem className="rounded-full hover:bg-lime-600 focus:bg-lime-600 transition-all duration-200 ">
           <button
             onClick={handleLogout}
             className="flex items-center space-x-2"
