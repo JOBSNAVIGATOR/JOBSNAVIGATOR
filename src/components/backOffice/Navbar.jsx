@@ -5,7 +5,7 @@ import React from "react";
 import ThemeSwitcherBtn from "../ui/ThemeSwitcherBtn";
 import UserAvatar from "../frontOffice/UserAvatar";
 
-export default function Navbar() {
+export default function Navbar({ showSideBar, setShowSideBar }) {
   const user = {
     name: "Bonnie Green",
     email: "name@gmail.com",
@@ -18,6 +18,7 @@ export default function Navbar() {
           <div className="flex items-center justify-start rtl:justify-end">
             {/* burger sign */}
             <button
+              onClick={() => setShowSideBar(!showSideBar)}
               data-drawer-target="logo-sidebar"
               data-drawer-toggle="logo-sidebar"
               aria-controls="logo-sidebar"
