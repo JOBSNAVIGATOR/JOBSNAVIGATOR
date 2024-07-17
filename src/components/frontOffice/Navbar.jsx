@@ -44,7 +44,7 @@ export default function Navbar() {
 
   return (
     <nav className="bg-slate-200 border-slate-200 dark:bg-slate-700 fixed w-full z-20 top-0 start-0">
-      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+      <div className="max-w-7xl flex flex-wrap items-center justify-between mx-auto p-4">
         {/* Logo */}
         <Link
           href="/"
@@ -96,7 +96,7 @@ export default function Navbar() {
           } w-full md:flex md:w-auto md:order-1`}
           id="navbar-user"
         >
-          <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-slate-100 rounded-lg bg-slate-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-slate-700 md:dark:bg-slate-700 dark:border-slate-700">
+          <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-slate-100 rounded-lg bg-slate-200 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-slate-700 md:dark:bg-slate-700 dark:border-slate-700">
             {navMenuItems.map(({ title, href }) => (
               <li key={title}>
                 <Link
