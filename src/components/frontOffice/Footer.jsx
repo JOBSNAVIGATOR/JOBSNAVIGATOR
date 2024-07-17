@@ -5,10 +5,18 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 import { Button } from "../ui/button";
+import DeveloperFooter from "../ui/DeveloperFooter";
 
 const Footer = () => {
+  const footerMenuItems = [
+    { title: "About", href: "/about" },
+    { title: "Contact", href: "/contact" },
+    { title: "Careers", href: "/careers" },
+    { title: "Terms & Condition", href: "#" },
+    { title: "Privacy Policy", href: "#" },
+  ];
   return (
-    <section className="py-6 bg-gray-50 sm:pt-16 lg:pt-17 dark:bg-slate-700 shadow-lg dark:shadow-blue-400 mb-4">
+    <section className="py-2 bg-slate-200 sm:pt-16 lg:pt-17 dark:bg-slate-700 shadow-lg dark:shadow-blue-400 mb-4">
       <div className="px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl text-green-950 dark:text-slate-100">
         <div className="grid grid-cols-2 md:col-span-3 lg:grid-cols-6 gap-y-16 gap-x-12">
           <div className="col-span-2 md:col-span-3 lg:col-span-2 lg:pr-8">
@@ -30,6 +38,7 @@ const Footer = () => {
               <li>
                 <Link
                   href="#"
+                  target="_blank"
                   title=""
                   className="flex items-center justify-center transition-all duration-200  rounded-full w-7 h-7 hover:bg-lime-600 focus:bg-lime-600"
                 >
@@ -38,7 +47,8 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  href="#"
+                  href={process.env.NEXT_PUBLIC_JOBSNAVIGATOR_LINKEDIN_URL}
+                  target="_blank"
                   title=""
                   className="flex items-center justify-center transition-all duration-200  rounded-full w-7 h-7 hover:bg-lime-600 focus:bg-lime-600"
                 >
@@ -75,48 +85,20 @@ const Footer = () => {
             </p>
 
             <ul className="mt-6 space-y-4">
-              <li>
-                <Link
-                  href="#"
-                  title=""
-                  className="flex text-base transition-all duration-200 hover:text-lime-600 focus:text-lime-600"
-                >
-                  {" "}
-                  About{" "}
-                </Link>
-              </li>
-
-              <li>
-                <Link
-                  href="#"
-                  title=""
-                  className="flex text-base transition-all duration-200 hover:text-lime-600 focus:text-lime-600"
-                >
-                  {" "}
-                  Career{" "}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  title=""
-                  className="flex text-base transition-all duration-200 hover:text-lime-600 focus:text-lime-600"
-                >
-                  {" "}
-                  Terms & Conditions{" "}
-                </Link>
-              </li>
-
-              <li>
-                <Link
-                  href="#"
-                  title=""
-                  className="flex text-base transition-all duration-200 hover:text-lime-600 focus:text-lime-600"
-                >
-                  {" "}
-                  Privacy Policy{" "}
-                </Link>
-              </li>
+              {footerMenuItems.map((item) => {
+                return (
+                  <li key={item.title}>
+                    <Link
+                      href={item.href}
+                      title=""
+                      className="flex text-base transition-all duration-200 hover:text-lime-600 focus:text-lime-600"
+                    >
+                      {" "}
+                      {item.title}{" "}
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </div>
 
@@ -151,45 +133,7 @@ const Footer = () => {
 
         <hr className="mt-16 mb-10 dark:border-gray-200 border-gray-700" />
         {/* Developer Footer */}
-        <div className="sm:flex sm:items-center sm:justify-between">
-          <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">
-            <Link
-              href={process.env.NEXT_PUBLIC_DEVELOPER_PORTFOLIO_URL}
-              className="hover:underline"
-              target="_blank"
-            >
-              Developed & Maintained by -{" "}
-              {process.env.NEXT_PUBLIC_DEVELOPER_NAME}
-            </Link>
-          </span>
-          <div className="flex mt-4 sm:justify-center sm:mt-0">
-            <Link
-              href={process.env.NEXT_PUBLIC_DEVELOPER_LINKEDIN_URL}
-              className="text-gray-500 hover:text-gray-900 dark:hover:text-white"
-              target="_blank"
-            >
-              <Linkedin
-                className="w-6 h-5"
-                aria-hidden="true"
-                fill="currentColor"
-              />
-              <span className="sr-only">LinkedIn page</span>
-            </Link>
-            {/* github */}
-            <Link
-              href={process.env.NEXT_PUBLIC_DEVELOPER_GITHUB_URL}
-              className="text-gray-500 hover:text-gray-900 dark:hover:text-white ms-5"
-              target="_blank"
-            >
-              <FaGithub
-                className="w-6 h-5"
-                aria-hidden="true"
-                fill="currentColor"
-              />
-              <span className="sr-only">GitHub account</span>
-            </Link>
-          </div>
-        </div>
+        <DeveloperFooter />
       </div>
     </section>
   );

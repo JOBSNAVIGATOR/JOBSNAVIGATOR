@@ -43,7 +43,7 @@ export default function Navbar() {
   //   ];
 
   return (
-    <nav className="bg-white border-slate-200 dark:bg-slate-700 fixed w-full z-20 top-0 start-0">
+    <nav className="bg-slate-200 border-slate-200 dark:bg-slate-700 fixed w-full z-20 top-0 start-0">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         {/* Logo */}
         <Link

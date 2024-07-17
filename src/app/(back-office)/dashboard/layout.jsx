@@ -1,6 +1,7 @@
 "use client";
 import Navbar from "@/components/backOffice/Navbar";
 import Sidebar from "@/components/backOffice/Sidebar";
+import DeveloperFooter from "@/components/ui/DeveloperFooter";
 import React, { useState } from "react";
 
 export default function Layout({ children }) {
@@ -11,6 +12,9 @@ export default function Layout({ children }) {
       <Sidebar showSideBar={showSideBar} setShowSideBar={setShowSideBar} />
 
       <div className="min-h-screen p-4 sm:ml-64 mt-16">{children}</div>
+      <div className="p-4 sm:ml-64 mt-16 ">
+        <DeveloperFooter />
+      </div>
     </div>
   );
 }
