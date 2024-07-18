@@ -1,9 +1,10 @@
 import Description from "@/components/frontOffice/home/Description";
 import { HoverEffect } from "@/components/ui/card-hover-effext";
+import { InfiniteMovingCards } from "@/components/ui/infinite-moving-cards";
 import LampDemo from "@/components/ui/Lamp";
 import Image from "next/image";
 
-export const projects = [
+export const services = [
   {
     title: "Top",
     description: "Top Executive Search",
@@ -30,6 +31,52 @@ export const projects = [
     link: "https://stripe.com",
   },
 ];
+const bankingPartners = [
+  {
+    title: "Acuity Bank",
+    src: "/bankLogo/acuitybank.png",
+  },
+  {
+    title: "ADCB Bank",
+    src: "/bankLogo/adcbbank.jpeg",
+  },
+  {
+    title: "AU Small Bank",
+    src: "/bankLogo/ausmallbank.jpeg",
+  },
+  {
+    title: "DCB Bank",
+    src: "/bankLogo/dcbbank.jpeg",
+  },
+  {
+    title: "Fitch India Bank",
+    src: "/bankLogo/fitchindiabank.jpeg",
+  },
+  {
+    title: "ICRA Bank",
+    src: "/bankLogo/icrabank.jpeg",
+  },
+  {
+    title: "Indusland Bank",
+    src: "/bankLogo/induslandbank.jpeg",
+  },
+  {
+    title: "Kotak Mahindra Bank",
+    src: "/bankLogo/kotakbank.png",
+  },
+  {
+    title: "SBI Bank",
+    src: "/bankLogo/sbibank.jpeg",
+  },
+  {
+    title: "Woori Bank",
+    src: "/bankLogo/wooribank.png",
+  },
+  {
+    title: "Yes Bank",
+    src: "/bankLogo/yesbank.png",
+  },
+];
 
 export default function Home() {
   return (
@@ -50,9 +97,17 @@ export default function Home() {
         />
       </div>
 
-      {/* cards */}
+      {/* Services cards */}
       <div>
-        <HoverEffect items={projects} />
+        <HoverEffect items={services} />
+      </div>
+      {/* partners */}
+      <div className="h-[40rem] rounded-md flex flex-col antialiased dark:bg-grid-white/[0.05] items-center justify-center relative overflow-hidden">
+        <InfiniteMovingCards
+          items={bankingPartners}
+          direction="right"
+          speed="slow"
+        />
       </div>
     </>
   );
