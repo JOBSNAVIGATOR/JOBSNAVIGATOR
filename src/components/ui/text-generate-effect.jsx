@@ -91,7 +91,7 @@ export const TextGenerateEffect = ({ words, className, onCompletion }) => {
 
   return (
     <div className={cn("font-thin", className)}>
-      <div className="mt-4">
+      <div className="">
         <div className="max-w-7xl mx-auto text-center dark:text-white text-black text-xl leading-snug tracking-light">
           {renderWords()}
         </div>

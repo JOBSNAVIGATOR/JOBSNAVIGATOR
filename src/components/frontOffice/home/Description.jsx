@@ -39,6 +39,7 @@ export default function Description() {
         words={about}
         onCompletion={handleFirstEffectComplete}
       />
+      <br />
       {firstEffectCompleted && <TextGenerateEffect words={locations} />}
     </div>
   );

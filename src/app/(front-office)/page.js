@@ -1,6 +1,7 @@
 import Description from "@/components/frontOffice/home/Description";
 import { HoverEffect } from "@/components/ui/card-hover-effext";
 import LampDemo from "@/components/ui/Lamp";
+import Image from "next/image";
 
 export const projects = [
   {
@@ -38,9 +39,17 @@ export default function Home() {
         <LampDemo title="Empowering - Corporate | Careers" />
       </div>
       {/* content section */}
-      <div className=" text-center">
-        <Description />
+      <div className="flex flex-col md:flex-row  gap-5 p-5 max-w-7xl mx-auto">
+        <Description className="order-2 md:order-1" />
+        <Image
+          src="/interview.jpeg"
+          width={800}
+          height={800}
+          alt="interview image"
+          className="order-1 md:order-2 w-full h-auto md:w-[400px] md:h-[500px] lg:w-[600px] lg:h-auto rounded-xl shadow-lg shadow-blue-500 border border-black"
+        />
       </div>
+
       {/* cards */}
       <div>
         <HoverEffect items={projects} />

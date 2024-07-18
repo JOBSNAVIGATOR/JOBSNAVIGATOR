@@ -6,7 +6,7 @@ export default function Layout({ children }) {
   return (
     <div>
       <Navbar />
-      <div className="mt-20 min-h-screen">{children}</div>
+      <div className="mt-20 min-h-screen bg-slate-300 dark:bg-transparent">{children}</div>
       <Footer />
     </div>
   );
