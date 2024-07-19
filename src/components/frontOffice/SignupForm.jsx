@@ -74,24 +74,27 @@ export default function SignupForm({ role = "USER" }) {
         className="sm:col-span-2 mb-3"
       />
 
-      {/* first name */}
-      <TextInput
-        label="First Name"
-        name="firstName"
-        type="text"
-        register={register}
-        errors={errors}
-        className="sm:col-span-2 mb-3"
-      />
-      {/* last name */}
-      <TextInput
-        label="Last Name"
-        name="lastName"
-        type="text"
-        register={register}
-        errors={errors}
-        className="sm:col-span-2 mb-3"
-      />
+      <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
+        {/* first name */}
+        <TextInput
+          label="First Name"
+          name="firstName"
+          type="text"
+          register={register}
+          errors={errors}
+          className="sm:col-span-2 mb-3"
+        />
+        {/* last name */}
+        <TextInput
+          label="Last Name"
+          name="lastName"
+          type="text"
+          register={register}
+          errors={errors}
+          className="sm:col-span-2 mb-3"
+        />
+      </div>
+
       {/* email */}
       <TextInput
         label="Email"
