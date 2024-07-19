@@ -51,6 +51,7 @@ export default function LoginForm() {
         label="Email"
         name="email"
         type="email"
+        placeholder="email@company"
         register={register}
         errors={errors}
         className="sm:col-span-2 mb-3"
@@ -63,6 +64,7 @@ export default function LoginForm() {
         label="Password"
         name="password"
         type="password"
+        placeholder="********"
         register={register}
         errors={errors}
         className="sm:col-span-2 mb-3"

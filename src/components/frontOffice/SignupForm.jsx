@@ -83,12 +83,14 @@ export default function SignupForm({ role = "USER" }) {
           register={register}
           errors={errors}
           className="sm:col-span-2 mb-3"
+          placeholder="John"
         />
         {/* last name */}
         <TextInput
           label="Last Name"
           name="lastName"
           type="text"
+          placeholder="Doe"
           register={register}
           errors={errors}
           className="sm:col-span-2 mb-3"
@@ -100,6 +102,7 @@ export default function SignupForm({ role = "USER" }) {
         label="Email"
         name="email"
         type="email"
+        placeholder="johndoe@comany.com"
         register={register}
         errors={errors}
         className="sm:col-span-2 mb-3"
@@ -112,6 +115,7 @@ export default function SignupForm({ role = "USER" }) {
         label="Password"
         name="password"
         type="password"
+        placeholder="******"
         register={register}
         errors={errors}
         className="sm:col-span-2 mb-3"

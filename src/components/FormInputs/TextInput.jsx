@@ -13,6 +13,7 @@ export default function TextInput({
   defaultValue = "",
   min,
   max,
+  placeholder,
 }) {
   return (
     <div className={className}>
@@ -32,7 +33,7 @@ export default function TextInput({
           defaultValue={defaultValue}
           autoComplete={name}
           className=""
-          placeholder={label.toLowerCase()}
+          placeholder={placeholder}
           min={type === "date" ? min : undefined}
           max={type === "date" ? max : undefined}
         />
