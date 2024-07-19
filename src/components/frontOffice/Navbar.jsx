@@ -65,7 +65,7 @@ export default function Navbar() {
             {status === "unauthenticated" ? (
               <Link
                 href="/login"
-                className="flex items-center space-x-1 text-green-950  transition-all duration-200  hover:bg-slate-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-slate-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                className="flex items-center space-x-1 text-green-950  transition-all duration-200  hover:bg-slate-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-slate-700 dark:hover:text-white md:dark:hover:bg-transparent text-xl"
               >
                 <User />
                 <span>Login</span>
@@ -96,7 +96,7 @@ export default function Navbar() {
           } w-full md:flex md:w-auto md:order-1`}
           id="navbar-user"
         >
-          <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-slate-100 rounded-lg bg-slate-200 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-slate-700 md:dark:bg-slate-700 dark:border-slate-700">
+          <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-slate-100 rounded-lg bg-slate-200 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 dark:bg-slate-700 md:dark:bg-slate-700 dark:border-slate-700 text-xl">
             {navMenuItems.map(({ title, href }) => (
               <li key={title}>
                 <Link
