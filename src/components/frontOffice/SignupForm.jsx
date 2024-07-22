@@ -149,7 +149,7 @@ export default function SignupForm({ role = "USER" }) {
           <p className="text-[0.75rem] font-light text-gray-500 dark:text-gray-400 py-4">
             Are you a CANDIDATE ?{" "}
             <Link
-              href="/register"
+              href="/signup"
               className="font-medium text-purple-600 hover:underline dark:text-purple-500"
             >
               Register here

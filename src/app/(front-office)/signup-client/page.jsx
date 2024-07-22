@@ -10,7 +10,7 @@ export default function page() {
             <h1 className="text-xl font-bold leading-tight tracking-tight  md:text-2xl  text-center text-neutral-800 dark:text-neutral-200">
               Create your Account
             </h1>
-            <SignupForm role="CANDIDATE" />
+            <SignupForm role="CLIENT" />
           </div>
         </div>
       </div>
