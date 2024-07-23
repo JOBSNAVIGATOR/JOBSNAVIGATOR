@@ -1,15 +1,17 @@
 "use client";
 import React from "react";
-import { BackgroundGradient } from "../ui/background-gradient";
+
 import Link from "next/link";
-import { BottomGradient } from "../ui/BottomGradient";
+
+import { BackgroundGradient } from "@/components/ui/background-gradient";
+import { BottomGradient } from "@/components/ui/BottomGradient";
 
 export default function JobCard({ jobItem }) {
   return (
     <div className="">
-      <BackgroundGradient className="h-[300px] rounded-[22px] p-4 sm:p-10 bg-white dark:bg-zinc-900 flex flex-col justify-around">
+      <BackgroundGradient className="h-[300px] rounded-[22px] p-4  bg-white dark:bg-zinc-900 flex flex-col justify-around">
         <div className="flex flex-col justify-around h-[200px]">
-          <p className="whitespace-nowrap text-wrap text-base sm:text-2xl text-black mt-4 mb-2 dark:text-neutral-200">
+          <p className="whitespace-nowrap text-wrap text-base sm:text-2xl text-black dark:text-neutral-200">
             {jobItem.jobTitle}
           </p>
 
