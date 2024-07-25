@@ -310,7 +310,7 @@ export default function FilterSection({ jobs, setFilteredJobs }) {
             placeholder="Search by skills"
             value={searchSkills}
             onChange={(e) => setSearchSkills(e.target.value)}
-            className="w-full px-4 py-2 rounded-lg dark:text-black"
+            className="w-full px-4 py-2 rounded-xl dark:text-black"
           />
         </div>
 
@@ -322,7 +322,7 @@ export default function FilterSection({ jobs, setFilteredJobs }) {
             onChange={setSelectedSectors}
             options={jobSectors}
             placeholder="Select Sectors"
-            className="w-full rounded-lg dark:text-black"
+            className="w-full rounded-xl dark:text-black"
           />
         </div>
         <div className="mb-4">
@@ -332,7 +332,7 @@ export default function FilterSection({ jobs, setFilteredJobs }) {
             onChange={setSelectedDomains}
             options={jobDomains}
             placeholder="Select Domains"
-            className="w-full rounded-lg dark:text-black"
+            className="w-full rounded-xl dark:text-black"
           />
         </div>
         <div className="mb-4">
@@ -342,7 +342,7 @@ export default function FilterSection({ jobs, setFilteredJobs }) {
             onChange={setSelectedLevels}
             options={jobLevels}
             placeholder="Select Levels"
-            className="w-full rounded-lg dark:text-black"
+            className="w-full rounded-xl dark:text-black"
           />
         </div>
         <div className="mb-4">
@@ -352,7 +352,7 @@ export default function FilterSection({ jobs, setFilteredJobs }) {
             onChange={setSelectedCompanies}
             options={jobCompanies}
             placeholder="Select Companies"
-            className="w-full rounded-lg dark:text-black"
+            className="w-full rounded-xl dark:text-black"
           />
         </div>
         <div className="mb-4">
@@ -362,7 +362,7 @@ export default function FilterSection({ jobs, setFilteredJobs }) {
             onChange={setSelectedLocations}
             options={jobLocations}
             placeholder="Select Locations"
-            className="w-full rounded-lg dark:text-black"
+            className="w-full rounded-xl dark:text-black"
           />
         </div>
 
