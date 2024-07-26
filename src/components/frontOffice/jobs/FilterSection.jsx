@@ -291,7 +291,7 @@ export default function FilterSection({ jobs, setFilteredJobs }) {
     <>
       {/* Icon for filter section */}
       <div
-        className="fixed top-20 left-1/2 transform -translate-x-1/2 bg-blue-600 text-white p-3 rounded-full cursor-pointer md:hidden z-50"
+        className="fixed top-20 left-1/2 transform -translate-x-1/2 bg-blue-600 text-white p-3 rounded-full cursor-pointer md:hidden z-20"
         onClick={() => setIsFilterVisible(!isFilterVisible)}
       >
         <FaFilter size={24} />
