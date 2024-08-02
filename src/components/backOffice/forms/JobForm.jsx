@@ -20,11 +20,9 @@ export default function JobForm({
   clients,
   updateData = {},
 }) {
-  const initialImageUrl = updateData?.imageUrl ?? "";
   const initialSkills = updateData?.skills ?? [];
   const id = updateData?.id ?? "";
   const router = useRouter();
-  const [imageUrl, setImageUrl] = useState(initialImageUrl);
   const [loading, setLoading] = useState(false);
   const {
     register,
@@ -40,7 +38,7 @@ export default function JobForm({
   const [skills, setSkills] = useState(initialSkills);
   async function onSubmit(data) {
     // const productCode = generateUserCode("JSP", data.title);
-    data.productCode = "BJSXSJXVSXVS";
+    data.jobCode = "BJSXSJXVSXVS";
     data.skills = skills;
     console.log(data);
     // if (id) {
