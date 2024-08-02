@@ -22,8 +22,8 @@ export default function ActionColumn({ row, title, endpoint, editEndpoint }) {
           <MoreHorizontal className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+      <DropdownMenuContent align="end" className="dark:bg-black bg-slate-200">
+        <DropdownMenuLabel className="text-center">Actions</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
           <DeleteBtn title={title} endpoint={endpoint} />
