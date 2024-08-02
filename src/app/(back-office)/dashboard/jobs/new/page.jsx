@@ -1,10 +1,11 @@
-import FormHeader from "@/components/backoffice/FormHeader";
+import FormHeader from "@/components/backOffice/FormHeader";
+import JobForm from "@/components/backOffice/forms/JobForm";
 
 export default function NewJob() {
   return (
     <div>
-      {/* <FormHeader title="New Job" /> */}
-      {/* <CategoryForm /> */}
+      <FormHeader title="New Job" />
+      <JobForm />
     </div>
   );
 }
