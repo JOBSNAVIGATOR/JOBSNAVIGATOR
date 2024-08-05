@@ -273,7 +273,7 @@ export const jobs = [
   },
 ];
 
-export const companyData = [
+export const companies = [
   // Banking Sector
   {
     companyId: "00001",
@@ -395,4 +395,107 @@ export const companyData = [
     companyDescription:
       "Unacademy is an Indian online education technology company based in Bengaluru, India.",
   },
+];
+
+export const sectors = [
+  {
+    sectorId: 0,
+    sectorName: "Banking",
+    domains: [
+      {
+        domainId: 0,
+        domainName: "Retail Banking",
+        levels: [
+          { levelId: 0, levelName: "Entry Level" },
+          { levelId: 1, levelName: "Mid Level" },
+          { levelId: 2, levelName: "Senior Level" },
+        ],
+      },
+      {
+        domainId: 1,
+        domainName: "Corporate Banking",
+        levels: [
+          { levelId: 0, levelName: "Entry Level" },
+          { levelId: 1, levelName: "Mid Level" },
+          { levelId: 2, levelName: "Senior Level" },
+        ],
+      },
+      {
+        domainId: 2,
+        domainName: "Investment Banking",
+        levels: [
+          { levelId: 0, levelName: "Entry Level" },
+          { levelId: 1, levelName: "Mid Level" },
+          { levelId: 2, levelName: "Senior Level" },
+        ],
+      },
+    ],
+  },
+  {
+    sectorId: 1,
+    sectorName: "Information Technology",
+    domains: [
+      {
+        domainId: 0,
+        domainName: "Software Development",
+        levels: [
+          { levelId: 0, levelName: "Junior Developer" },
+          { levelId: 1, levelName: "Mid Level Developer" },
+          { levelId: 2, levelName: "Senior Developer" },
+        ],
+      },
+      {
+        domainId: 1,
+        domainName: "Cybersecurity",
+        levels: [
+          { levelId: 0, levelName: "Analyst" },
+          { levelId: 1, levelName: "Specialist" },
+          { levelId: 2, levelName: "Manager" },
+        ],
+      },
+      {
+        domainId: 2,
+        domainName: "Data Science",
+        levels: [
+          { levelId: 0, levelName: "Data Analyst" },
+          { levelId: 1, levelName: "Data Scientist" },
+          { levelId: 2, levelName: "Data Engineer" },
+        ],
+      },
+    ],
+  },
+  {
+    sectorId: 2,
+    sectorName: "Healthcare",
+    domains: [
+      {
+        domainId: 0,
+        domainName: "Pharmaceuticals",
+        levels: [
+          { levelId: 0, levelName: "Research Assistant" },
+          { levelId: 1, levelName: "Research Scientist" },
+          { levelId: 2, levelName: "Lab Manager" },
+        ],
+      },
+      {
+        domainId: 1,
+        domainName: "Medical Devices",
+        levels: [
+          { levelId: 0, levelName: "Technician" },
+          { levelId: 1, levelName: "Engineer" },
+          { levelId: 2, levelName: "Senior Engineer" },
+        ],
+      },
+      {
+        domainId: 2,
+        domainName: "Healthcare Services",
+        levels: [
+          { levelId: 0, levelName: "Assistant" },
+          { levelId: 1, levelName: "Practitioner" },
+          { levelId: 2, levelName: "Senior Practitioner" },
+        ],
+      },
+    ],
+  },
+  // Add more sectors, domains, and levels as needed
 ];
