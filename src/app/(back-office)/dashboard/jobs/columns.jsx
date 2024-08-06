@@ -53,7 +53,7 @@ export const columns = [
   {
     accessorKey: "jobVacanciesRemaining",
     header: ({ column }) => (
-      <SortableColumn column={column} title="Reamining Vacancies" />
+      <SortableColumn column={column} title="Remaining Vacancies" />
     ),
   },
   {

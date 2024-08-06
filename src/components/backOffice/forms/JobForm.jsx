@@ -20,17 +20,17 @@
 //   const router = useRouter();
 //   const [loading, setLoading] = useState(false);
 
-//   const {
-//     register,
-//     reset,
-//     watch,
-//     handleSubmit,
-//     formState: { errors },
-//   } = useForm({
-//     defaultValues: {
-//       ...updateData,
-//     },
-//   });
+  // const {
+  //   register,
+  //   reset,
+  //   watch,
+  //   handleSubmit,
+  //   formState: { errors },
+  // } = useForm({
+  //   defaultValues: {
+  //     ...updateData,
+  //   },
+  // });
 
 //   const [skills, setSkills] = useState(initialSkills);
 
@@ -83,17 +83,17 @@
 //       className="w-full max-w-4xl p-4 bg-white border border-gray-200 rounded-lg shadow-lg dark:shadow-emerald-500 sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700 mx-auto my-3"
 //     >
 //       <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
-//         <SelectInput
-//           label="Select Sector"
-//           name="sectorId"
-//           register={register}
-//           errors={errors}
-//           className="w-full"
-//           options={sectors.map((sector) => ({
-//             id: sector.sectorId,
-//             title: sector.sectorName,
-//           }))}
-//         />
+        // <SelectInput
+        //   label="Select Sector"
+        //   name="sectorId"
+        //   register={register}
+        //   errors={errors}
+        //   className="w-full"
+        //   options={sectors.map((sector) => ({
+        //     id: sector.sectorId,
+        //     title: sector.sectorName,
+        //   }))}
+        // />
 
 //         <SelectInput
 //           label="Select Company"

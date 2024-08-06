@@ -1,9 +1,11 @@
 "use client";
 import React from "react";
-import { jobs } from "@/data";
+import { jobs, candidates } from "@/data";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import useMediaQuery from "@custom-react-hooks/use-media-query";
+import DataTable from "@/components/data-table-components/DataTable";
+import { columns } from "./columns";
 
 // Common Job Detail Component
 const JobDetail = ({ title, detail }) => (
@@ -27,6 +29,42 @@ export default function Page({ params: { id } }) {
       </div>
     );
   }
+
+  const updateStatus = (candidateId, newStatus) => {
+    // Update status in your state or backend
+    console.log(`Updating status for candidate ${candidateId} to ${newStatus}`);
+    // Example: call API or update local state
+  };
+
+  // const updateStatus = async (candidateId, newStatus) => {
+  //   try {
+  //     await fetch(`/api/candidates/${candidateId}`, {
+  //       method: 'PUT',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({ status: newStatus }),
+  //     });
+  //     console.log(`Status updated for candidate ${candidateId}`);
+  //   } catch (error) {
+  //     console.error('Failed to update status:', error);
+  //   }
+  // };
+
+  const applicants = candidates
+    .map((candidate) => {
+      // Find the application status for the job
+      const application = candidate.applications.find(
+        (app) => app.jobId === id
+      );
+      return {
+        ...candidate,
+        status: application ? application.status : "Not Applied",
+      };
+    })
+    .filter((candidate) => job.jobApplicants.includes(candidate.id));
+
+  console.log(applicants);
 
   return (
     <div className="min-h-screen gap-4">
@@ -62,7 +100,9 @@ export default function Page({ params: { id } }) {
       </div>
 
       {/* Applicants Table */}
-      <div className="h-96 bg-red-600 my-8"></div>
+      <div className="py-8">
+        <DataTable data={applicants} columns={columns(updateStatus)} />
+      </div>
     </div>
   );
 }

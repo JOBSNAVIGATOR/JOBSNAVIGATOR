@@ -1,3 +1,278 @@
+// export const jobs = [
+//   {
+//     jobId: "49790139",
+//     jobTitle: "Corporate Integration Executive",
+//     jobCompany: "HDFC Bank",
+//     jobSector: "Finance",
+//     jobDomain: "Corporate Finance",
+//     jobLevel: "Senior",
+//     jobDescription:
+//       "Responsible for overseeing corporate integration projects and ensuring seamless processes across departments.",
+//     jobSalary: 15, // in LPA
+//     skillsRequired: [
+//       "Project Management",
+//       "Corporate Strategy",
+//       "Financial Analysis",
+//     ],
+//     jobLocation: "Mumbai",
+//     jobVacancies: 5,
+//     jobVacanciesRemaining: 2,
+//     jobApplicants: ["applicant_1", "applicant_2"],
+//   },
+//   {
+//     jobId: "63958436",
+//     jobTitle: "Global Implementation Architect",
+//     jobCompany: "Infosys",
+//     jobSector: "IT",
+//     jobDomain: "Software Implementation",
+//     jobLevel: "Mid",
+//     jobDescription:
+//       "Leads global software implementation projects, ensuring adherence to accountability standards and timelines.",
+//     jobSalary: 18, // in LPA
+//     skillsRequired: [
+//       "Software Architecture",
+//       "Global Implementation",
+//       "Stakeholder Management",
+//     ],
+//     jobLocation: "Bengaluru",
+//     jobVacancies: 3,
+//     jobVacanciesRemaining: 1,
+//     jobApplicants: ["applicant_3"],
+//   },
+//   {
+//     jobId: "85430218",
+//     jobTitle: "Senior Software Engineer",
+//     jobCompany: "Tata Consultancy Services",
+//     jobSector: "Technology",
+//     jobDomain: "Software Development",
+//     jobLevel: "Senior",
+//     jobDescription:
+//       "Develop and maintain software applications, ensuring high performance and scalability.",
+//     jobSalary: 20, // in LPA
+//     skillsRequired: ["JavaScript", "React", "Node.js"],
+//     jobLocation: "Pune",
+//     jobVacancies: 4,
+//     jobVacanciesRemaining: 3,
+//     jobApplicants: ["applicant_4", "applicant_5"],
+//   },
+//   {
+//     jobId: "22948320",
+//     jobTitle: "Healthcare Data Analyst",
+//     jobCompany: "Apollo Hospitals",
+//     jobSector: "Healthcare",
+//     jobDomain: "Data Analysis",
+//     jobLevel: "Mid",
+//     jobDescription:
+//       "Analyze healthcare data to provide actionable insights and improve patient outcomes.",
+//     jobSalary: 12, // in LPA
+//     skillsRequired: ["Data Analysis", "SQL", "Healthcare Analytics"],
+//     jobLocation: "Chennai",
+//     jobVacancies: 2,
+//     jobVacanciesRemaining: 2,
+//     jobApplicants: [],
+//   },
+//   {
+//     jobId: "94830217",
+//     jobTitle: "Financial Advisor",
+//     jobCompany: "Bajaj Finance",
+//     jobSector: "Finance",
+//     jobDomain: "Financial Planning",
+//     jobLevel: "Junior",
+//     jobDescription:
+//       "Provide financial advice and planning services to clients, helping them achieve their financial goals.",
+//     jobSalary: 10, // in LPA
+//     skillsRequired: [
+//       "Financial Planning",
+//       "Client Management",
+//       "Investment Strategies",
+//     ],
+//     jobLocation: "Delhi",
+//     jobVacancies: 3,
+//     jobVacanciesRemaining: 1,
+//     jobApplicants: ["applicant_6", "applicant_7"],
+//   },
+//   {
+//     jobId: "57382910",
+//     jobTitle: "IT Support Specialist",
+//     jobCompany: "Wipro",
+//     jobSector: "IT",
+//     jobDomain: "Technical Support",
+//     jobLevel: "Entry",
+//     jobDescription:
+//       "Provide technical support and troubleshooting services for IT systems and applications.",
+//     jobSalary: 8, // in LPA
+//     skillsRequired: [
+//       "Technical Support",
+//       "Troubleshooting",
+//       "Customer Service",
+//     ],
+//     jobLocation: "Hyderabad",
+//     jobVacancies: 5,
+//     jobVacanciesRemaining: 4,
+//     jobApplicants: ["applicant_8"],
+//   },
+//   {
+//     jobId: "28493716",
+//     jobTitle: "Marketing Manager",
+//     jobCompany: "Unacademy",
+//     jobSector: "Education",
+//     jobDomain: "Digital Marketing",
+//     jobLevel: "Mid",
+//     jobDescription:
+//       "Develop and implement marketing strategies to promote educational products and services.",
+//     jobSalary: 14, // in LPA
+//     skillsRequired: ["Digital Marketing", "Campaign Management", "SEO/SEM"],
+//     jobLocation: "Bengaluru",
+//     jobVacancies: 4,
+//     jobVacanciesRemaining: 3,
+//     jobApplicants: ["applicant_9"],
+//   },
+//   {
+//     jobId: "39485721",
+//     jobTitle: "Product Manager",
+//     jobCompany: "Byju's",
+//     jobSector: "Education",
+//     jobDomain: "Product Management",
+//     jobLevel: "Senior",
+//     jobDescription:
+//       "Lead product development efforts, ensuring alignment with business goals and customer needs.",
+//     jobSalary: 22, // in LPA
+//     skillsRequired: [
+//       "Product Management",
+//       "Agile Methodologies",
+//       "User Experience",
+//     ],
+//     jobLocation: "Bengaluru",
+//     jobVacancies: 2,
+//     jobVacanciesRemaining: 1,
+//     jobApplicants: ["applicant_10"],
+//   },
+//   {
+//     jobId: "48592031",
+//     jobTitle: "Chief Marketing Officer",
+//     jobCompany: "Reliance Industries",
+//     jobSector: "Retail",
+//     jobDomain: "Marketing Strategy",
+//     jobLevel: "Executive",
+//     jobDescription:
+//       "Oversee the development and execution of marketing strategies to drive business growth.",
+//     jobSalary: 35, // in LPA
+//     skillsRequired: ["Marketing Strategy", "Leadership", "Brand Management"],
+//     jobLocation: "Mumbai",
+//     jobVacancies: 1,
+//     jobVacanciesRemaining: 0,
+//     jobApplicants: ["applicant_11"],
+//   },
+//   {
+//     jobId: "57382145",
+//     jobTitle: "Network Security Engineer",
+//     jobCompany: "Tata Communications",
+//     jobSector: "Telecommunications",
+//     jobDomain: "Network Security",
+//     jobLevel: "Mid",
+//     jobDescription:
+//       "Implement and manage network security measures to protect the organization's IT infrastructure.",
+//     jobSalary: 16, // in LPA
+//     skillsRequired: [
+//       "Network Security",
+//       "Firewall Management",
+//       "Incident Response",
+//     ],
+//     jobLocation: "Chennai",
+//     jobVacancies: 3,
+//     jobVacanciesRemaining: 3,
+//     jobApplicants: [],
+//   },
+//   {
+//     jobId: "84736290",
+//     jobTitle: "Operations Manager",
+//     jobCompany: "Flipkart",
+//     jobSector: "E-commerce",
+//     jobDomain: "Operations Management",
+//     jobLevel: "Senior",
+//     jobDescription:
+//       "Oversee and optimize operational processes to ensure efficiency and effectiveness.",
+//     jobSalary: 25, // in LPA
+//     skillsRequired: [
+//       "Operations Management",
+//       "Process Improvement",
+//       "Team Leadership",
+//     ],
+//     jobLocation: "Bengaluru",
+//     jobVacancies: 2,
+//     jobVacanciesRemaining: 1,
+//     jobApplicants: ["applicant_12"],
+//   },
+//   {
+//     jobId: "92735481",
+//     jobTitle: "UX/UI Designer",
+//     jobCompany: "Ola",
+//     jobSector: "Transport",
+//     jobDomain: "UX/UI Design",
+//     jobLevel: "Mid",
+//     jobDescription:
+//       "Design user interfaces and experiences for the company's digital products.",
+//     jobSalary: 15, // in LPA
+//     skillsRequired: ["UX Design", "UI Design", "Prototyping"],
+//     jobLocation: "Bengaluru",
+//     jobVacancies: 3,
+//     jobVacanciesRemaining: 2,
+//     jobApplicants: ["applicant_13"],
+//   },
+//   {
+//     jobId: "36478215",
+//     jobTitle: "Business Development Executive",
+//     jobCompany: "Paytm",
+//     jobSector: "Fintech",
+//     jobDomain: "Business Development",
+//     jobLevel: "Junior",
+//     jobDescription:
+//       "Identify and pursue new business opportunities to drive company growth.",
+//     jobSalary: 12, // in LPA
+//     skillsRequired: [
+//       "Business Development",
+//       "Sales Strategy",
+//       "Client Relations",
+//     ],
+//     jobLocation: "Noida",
+//     jobVacancies: 4,
+//     jobVacanciesRemaining: 2,
+//     jobApplicants: ["applicant_14", "applicant_15"],
+//   },
+//   {
+//     jobId: "48293761",
+//     jobTitle: "Data Scientist",
+//     jobCompany: "Zomato",
+//     jobSector: "Foodtech",
+//     jobDomain: "Data Analysis",
+//     jobLevel: "Mid",
+//     jobDescription:
+//       "Analyze and interpret complex data to provide actionable insights for business decision-making.",
+//     jobSalary: 18, // in LPA
+//     skillsRequired: ["Data Analysis", "Machine Learning", "Python"],
+//     jobLocation: "Gurgaon",
+//     jobVacancies: 2,
+//     jobVacanciesRemaining: 1,
+//     jobApplicants: ["applicant_16"],
+//   },
+//   {
+//     jobId: "57384921",
+//     jobTitle: "Content Writer",
+//     jobCompany: "Swiggy",
+//     jobSector: "Foodtech",
+//     jobDomain: "Content Creation",
+//     jobLevel: "Entry",
+//     jobDescription:
+//       "Create engaging and informative content for the company's digital platforms.",
+//     jobSalary: 9, // in LPA
+//     skillsRequired: ["Content Writing", "SEO", "Creativity"],
+//     jobLocation: "Bengaluru",
+//     jobVacancies: 5,
+//     jobVacanciesRemaining: 3,
+//     jobApplicants: ["applicant_17", "applicant_18"],
+//   },
+// ];
+
 export const jobs = [
   {
     jobId: "49790139",
@@ -17,7 +292,7 @@ export const jobs = [
     jobLocation: "Mumbai",
     jobVacancies: 5,
     jobVacanciesRemaining: 2,
-    jobApplicants: ["applicant_1", "applicant_2"],
+    jobApplicants: ["JOBSN202308060001", "JOBSN202308060002"],
   },
   {
     jobId: "63958436",
@@ -37,7 +312,7 @@ export const jobs = [
     jobLocation: "Bengaluru",
     jobVacancies: 3,
     jobVacanciesRemaining: 1,
-    jobApplicants: ["applicant_3"],
+    jobApplicants: ["JOBSN202308060003"],
   },
   {
     jobId: "85430218",
@@ -53,7 +328,7 @@ export const jobs = [
     jobLocation: "Pune",
     jobVacancies: 4,
     jobVacanciesRemaining: 3,
-    jobApplicants: ["applicant_4", "applicant_5"],
+    jobApplicants: ["JOBSN202308060004", "JOBSN202308060005"],
   },
   {
     jobId: "22948320",
@@ -89,7 +364,7 @@ export const jobs = [
     jobLocation: "Delhi",
     jobVacancies: 3,
     jobVacanciesRemaining: 1,
-    jobApplicants: ["applicant_6", "applicant_7"],
+    jobApplicants: ["JOBSN202308060006", "JOBSN202308060007"],
   },
   {
     jobId: "57382910",
@@ -109,7 +384,7 @@ export const jobs = [
     jobLocation: "Hyderabad",
     jobVacancies: 5,
     jobVacanciesRemaining: 4,
-    jobApplicants: ["applicant_8"],
+    jobApplicants: ["JOBSN202308060008"],
   },
   {
     jobId: "28493716",
@@ -125,7 +400,7 @@ export const jobs = [
     jobLocation: "Bengaluru",
     jobVacancies: 4,
     jobVacanciesRemaining: 3,
-    jobApplicants: ["applicant_9"],
+    jobApplicants: ["JOBSN202308060001", "JOBSN202308060003"],
   },
   {
     jobId: "39485721",
@@ -145,7 +420,7 @@ export const jobs = [
     jobLocation: "Bengaluru",
     jobVacancies: 2,
     jobVacanciesRemaining: 1,
-    jobApplicants: ["applicant_10"],
+    jobApplicants: ["JOBSN202308060002", "JOBSN202308060004"],
   },
   {
     jobId: "48592031",
@@ -161,7 +436,7 @@ export const jobs = [
     jobLocation: "Mumbai",
     jobVacancies: 1,
     jobVacanciesRemaining: 0,
-    jobApplicants: ["applicant_11"],
+    jobApplicants: ["JOBSN202308060006", "JOBSN202308060008"],
   },
   {
     jobId: "57382145",
@@ -201,7 +476,7 @@ export const jobs = [
     jobLocation: "Bengaluru",
     jobVacancies: 2,
     jobVacanciesRemaining: 1,
-    jobApplicants: ["applicant_12"],
+    jobApplicants: ["JOBSN202308060004", "JOBSN202308060007"],
   },
   {
     jobId: "92735481",
@@ -217,7 +492,7 @@ export const jobs = [
     jobLocation: "Bengaluru",
     jobVacancies: 3,
     jobVacanciesRemaining: 2,
-    jobApplicants: ["applicant_13"],
+    jobApplicants: ["JOBSN202308060003", "JOBSN202308060008"],
   },
   {
     jobId: "36478215",
@@ -237,7 +512,7 @@ export const jobs = [
     jobLocation: "Noida",
     jobVacancies: 4,
     jobVacanciesRemaining: 2,
-    jobApplicants: ["applicant_14", "applicant_15"],
+    jobApplicants: ["JOBSN202308060002", "JOBSN202308060008"],
   },
   {
     jobId: "48293761",
@@ -253,7 +528,7 @@ export const jobs = [
     jobLocation: "Gurgaon",
     jobVacancies: 2,
     jobVacanciesRemaining: 1,
-    jobApplicants: ["applicant_16"],
+    jobApplicants: ["JOBSN202308060001"],
   },
   {
     jobId: "57384921",
@@ -269,7 +544,226 @@ export const jobs = [
     jobLocation: "Bengaluru",
     jobVacancies: 5,
     jobVacanciesRemaining: 3,
-    jobApplicants: ["applicant_17", "applicant_18"],
+    jobApplicants: ["JOBSN202308060002", "JOBSN202308060007"],
+  },
+];
+
+export const candidates = [
+  {
+    id: "JOBSN202308060001",
+    firstName: "John",
+    lastName: "Doe",
+    email: "john.doe@example.com",
+    currentJobLocation: "Bangalore",
+    preferredJobLocation: ["Mumbai", "Pune"],
+    currentSalary: 12, // in LPA
+    noticePeriod: 60, // in days
+    skills: ["JavaScript", "React", "Node.js"],
+    currentCompany: "Infosys",
+    previousCompanies: ["TCS", "Wipro"],
+    totalExperience: 5, // in years
+    collegeName: "IIT Bombay",
+    collegeLocation: "Mumbai",
+    graduationYear: 2018,
+    linkedinProfile: "https://www.linkedin.com/in/johndoe",
+    githubProfile: "https://github.com/johndoe",
+    resume: "resume_johndoe.pdf",
+    applications: [
+      { jobId: "49790139", status: "Applied" },
+      { jobId: "49790140", status: "Interviewed" },
+    ],
+    dateOfBirth: "1990-05-15", // in YYYY-MM-DD format
+    location: "Bangalore",
+    contactNumber: "+91-9876543210",
+  },
+  {
+    id: "JOBSN202308060002",
+    firstName: "Jane",
+    lastName: "Smith",
+    email: "jane.smith@example.com",
+    currentJobLocation: "Delhi",
+    preferredJobLocation: ["Delhi", "Gurgaon"],
+    currentSalary: 10, // in LPA
+    noticePeriod: 30, // in days
+    skills: ["Python", "Django", "Machine Learning"],
+    currentCompany: "HCL",
+    previousCompanies: ["Tech Mahindra", "Cognizant"],
+    totalExperience: 4, // in years
+    collegeName: "NIT Delhi",
+    collegeLocation: "Delhi",
+    graduationYear: 2019,
+    linkedinProfile: "https://www.linkedin.com/in/janesmith",
+    githubProfile: "https://github.com/janesmith",
+    resume: "resume_janesmith.pdf",
+    applications: [
+      { jobId: "49790141", status: "Shortlisted" },
+      { jobId: "49790142", status: "Rejected" },
+    ],
+    dateOfBirth: "1992-08-22", // in YYYY-MM-DD format
+    location: "Delhi",
+    contactNumber: "+91-9123456789",
+  },
+  {
+    id: "JOBSN202308060003",
+    firstName: "Alice",
+    lastName: "Johnson",
+    email: "alice.johnson@example.com",
+    currentJobLocation: "Hyderabad",
+    preferredJobLocation: ["Hyderabad", "Chennai"],
+    currentSalary: 14, // in LPA
+    noticePeriod: 45, // in days
+    skills: ["Java", "Spring Boot", "Microservices"],
+    currentCompany: "Accenture",
+    previousCompanies: ["Capgemini", "Oracle"],
+    totalExperience: 6, // in years
+    collegeName: "IIT Hyderabad",
+    collegeLocation: "Hyderabad",
+    graduationYear: 2017,
+    linkedinProfile: "https://www.linkedin.com/in/alicejohnson",
+    githubProfile: "https://github.com/alicejohnson",
+    resume: "resume_alicejohnson.pdf",
+    applications: [
+      { jobId: "49790143", status: "Applied" },
+      { jobId: "49790144", status: "Offer Extended" },
+    ],
+    dateOfBirth: "1989-11-05", // in YYYY-MM-DD format
+    location: "Hyderabad",
+    contactNumber: "+91-9234567890",
+  },
+  {
+    id: "JOBSN202308060004",
+    firstName: "Robert",
+    lastName: "Williams",
+    email: "robert.williams@example.com",
+    currentJobLocation: "Pune",
+    preferredJobLocation: ["Pune", "Mumbai"],
+    currentSalary: 11, // in LPA
+    noticePeriod: 90, // in days
+    skills: ["C#", ".NET Core", "Azure"],
+    currentCompany: "Microsoft",
+    previousCompanies: ["IBM", "SAP"],
+    totalExperience: 7, // in years
+    collegeName: "BITS Pilani",
+    collegeLocation: "Pilani",
+    graduationYear: 2016,
+    linkedinProfile: "https://www.linkedin.com/in/robertwilliams",
+    githubProfile: "https://github.com/robertwilliams",
+    resume: "resume_robertwilliams.pdf",
+    applications: [
+      { jobId: "49790145", status: "Applied" },
+      { jobId: "49790146", status: "Interviewed" },
+    ],
+    dateOfBirth: "1987-03-30", // in YYYY-MM-DD format
+    location: "Pune",
+    contactNumber: "+91-9345678901",
+  },
+  {
+    id: "JOBSN202308060005",
+    firstName: "Emily",
+    lastName: "Brown",
+    email: "emily.brown@example.com",
+    currentJobLocation: "Chennai",
+    preferredJobLocation: ["Chennai", "Bangalore"],
+    currentSalary: 9, // in LPA
+    noticePeriod: 30, // in days
+    skills: ["PHP", "Laravel", "MySQL"],
+    currentCompany: "Zoho",
+    previousCompanies: ["Freshworks", "Mindtree"],
+    totalExperience: 3, // in years
+    collegeName: "Anna University",
+    collegeLocation: "Chennai",
+    graduationYear: 2020,
+    linkedinProfile: "https://www.linkedin.com/in/emilybrown",
+    githubProfile: "https://github.com/emilybrown",
+    resume: "resume_emilybrown.pdf",
+    applications: [
+      { jobId: "49790147", status: "Applied" },
+      { jobId: "49790148", status: "Shortlisted" },
+    ],
+    dateOfBirth: "1995-07-19", // in YYYY-MM-DD format
+    location: "Chennai",
+    contactNumber: "+91-9456789012",
+  },
+  {
+    id: "JOBSN202308060006",
+    firstName: "Michael",
+    lastName: "Taylor",
+    email: "michael.taylor@example.com",
+    currentJobLocation: "Mumbai",
+    preferredJobLocation: ["Mumbai", "Bangalore"],
+    currentSalary: 13, // in LPA
+    noticePeriod: 60, // in days
+    skills: ["Angular", "TypeScript", "Node.js"],
+    currentCompany: "TCS",
+    previousCompanies: ["Cognizant", "Infosys"],
+    totalExperience: 5, // in years
+    collegeName: "IIT Bombay",
+    collegeLocation: "Mumbai",
+    graduationYear: 2018,
+    linkedinProfile: "https://www.linkedin.com/in/michaeltaylor",
+    githubProfile: "https://github.com/michaeltaylor",
+    resume: "resume_michaeltaylor.pdf",
+    applications: [
+      { jobId: "49790149", status: "Applied" },
+      { jobId: "49790150", status: "Offer Extended" },
+    ],
+    dateOfBirth: "1991-04-28", // in YYYY-MM-DD format
+    location: "Mumbai",
+    contactNumber: "+91-9567890123",
+  },
+  {
+    id: "JOBSN202308060007",
+    firstName: "Jessica",
+    lastName: "Davis",
+    email: "jessica.davis@example.com",
+    currentJobLocation: "Kolkata",
+    preferredJobLocation: ["Kolkata", "Delhi"],
+    currentSalary: 8, // in LPA
+    noticePeriod: 45, // in days
+    skills: ["Ruby on Rails", "PostgreSQL", "Redis"],
+    currentCompany: "Tech Mahindra",
+    previousCompanies: ["Wipro", "HCL"],
+    totalExperience: 4, // in years
+    collegeName: "Jadavpur University",
+    collegeLocation: "Kolkata",
+    graduationYear: 2019,
+    linkedinProfile: "https://www.linkedin.com/in/jessicadavis",
+    githubProfile: "https://github.com/jessicadavis",
+    resume: "resume_jessicadavis.pdf",
+    applications: [
+      { jobId: "49790151", status: "Applied" },
+      { jobId: "49790152", status: "Rejected" },
+    ],
+    dateOfBirth: "1992-09-14", // in YYYY-MM-DD format
+    location: "Kolkata",
+    contactNumber: "+91-9678901234",
+  },
+  {
+    id: "JOBSN202308060008",
+    firstName: "Daniel",
+    lastName: "Moore",
+    email: "daniel.moore@example.com",
+    currentJobLocation: "Ahmedabad",
+    preferredJobLocation: ["Ahmedabad", "Surat"],
+    currentSalary: 7, // in LPA
+    noticePeriod: 60, // in days
+    skills: ["Go", "Kubernetes", "Docker"],
+    currentCompany: "Zomato",
+    previousCompanies: ["Swiggy", "Paytm"],
+    totalExperience: 3, // in years
+    collegeName: "IIT Gandhinagar",
+    collegeLocation: "Gandhinagar",
+    graduationYear: 2020,
+    linkedinProfile: "https://www.linkedin.com/in/danielmoore",
+    githubProfile: "https://github.com/danielmoore",
+    resume: "resume_danielmoore.pdf",
+    applications: [
+      { jobId: "49790153", status: "Applied" },
+      { jobId: "49790154", status: "Shortlisted" },
+    ],
+    dateOfBirth: "1996-06-25", // in YYYY-MM-DD format
+    location: "Ahmedabad",
+    contactNumber: "+91-9801234567",
   },
 ];
 
