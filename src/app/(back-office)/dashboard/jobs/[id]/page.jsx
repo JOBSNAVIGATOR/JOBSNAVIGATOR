@@ -101,7 +101,22 @@ export default function Page({ params: { id } }) {
 
       {/* Applicants Table */}
       <div className="py-8">
-        <DataTable data={applicants} columns={columns(updateStatus)} />
+        {/* <DataTable
+          data={applicants}
+          columns={columns(updateStatus)}
+          filterKeys={["fullName", "location"]}
+        /> */}
+        {applicants.length > 0 ? (
+          <DataTable
+            data={applicants}
+            columns={columns(updateStatus)}
+            filterKeys={["firstName", "lastName", "location"]}
+          />
+        ) : (
+          <div className="text-center text-gray-500">
+            No applicants for this job.
+          </div>
+        )}
       </div>
     </div>
   );

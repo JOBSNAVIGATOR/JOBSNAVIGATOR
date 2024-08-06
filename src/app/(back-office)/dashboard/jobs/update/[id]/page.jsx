@@ -1,5 +1,5 @@
 import FormHeader from "@/components/backoffice/FormHeader";
-import { getData } from "@/lib/getData";
+// import { getData } from "@/lib/getData";
 import React from "react";
 
 export default async function UpdateJob({ params: { id } }) {

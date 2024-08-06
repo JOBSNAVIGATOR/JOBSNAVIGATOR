@@ -35,10 +35,22 @@ export const columns = (updateStatus) => [
     enableSorting: false,
     enableHiding: false,
   },
+  // {
+  //   accessorKey: "fullName",
+  //   header: ({ column }) => <SortableColumn column={column} title="Name" />,
+  //   cell: ({ row }) => `${row.original.firstName} ${row.original.lastName}`,
+  // },
   {
-    accessorKey: "fullName",
-    header: ({ column }) => <SortableColumn column={column} title="Name" />,
-    cell: ({ row }) => `${row.original.firstName} ${row.original.lastName}`,
+    accessorKey: "firstName",
+    header: ({ column }) => (
+      <SortableColumn column={column} title="First Name" />
+    ),
+  },
+  {
+    accessorKey: "lastName",
+    header: ({ column }) => (
+      <SortableColumn column={column} title="Last Name" />
+    ),
   },
   {
     accessorKey: "email",
@@ -80,7 +92,7 @@ export const columns = (updateStatus) => [
           name="status"
           register={() => {}} // No need for register here
           errors={{}} // No need for errors here
-          className="w-full"
+          className="w-full dark:text-black"
           options={statusOptions}
           value={status} // Ensure the value reflects the current status
           onChange={handleChange} // Handle status change
