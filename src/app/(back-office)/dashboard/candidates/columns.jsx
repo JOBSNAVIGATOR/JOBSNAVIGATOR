@@ -38,7 +38,9 @@ export const columns = [
   },
   {
     accessorKey: "lastName",
-    header: ({ column }) => <SortableColumn column={column} title="lastName" />,
+    header: ({ column }) => (
+      <SortableColumn column={column} title="Last Name" />
+    ),
   },
   {
     accessorKey: "email",

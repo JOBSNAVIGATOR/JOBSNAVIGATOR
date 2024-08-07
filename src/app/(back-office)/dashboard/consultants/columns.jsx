@@ -31,40 +31,44 @@ export const columns = [
     enableHiding: false,
   },
   {
-    accessorKey: "jobSector",
-    header: ({ column }) => <SortableColumn column={column} title="Sector" />,
+    accessorKey: "firstName",
+    header: ({ column }) => (
+      <SortableColumn column={column} title="First Name" />
+    ),
   },
   {
-    accessorKey: "jobDomain",
-    header: ({ column }) => <SortableColumn column={column} title="Domain" />,
+    accessorKey: "lastName",
+    header: ({ column }) => (
+      <SortableColumn column={column} title="Last Name" />
+    ),
   },
   {
-    accessorKey: "jobTitle",
-    header: ({ column }) => <SortableColumn column={column} title="Title" />,
+    accessorKey: "email",
+    header: ({ column }) => <SortableColumn column={column} title="Email" />,
   },
   {
-    accessorKey: "jobLevel",
-    header: ({ column }) => <SortableColumn column={column} title="Level" />,
+    accessorKey: "phone",
+    header: ({ column }) => <SortableColumn column={column} title="Contact" />,
   },
   {
-    accessorKey: "jobLocation",
+    accessorKey: "workingLocation",
     header: ({ column }) => <SortableColumn column={column} title="Location" />,
   },
   {
-    accessorKey: "jobVacanciesRemaining",
+    accessorKey: "currentPotentialPoints",
     header: ({ column }) => (
-      <SortableColumn column={column} title="Remaining Vacancies" />
+      <SortableColumn column={column} title="Potential Points" />
     ),
   },
   {
     id: "view",
     cell: ({ row }) => {
-      const job = row.original;
+      const consultant = row.original;
       return (
-        <Link href={`/dashboard/jobs/${job.jobId}`}>
+        <Link href={`/dashboard/consultants/${consultant.consultantId}`}>
           <button className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">
             <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-              View Job
+              View
             </span>
           </button>
         </Link>
@@ -74,13 +78,13 @@ export const columns = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const job = row.original;
+      const consultant = row.original;
       return (
         <ActionColumn
           row={row}
-          title="Jobs"
-          editEndpoint={`jobs/update/${job.id}`}
-          endpoint={`jobs/${job.id}`}
+          title="Consultant"
+          editEndpoint={`consultant/update/${consultant.id}`}
+          endpoint={`consultant/${consultant.id}`}
         />
       );
     },
