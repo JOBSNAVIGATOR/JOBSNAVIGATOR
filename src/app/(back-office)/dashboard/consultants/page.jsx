@@ -11,7 +11,7 @@ export default function page() {
       {/* Header */}
       <PageHeader
         heading={"Consultants"}
-        href={"/dashboard/consultant/new"}
+        href={"/dashboard/consultants/new"}
         linkTitle={"Add Consultant"}
       />
 

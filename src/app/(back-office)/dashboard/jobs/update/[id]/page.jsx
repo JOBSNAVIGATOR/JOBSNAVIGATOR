@@ -8,6 +8,7 @@ export default async function UpdateJob({ params: { id } }) {
     <div>
       <FormHeader title="Update Job" />
       {/* <CategoryForm updateData={category} /> */}
+      <h2>id : {id}</h2>
     </div>
   );
 }

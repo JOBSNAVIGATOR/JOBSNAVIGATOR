@@ -78,7 +78,7 @@ export const columns = [
       return (
         <ActionColumn
           row={row}
-          title="Jobs"
+          title="Job"
           editEndpoint={`jobs/update/${job.id}`}
           endpoint={`jobs/${job.id}`}
         />
