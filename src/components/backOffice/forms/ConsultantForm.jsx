@@ -108,6 +108,7 @@ export default function ConsultantForm({ user, updateData = {} }) {
           register={register}
           errors={errors}
           className="w-full"
+          type="number"
         />
         <TextInput
           label="Street Address"
@@ -143,6 +144,30 @@ export default function ConsultantForm({ user, updateData = {} }) {
           register={register}
           errors={errors}
           className="w-full"
+        />
+        <TextInput
+          label="Aadhar Number"
+          name="aadharNumber"
+          register={register}
+          errors={errors}
+          className="w-full"
+          type="number"
+        />
+        <TextInput
+          label="PAN Number"
+          name="panNumber"
+          register={register}
+          errors={errors}
+          className="w-full"
+          type="number"
+        />
+        <TextInput
+          label="CTC Offered"
+          name="ctcOffered"
+          register={register}
+          errors={errors}
+          className="w-full"
+          type="number"
         />
       </div>
       <br />
