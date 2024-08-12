@@ -83,7 +83,7 @@ export const columns = [
         <ActionColumn
           row={row}
           title="Consultant"
-          editEndpoint={`consultant/update/${consultant.id}`}
+          editEndpoint={`consultants/update/${consultant.id}`}
           endpoint={`consultant/${consultant.id}`}
         />
       );
