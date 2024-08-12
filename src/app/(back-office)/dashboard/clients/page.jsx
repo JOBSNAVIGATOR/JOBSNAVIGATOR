@@ -1,9 +1,24 @@
+import PageHeader from "@/components/backOffice/PageHeader";
 import React from "react";
+import { consultants } from "@/data";
+import DataTable from "@/components/data-table-components/DataTable";
+import { columns } from "./columns";
 
 export default function page() {
+  // const jobs = await getData("jobs");
   return (
     <div>
-      <h2>Clients</h2>
+      {/* Header */}
+      <PageHeader
+        heading={"Clients"}
+        href={"/dashboard/clients/new"}
+        linkTitle={"Add Client"}
+      />
+
+      {/* table */}
+      <div className="py-8">
+        <DataTable data={consultants} columns={columns} />
+      </div>
     </div>
   );
 }
