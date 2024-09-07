@@ -9,11 +9,11 @@ import DeveloperFooter from "../ui/DeveloperFooter";
 
 const Footer = () => {
   const footerMenuItems = [
-    { title: "About", href: "/about" },
+    { title: "About", href: "/" },
     { title: "Contact", href: "/contact" },
-    { title: "Careers", href: "/careers" },
-    { title: "Terms & Condition", href: "#" },
-    { title: "Privacy Policy", href: "#" },
+    // { title: "Careers", href: "/careers" },
+    // { title: "Terms & Condition", href: "#" },
+    // { title: "Privacy Policy", href: "#" },
   ];
   return (
     <section className="py-2 bg-slate-200 sm:pt-16 lg:pt-17 dark:bg-slate-700 shadow-lg dark:shadow-blue-400 mb-4">
@@ -26,8 +26,10 @@ const Footer = () => {
               width={200}
               height={200}
             />
+          </div>
 
-            <p className="text-base leading-relaxed mt-7">
+          <div className="col-span-2 md:col-span-1 lg:col-span-2">
+            <p className="text-base leading-relaxed">
               Navigating Your Career, One Job at a Time
             </p>
             <p className="text-base leading-relaxed">
@@ -103,7 +105,7 @@ const Footer = () => {
           </div>
 
           {/* Subscribe to Newsletter */}
-          <div className="col-span-2 md:col-span-1 lg:col-span-2 lg:pl-8">
+          {/* <div className="col-span-2 md:col-span-1 lg:col-span-2 lg:pl-8">
             <p className="text-sm font-semibold tracking-widest uppercase">
               Subscribe to newsletter
             </p>
@@ -128,7 +130,7 @@ const Footer = () => {
                 Subscribe
               </Button>
             </form>
-          </div>
+          </div> */}
         </div>
 
         <hr className="mt-16 mb-10 dark:border-gray-200 border-gray-700" />

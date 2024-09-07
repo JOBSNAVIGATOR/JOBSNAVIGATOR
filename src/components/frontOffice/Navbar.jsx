@@ -33,7 +33,7 @@ export default function Navbar() {
     { title: "Jobs", href: "/jobs" },
     { title: "Activity", href: "/activity" },
     { title: "Learning", href: "/learning" },
-    { title: "Contact", href: "/contact" },
+    // { title: "Contact", href: "/contact" },
   ];
 
   //   const userMenuItems = [
