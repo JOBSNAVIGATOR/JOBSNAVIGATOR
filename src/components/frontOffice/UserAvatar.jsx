@@ -44,7 +44,7 @@ export default function UserAvatar({ user = {} }) {
         )}
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent className="px-4 py-2 pr-8 dark:bg-slate-700">
+      <DropdownMenuContent className="px-4 py-2 pr-8 dark:bg-slate-700 bg-gray-100">
         <DropdownMenuLabel>{name}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem className="rounded-full hover:bg-lime-600 focus:bg-lime-600 transition-all duration-200 ">
