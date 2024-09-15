@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import UserAvatar from "./UserAvatar";
 import ThemeSwitcherBtn from "../ui/ThemeSwitcherBtn";
+import { useSession } from "next-auth/react";
 
 export default function Navbar() {
   const router = useRouter();
@@ -15,32 +16,29 @@ export default function Navbar() {
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
-  //   const { data: session, status } = useSession();
-  //   if (status === "loading") {
-  //     <Loading />;
-  //   }
+  const { data: session, status } = useSession();
+  if (status === "loading") {
+    // <Loading />;
+    <p>loading...</p>;
+  }
 
-  let status = "unauthenticated";
+  // let status = "unauthenticated";
 
-  const user = {
-    name: "Bonnie Green",
-    email: "name@gmail.com",
-    image: "", // Replace with actual user image URL
-  };
+  // const user2 = {
+  //   name: "Bonnie Green",
+  //   email: "name@gmail.com",
+  //   image: "", // Replace with actual user image URL
+  // };
+
+  const user = session?.user;
+  console.log(user);
 
   const navMenuItems = [
     { title: "Home", href: "/" },
     { title: "Jobs", href: "/jobs" },
     { title: "Activity", href: "/activity" },
     { title: "Learning", href: "/learning" },
-    // { title: "Contact", href: "/contact" },
   ];
-
-  //   const userMenuItems = [
-  //     { title: "Home", href: "/" },
-  //     { title: "Profile", href: "/profile" },
-  //     { title: "Sign Out", href: "/signout" },
-  //   ];
 
   return (
     <nav className="bg-slate-200 border-slate-200 dark:bg-slate-700 fixed w-full z-40 top-0 start-0">

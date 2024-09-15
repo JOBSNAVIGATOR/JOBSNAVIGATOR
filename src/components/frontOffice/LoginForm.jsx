@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import Link from "next/link";
 import TextInput from "../FormInputs/TextInput";
 import SubmitButton from "../FormInputs/SubmitButton";
+import { signIn } from "next-auth/react";
 // import { getData } from "@/lib/getData";
 export default function LoginForm() {
   const router = useRouter();
@@ -21,28 +22,28 @@ export default function LoginForm() {
 
   async function onSubmit(data) {
     console.log(data);
-    // try {
-    //   setLoading(true);
-    //   console.log("Attempting to sign in with credentials:", data);
-    //   const loginData = await signIn("credentials", {
-    //     ...data,
-    //     redirect: false,
-    //   });
-    //   console.log("SignIn response:", loginData);
-    //   if (loginData?.error) {
-    //     setLoading(false);
-    //     toast.error("Sign-in error: Check your credentials");
-    //   } else {
-    //     // Sign-in was successful
-    //     toast.success("Login Successful");
-    //     reset();
-    //     router.push("/");
-    //   }
-    // } catch (error) {
-    //   setLoading(false);
-    //   console.error("Network Error:", error);
-    //   toast.error("Its seems something is wrong with your Network");
-    // }
+    try {
+      setLoading(true);
+      console.log("Attempting to sign in with credentials:", data);
+      const loginData = await signIn("credentials", {
+        ...data,
+        redirect: false,
+      });
+      console.log("SignIn response:", loginData);
+      if (loginData?.error) {
+        setLoading(false);
+        toast.error("Sign-in error: Check your credentials");
+      } else {
+        // Sign-in was successful
+        toast.success("Login Successful");
+        reset();
+        router.push("/");
+      }
+    } catch (error) {
+      setLoading(false);
+      console.error("Network Error:", error);
+      toast.error("Its seems something is wrong with your Network");
+    }
   }
 
   return (

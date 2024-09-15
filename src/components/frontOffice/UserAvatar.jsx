@@ -11,7 +11,7 @@ import {
 import Image from "next/image";
 import { LayoutDashboard, LogOut, Settings } from "lucide-react";
 import { useRouter } from "next/navigation";
-// import { signOut } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { generateInitials } from "@/lib/generateInitials";
 import { Button } from "../ui/button";
@@ -23,8 +23,8 @@ export default function UserAvatar({ user = {} }) {
   const router = useRouter();
   async function handleLogout() {
     console.log("Logged Out");
-    // await signOut();
-    // router.push("/");
+    await signOut();
+    router.push("/");
   }
   return (
     <DropdownMenu>
