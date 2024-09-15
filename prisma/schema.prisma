@@ -22,8 +22,8 @@ model User {
   email                    String?   @unique
   emailVerified            Boolean   @default(false)
   emailVerifiedDate        DateTime?
-  verificationRequestCount Int?
-  verificationToken        String?
+  verificationRequestCount Int?      @default(0)
+  verificationToken        String?   @unique
   image                    String?
   password                 String?
   hashedPassword           String?
