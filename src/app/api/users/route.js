@@ -1,7 +1,13 @@
 import db from "@/lib/db";
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
+import { v4 as uuidv4 } from "uuid";
+import base64url from "base64url";
+import { Resend } from "resend";
+import EmailTemplate from "@/components/email-template";
+
 export async function POST(request) {
+  const resend = new Resend(process.env.RESEND_API_KEY);
   try {
     //extract the credentials
     const { name, email, password, role } = await request.json();
@@ -22,6 +28,13 @@ export async function POST(request) {
     }
     // Encrypt the Password =>bcrypt
     const hashedPassword = await bcrypt.hash(password, 10);
+
+    // generate token
+    // genrate a random UUID (version 4)
+    const rawToken = uuidv4();
+    // Encode the token using Base64 URL- safe format
+    const token = base64url.encode(rawToken);
+
     const newUser = await db.user.create({
       data: {
         name,
@@ -29,9 +42,25 @@ export async function POST(request) {
         password,
         hashedPassword,
         role,
+        verificationToken: token,
       },
     });
     console.log(newUser);
+
+    // Send an email with the token on the link as a search param
+    const userId = newUser.id;
+    const redirectUrl = `login?token=${token}&id=${userId}`;
+    const sendMail = await resend.emails.send({
+      from: "LifeEasyWay <info@lifeeasyway.com>",
+      to: email,
+      subject: "Account Verification from Auth System",
+      react: EmailTemplate({ name, redirectUrl }),
+    });
+
+    console.log(sendMail);
+    console.log(rawToken);
+    console.log(token);
+
     return NextResponse.json(
       {
         data: newUser,

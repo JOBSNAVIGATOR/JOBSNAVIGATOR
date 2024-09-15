@@ -37,7 +37,7 @@ export default function SignupForm({ role = "USER" }) {
         toast.success("User Created Successfully");
         console.log(responseData.data);
         reset();
-        router.push("/login");
+        router.push(`/verify-account/${responseData.data.id}`);
         // if role =user => home
         // if role =farmer=>onboarding
         // if (role === "CANDIDATE") {
