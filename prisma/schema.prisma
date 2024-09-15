@@ -1,215 +1,58 @@
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "mongodb"
-    url      = env("DATABASE_URL")
-}
-
-model Sector {
-    id         String    @id @default(auto()) @map("_id") @db.ObjectId
-    sectorName String
-    domains    Domain[]
-    Job        Job[]
-    Company    Company[]
-}
-
-model Domain {
-    id         String  @id @default(auto()) @map("_id") @db.ObjectId
-    domainName String
-    sectorId   String  @db.ObjectId
-    sector     Sector  @relation(fields: [sectorId], references: [id], onDelete: Cascade)
-    levels     Level[]
-    Job        Job[]
-}
-
-model Level {
-    id        String @id @default(auto()) @map("_id") @db.ObjectId
-    levelName String
-    domainId  String @db.ObjectId
-    domain    Domain @relation(fields: [domainId], references: [id], onDelete: Cascade)
-    Job       Job[]
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
 }
 
 enum UserRole {
-    ADMIN
-    CANDIDATE
-    CONSULTANT
-    CLIENT
+  SUPERADMIN
+  ADMIN
+  CONSULTANT
+  CANDIDATE
 }
 
-enum ApplicationStatus {
-    APPLIED
-    SHORTLISTED
-    SELECTED
-    REJECTED
-}
-
+//  User=> admin/farmer/customer/staff
 model User {
-    id String @id @default(auto()) @map("_id") @db.ObjectId
+  id String @id @default(auto()) @map("_id") @db.ObjectId
 
-    firstName     String?
-    lastName      String?
-    email         String? @unique
-    password      String?
-    emailVerified Boolean @default(false)
+  name                     String?
+  email                    String?   @unique
+  emailVerified            Boolean   @default(false)
+  emailVerifiedDate        DateTime?
+  verificationRequestCount Int?
+  verificationToken        String?
+  image                    String?
+  password                 String?
+  hashedPassword           String?
+  role                     UserRole  @default(CANDIDATE)
 
-    role              UserRole @default(CANDIDATE)
-    verificationToken String?
+  profile           UserProfile?
+  consultantProfile ConsultantProfile?
 
-    createdAt         DateTime           @default(now())
-    updatedAt         DateTime           @updatedAt
-    ClientProfile     ClientProfile?
-    CandidateProfile  CandidateProfile?
-    ConsultantProfile ConsultantProfile?
-    Job               Job[]
-    Application       Application[]
-}
-
-model ClientProfile {
-    id                        String  @id @default(auto()) @map("_id") @db.ObjectId
-    firstName                 String
-    lastName                  String
-    email                     String
-    phone                     String
-    profilePicture            String?
-    companyId                 String? @db.ObjectId
-    companyRole               String?
-    sectorId                  String? @db.ObjectId
-    industry                  String?
-    yearsOfExperience         String?
-    successfulHires           String?
-    companyStreet             String?
-    companyCity               String?
-    companyState              String?
-    companyCountry            String?
-    companyZip                String?
-    companyWebsite            String?
-    companyLinkedIn           String?
-    linkedInProfile           String?
-    profileCreationDate       String?
-    lastUpdateDate            String?
-    numberOfJobsProvided      String?
-    jobLevelsProvided         String?
-    currentPotentialPoints    Float?
-    cumulativePotentialPoints Float?
-    user                      User    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-    userId                    String  @unique @db.ObjectId
-
-    createdAt DateTime  @default(now())
-    updatedAt DateTime? @updatedAt
-    jobs      Job[]
-}
-
-model CandidateProfile {
-    id                   String        @id @default(auto()) @map("_id") @db.ObjectId
-    firstName            String
-    lastName             String
-    email                String
-    currentJobLocation   String?
-    preferredJobLocation String?
-    currentSalary        String?
-    noticePeriod         String?
-    skills               String?
-    currentCompany       String?
-    previousCompanies    String?
-    totalExperience      String?
-    collegeName          String?
-    collegeLocation      String?
-    graduatedYear        String?
-    linkedinProfile      String?
-    githubProfile        String?
-    resume               String?
-    sectorId             String?       @db.ObjectId
-    domainId             String?       @db.ObjectId
-    levelId              String?       @db.ObjectId
-    userId               String        @unique @db.ObjectId
-    user                 User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-    applications         Application[]
-
-    createdAt DateTime  @default(now())
-    updatedAt DateTime? @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model ConsultantProfile {
-    id                        String  @id @default(auto()) @map("_id") @db.ObjectId
-    firstName                 String
-    lastName                  String
-    email                     String
-    phone                     String
-    addressStreet             String?
-    addressCity               String?
-    addressDistrict           String?
-    addressState              String?
-    addressCountry            String?
-    position                  String?
-    salary                    String?
-    dateOfBirth               String?
-    profilePic                String?
-    startDate                 String?
-    endDate                   String?
-    workingLocation           String?
-    currentPotentialPoints    Float?
-    cumulativePotentialPoints Float?
-    userId                    String  @unique @db.ObjectId
-    user                      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id String @id @default(auto()) @map("_id") @db.ObjectId
 
-    createdAt DateTime  @default(now())
-    updatedAt DateTime? @updatedAt
+  companyName String?
+  location    String?
+  phone       String?
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @unique @db.ObjectId
 }
 
-model Job {
-    id                 String        @id @default(auto()) @map("_id") @db.ObjectId
-    companyName        String?
-    title              String?
-    location           String?
-    type               String?
-    experience         String?
-    sectorId           String?       @db.ObjectId
-    sector             Sector?       @relation(fields: [sectorId], references: [id], onDelete: SetNull)
-    domainId           String?       @db.ObjectId
-    domain             Domain?       @relation(fields: [domainId], references: [id], onDelete: SetNull)
-    levelId            String?       @db.ObjectId
-    level              Level?        @relation(fields: [levelId], references: [id], onDelete: SetNull)
-    description        String?
-    skills             String?
-    clientId           String?       @db.ObjectId
-    client             User?         @relation(fields: [clientId], references: [id], onDelete: SetNull)
-    openings           Int?
-    vacanciesFilled    Int?
-    remainingVacancies Int?
-    potentialPoints    Float?
-    applications       Application[]
+model UserProfile {
+  id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId   String    @unique @db.ObjectId
+  userName String?
+  dob      DateTime?
+  address  String?
 
-    createdAt       DateTime       @default(now())
-    updatedAt       DateTime?      @updatedAt
-    ClientProfile   ClientProfile? @relation(fields: [clientProfileId], references: [id])
-    clientProfileId String?        @db.ObjectId
-}
-
-model Application {
-    id             String            @id @default(auto()) @map("_id") @db.ObjectId
-    jobId          String?           @db.ObjectId
-    job            Job?              @relation(fields: [jobId], references: [id], onDelete: SetNull)
-    candidateId    String?           @db.ObjectId
-    candidate      User?             @relation(fields: [candidateId], references: [id], onDelete: SetNull)
-    status         ApplicationStatus @default(APPLIED)
-    jobAppliedDate String?
-
-    createdAt          DateTime          @default(now())
-    updatedAt          DateTime          @updatedAt
-    CandidateProfile   CandidateProfile? @relation(fields: [candidateProfileId], references: [id])
-    candidateProfileId String?           @db.ObjectId
-}
-
-model Company {
-    id              String  @id @default(auto()) @map("_id") @db.ObjectId
-    companyName     String?
-    companyWebsite  String?
-    companyLinkedIn String?
-    industry        String?
-    sectorId        String? @db.ObjectId
-    sector          Sector? @relation(fields: [sectorId], references: [id], onDelete: SetNull)
-    headquarters    String?
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

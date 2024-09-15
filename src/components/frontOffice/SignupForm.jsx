@@ -19,46 +19,48 @@ export default function SignupForm({ role = "USER" }) {
   const [loading, setLoading] = useState(false);
   const [emailErr, setEmailErr] = useState("");
   async function onSubmit(data) {
-    console.log(data);
-    // try {
-    //   console.log(data);
-    //   setLoading(true);
-    //   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-    //   const response = await fetch(`${baseUrl}/api/users`, {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(data),
-    //   });
-    //   const responseData = await response.json();
-    //   if (response.ok) {
-    //     setLoading(false);
-    //     toast.success("User Created Successfully");
-    //     reset();
-    //     // if role =user => home
-    //     // if role =farmer=>onboarding
-    //     if (role === "USER") {
-    //       router.push("/");
-    //     } else {
-    //       router.push("/verify-email");
-    //     }
-    //   } else {
-    //     setLoading(false);
-    //     if (response.status === 409) {
-    //       setEmailErr("User with this Email already exists");
-    //       toast.error("User with this Email already exists");
-    //     } else {
-    //       // Handle other errors
-    //       console.error("Server Error:", responseData.error);
-    //       toast.error("Oops Something Went wrong");
-    //     }
-    //   }
-    // } catch (error) {
-    //   setLoading(false);
-    //   console.error("Network Error:", error);
-    //   toast.error("Something Went wrong, Please Try Again");
-    // }
+    try {
+      data.role = role;
+      console.log(data);
+      setLoading(true);
+      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+      const response = await fetch(`${baseUrl}/api/users`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      const responseData = await response.json();
+      if (response.ok) {
+        setLoading(false);
+        toast.success("User Created Successfully");
+        console.log(responseData.data);
+        reset();
+        router.push("/login");
+        // if role =user => home
+        // if role =farmer=>onboarding
+        // if (role === "CANDIDATE") {
+        //   router.push("/");
+        // } else {
+        //   router.push("/verify-email");
+        // }
+      } else {
+        setLoading(false);
+        if (response.status === 409) {
+          setEmailErr("User with this Email already exists");
+          toast.error("User with this Email already exists");
+        } else {
+          // Handle other errors
+          console.error("Server Error:", responseData.message);
+          toast.error("Oops Something Went wrong");
+        }
+      }
+    } catch (error) {
+      setLoading(false);
+      console.error("Network Error:", error);
+      toast.error("Something Went wrong, Please Try Again");
+    }
   }
 
   return (
@@ -77,23 +79,13 @@ export default function SignupForm({ role = "USER" }) {
       <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
         {/* first name */}
         <TextInput
-          label="First Name"
-          name="firstName"
+          label="Name"
+          name="name"
           type="text"
           register={register}
           errors={errors}
           className="sm:col-span-2 mb-3"
-          placeholder="John"
-        />
-        {/* last name */}
-        <TextInput
-          label="Last Name"
-          name="lastName"
-          type="text"
-          placeholder="Doe"
-          register={register}
-          errors={errors}
-          className="sm:col-span-2 mb-3"
+          placeholder="John Doe"
         />
       </div>
 
