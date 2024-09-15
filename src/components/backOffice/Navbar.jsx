@@ -1,16 +1,19 @@
+"use client";
 import { AlignJustify } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import ThemeSwitcherBtn from "../ui/ThemeSwitcherBtn";
 import UserAvatar from "../frontOffice/UserAvatar";
+import { useSession } from "next-auth/react";
 
 export default function Navbar({ showSideBar, setShowSideBar }) {
-  const user = {
-    name: "Bonnie Green",
-    email: "name@gmail.com",
-    image: "", // Replace with actual user image URL
-  };
+  const { data: session, status } = useSession();
+  if (status === "loading") {
+    // <Loading />;
+    <p>loading...</p>;
+  }
+  const user = session?.user;
   return (
     <nav className="fixed top-0 z-50 w-full bg-slate-200 border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
       <div className="px-3 py-3 lg:px-5 lg:pl-3">
