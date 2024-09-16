@@ -1,4 +1,4 @@
-import ForgotPasswordForm from "@/components/frontOffice/ForgotPasswordForm";
+import ResetPasswordForm from "@/components/frontOffice/ResetPasswordForm";
 import React from "react";
 
 export default function page() {
@@ -10,7 +10,7 @@ export default function page() {
             <h1 className="text-xl font-bold leading-tight tracking-tight  md:text-2xl  text-center text-neutral-800 dark:text-neutral-200">
               Reset Password
             </h1>
-            <ForgotPasswordForm />
+            <ResetPasswordForm />
           </div>
         </div>
       </div>

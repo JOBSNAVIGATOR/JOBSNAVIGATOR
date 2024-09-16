@@ -4,53 +4,54 @@ import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
 import base64url from "base64url";
 import { Resend } from "resend";
-import EmailTemplate from "@/components/email-template";
+import { EmailTemplate } from "@/components/email-template";
 
-export async function POST(request) {
+export async function PUT(request) {
   const resend = new Resend(process.env.RESEND_API_KEY);
   try {
     //extract the credentials
-    const { name, email, password, role } = await request.json();
+    const { email } = await request.json();
     //Check if the user Already exists in the db
     const existingUser = await db.user.findUnique({
       where: {
         email,
       },
     });
-    if (existingUser) {
+    if (!existingUser) {
       return NextResponse.json(
         {
           data: null,
-          message: `User with this email ( ${email})  already exists in the Database`,
+          message: `User Not Found with ( ${email})  `,
         },
-        { status: 409 }
+        { status: 404 }
       );
     }
-    // Encrypt the Password =>bcrypt
-    const hashedPassword = await bcrypt.hash(password, 10);
 
     // generate token
+
     // genrate a random UUID (version 4)
     const rawToken = uuidv4();
+
     // Encode the token using Base64 URL- safe format
     const token = base64url.encode(rawToken);
 
-    const newUser = await db.user.create({
-      data: {
-        name,
+    // update a user
+    const updatedUser = await db.user.update({
+      where: {
         email,
-        password,
-        hashedPassword,
-        role,
-        verificationToken: token,
+      },
+      data: {
+        passwordResetToken: token,
       },
     });
-    console.log(newUser);
+    console.log(updatedUser);
 
     // Send an email with the token on the link as a search param
-    const userId = newUser.id;
-    const linkText = "Verify Account";
-    const redirectUrl = `login?token=${token}&id=${userId}`;
+
+    const userId = existingUser.id;
+    const linkText = "Reset Password";
+    const redirectUrl = `reset-password?token=${token}&id=${userId}`;
+    const name = existingUser.name;
     const sendMail = await resend.emails.send({
       from: "LifeEasyWay <info@lifeeasyway.com>",
       to: email,
@@ -61,11 +62,10 @@ export async function POST(request) {
     console.log(sendMail);
     console.log(rawToken);
     console.log(token);
-
     return NextResponse.json(
       {
-        data: newUser,
-        message: "User Created Successfully",
+        data: updatedUser,
+        message: "User Updated Successfully",
       },
       { status: 201 }
     );

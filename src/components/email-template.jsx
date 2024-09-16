@@ -15,8 +15,9 @@ import * as React from "react";
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 export const EmailTemplate = ({
-  name = "zenorocha",
+  name = "",
   redirectUrl = "/login",
+  linkText,
 }) => (
   <Html>
     <Head />
@@ -32,7 +33,7 @@ export const EmailTemplate = ({
           alt="Github"
         />
 
-        <Text style={title}>Verify your Account</Text>
+        <Text style={title}>{linkText}</Text>
 
         <Section style={section}>
           <Text style={text}>
@@ -40,11 +41,11 @@ export const EmailTemplate = ({
           </Text>
           <Text style={text}>
             Thank you, for Creating an Account with us . We request you to click
-            on th link Below in order to verify your Account. Thankyou
+            on th link Below in order to {linkText}. Thankyou
           </Text>
 
           <Link style={button} href={`${baseUrl}/${redirectUrl}`}>
-            Verify Your Account
+            {linkText}
           </Link>
         </Section>
         <Text style={links}>

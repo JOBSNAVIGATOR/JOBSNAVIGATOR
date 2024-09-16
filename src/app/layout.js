@@ -1,6 +1,7 @@
 import { Inter, Roboto } from "next/font/google";
 import "../styles/main.scss";
 import Providers from "@/context/Providers";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 const roboto = Roboto({ subsets: ["latin"], weight: ["400", "700"] });
@@ -15,6 +16,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={roboto.className}>
         <Providers>{children}</Providers>
+        <Toaster />
       </body>
     </html>
   );

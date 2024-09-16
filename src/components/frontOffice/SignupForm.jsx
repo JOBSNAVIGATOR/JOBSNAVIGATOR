@@ -84,7 +84,7 @@ export default function SignupForm({ role = "USER" }) {
           type="text"
           register={register}
           errors={errors}
-          className="sm:col-span-2 mb-3"
+          className="sm:col-span-2 mb-3 w-full"
           placeholder="John Doe"
         />
       </div>
