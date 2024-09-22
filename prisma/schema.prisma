@@ -12,48 +12,131 @@ enum UserRole {
   ADMIN
   CONSULTANT
   CANDIDATE
+  CLIENT
 }
 
-//  User=> admin/farmer/customer/staff
-model User {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+  PREFER_NOT_TO_SAY
+}
 
-  name                     String?
-  email                    String?   @unique
+model User {
+  id                       String    @id @default(auto()) @map("_id") @db.ObjectId
+  name                     String
+  email                    String    @unique
+  contactNumber            String
+  password                 String
+  role                     UserRole  @default(CANDIDATE)
   emailVerified            Boolean   @default(false)
   emailVerifiedDate        DateTime?
-  verificationRequestCount Int?      @default(0)
-  verificationToken        String?   @unique
-  passwordResetToken       String?   @unique
-  image                    String?
-  password                 String?
-  hashedPassword           String?
-  role                     UserRole  @default(CANDIDATE)
+  verificationRequestCount Int       @default(0)
+  verificationToken        String?
+  passwordResetToken       String?
+  hashedPassword           String
 
-  profile           UserProfile?
+  // Relations to specialized profiles
   consultantProfile ConsultantProfile?
+  clientProfile     ClientProfile?
+  candidateProfile  CandidateProfile?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model ConsultantProfile {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-
-  companyName String?
-  location    String?
-  phone       String?
+  id                     String   @id @default(auto()) @map("_id") @db.ObjectId
+  gender                 Gender
+  emergencyContactNumber String
+  permanentAddress       String
+  currentAddress         String
+  aadharNumber           String
+  ctcOffered             String
+  joiningDate            DateTime
+  isActive               Boolean  @default(true)
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @unique @db.ObjectId
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-model UserProfile {
-  id       String    @id @default(auto()) @map("_id") @db.ObjectId
-  userId   String    @unique @db.ObjectId
-  userName String?
-  dob      DateTime?
-  address  String?
+model CandidateProfile {
+  id                     String   @id @default(auto()) @map("_id") @db.ObjectId
+  gender                 Gender
+  emergencyContactNumber String
+  designation            String
+  currentCompany         String
+  currentJobLocation     String
+  totalWorkingExperience String
+  degree                 String
+  collegeName            String
+  graduationYear         String
+  previousCompanyName    String
+  resume                 String // URL or file path to the resume
+  skills                 String[]
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @unique @db.ObjectId
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
+
+model ClientProfile {
+  id                     String @id @default(auto()) @map("_id") @db.ObjectId
+  gender                 Gender
+  designation            String
+  company                String
+  currentJobLocation     String
+  emergencyContactNumber String
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @unique @db.ObjectId
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// model User {
+//   id String @id @default(auto()) @map("_id") @db.ObjectId
+
+//   name                     String?
+//   email                    String?   @unique
+//   emailVerified            Boolean   @default(false)
+//   emailVerifiedDate        DateTime?
+//   verificationRequestCount Int?      @default(0)
+//   verificationToken        String?   @unique
+//   passwordResetToken       String?   @unique
+//   image                    String?
+//   password                 String?
+//   hashedPassword           String?
+//   role                     UserRole  @default(CANDIDATE)
+
+//   profile           UserProfile?
+//   consultantProfile ConsultantProfile?
+
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+// }
+// model ConsultantProfile {
+//   id String @id @default(auto()) @map("_id") @db.ObjectId
+
+//   companyName String?
+//   location    String?
+//   phone       String?
+
+//   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+//   userId String @unique @db.ObjectId
+// }
+// model UserProfile {
+//   id       String    @id @default(auto()) @map("_id") @db.ObjectId
+//   userId   String    @unique @db.ObjectId
+//   userName String?
+//   dob      DateTime?
+//   address  String?
+
+//   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+// }

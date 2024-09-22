@@ -10,11 +10,9 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
 export default function ConsultantForm({ user, updateData = {} }) {
-  //   const initialImageUrl = updateData?.farmerProfile?.profileImageUrl ?? "";
-  const id = updateData?.farmerProfile?.id ?? "";
+  const id = updateData?.consultantProfile?.id ?? "";
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  //   const [imageUrl, setImageUrl] = useState(initialImageUrl);
   const {
     register,
     reset,
@@ -23,16 +21,12 @@ export default function ConsultantForm({ user, updateData = {} }) {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      isActive: true,
       ...user,
       ...updateData.consultantProfile,
     },
   });
 
   async function onSubmit(data) {
-    // const code = generateUserCode("JOBSNV", data.name);
-    // data.code = code;
-    // data.imageUrl = imageUrl;
     console.log(data);
     // if (id) {
     //   // make put request (update)
@@ -65,15 +59,8 @@ export default function ConsultantForm({ user, updateData = {} }) {
     >
       <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
         <TextInput
-          label="First Name"
-          name="firstName"
-          register={register}
-          errors={errors}
-          className="w-full"
-        />
-        <TextInput
-          label="Last Name"
-          name="lastName"
+          label="Full Name"
+          name="name"
           register={register}
           errors={errors}
           className="w-full"
@@ -103,44 +90,15 @@ export default function ConsultantForm({ user, updateData = {} }) {
           className="w-full"
         />
         <TextInput
-          label="House Number"
-          name="houseNumber"
-          register={register}
-          errors={errors}
-          className="w-full"
-          type="number"
-        />
-        <TextInput
-          label="Street Address"
-          name="street"
+          label="Permanent Address"
+          name="permanentAddress"
           register={register}
           errors={errors}
           className="w-full"
         />
         <TextInput
-          label="Locality"
-          name="locality"
-          register={register}
-          errors={errors}
-          className="w-full"
-        />
-        <TextInput
-          label="City"
-          name="city"
-          register={register}
-          errors={errors}
-          className="w-full"
-        />
-        <TextInput
-          label="State"
-          name="state"
-          register={register}
-          errors={errors}
-          className="w-full"
-        />
-        <TextInput
-          label="Country"
-          name="country"
+          label="Current Address"
+          name="currentAddress"
           register={register}
           errors={errors}
           className="w-full"
@@ -154,20 +112,19 @@ export default function ConsultantForm({ user, updateData = {} }) {
           type="number"
         />
         <TextInput
-          label="PAN Number"
-          name="panNumber"
-          register={register}
-          errors={errors}
-          className="w-full"
-          type="number"
-        />
-        <TextInput
           label="CTC Offered"
           name="ctcOffered"
           register={register}
           errors={errors}
           className="w-full"
-          type="number"
+        />
+        <TextInput
+          label="Joining Date"
+          name="joiningDate"
+          register={register}
+          errors={errors}
+          className="w-full"
+          type="date"
         />
       </div>
       <br />

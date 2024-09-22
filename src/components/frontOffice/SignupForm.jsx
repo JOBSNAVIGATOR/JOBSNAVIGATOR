@@ -38,13 +38,6 @@ export default function SignupForm({ role = "USER" }) {
         console.log(responseData.data);
         reset();
         router.push(`/verify-account/${responseData.data.id}`);
-        // if role =user => home
-        // if role =farmer=>onboarding
-        // if (role === "CANDIDATE") {
-        //   router.push("/");
-        // } else {
-        //   router.push("/verify-email");
-        // }
       } else {
         setLoading(false);
         if (response.status === 409) {
@@ -79,7 +72,7 @@ export default function SignupForm({ role = "USER" }) {
       <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
         {/* first name */}
         <TextInput
-          label="Name"
+          label="Full Name"
           name="name"
           type="text"
           register={register}
@@ -102,6 +95,15 @@ export default function SignupForm({ role = "USER" }) {
       {emailErr && (
         <small className="text-red-600 -mt-2 mb-2">{emailErr}</small>
       )}
+      <TextInput
+        label="Contact Number"
+        name="contactNumber"
+        type="text"
+        register={register}
+        errors={errors}
+        className="sm:col-span-2 mb-3 w-full"
+        placeholder="1234567891"
+      />
       {/* password */}
       <TextInput
         label="Password"
