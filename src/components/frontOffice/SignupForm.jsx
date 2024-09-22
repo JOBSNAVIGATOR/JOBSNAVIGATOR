@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 import SubmitButton from "../FormInputs/SubmitButton";
 import TextInput from "../FormInputs/TextInput";
 
-export default function SignupForm({ role = "USER" }) {
+export default function SignupForm({ role = "CANDIDATE" }) {
   const router = useRouter();
   const {
     register,
@@ -37,7 +37,12 @@ export default function SignupForm({ role = "USER" }) {
         toast.success("User Created Successfully");
         console.log(responseData.data);
         reset();
-        router.push(`/verify-account/${responseData.data.id}`);
+        if (role === "CANDIDATE") {
+          router.push("/verify-account");
+        } else {
+          router.push("/");
+        }
+        // router.push(`/verify-account/${responseData.data.id}`);
       } else {
         setLoading(false);
         if (response.status === 409) {

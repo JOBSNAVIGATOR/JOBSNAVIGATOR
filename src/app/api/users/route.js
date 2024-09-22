@@ -6,6 +6,7 @@ import base64url from "base64url";
 import { Resend } from "resend";
 import EmailTemplate from "@/components/email-template";
 import { LogIn } from "lucide-react";
+import { PrismaClient } from "@prisma/client";
 
 export async function POST(request) {
   const resend = new Resend(process.env.RESEND_API_KEY);
@@ -82,22 +83,65 @@ export async function POST(request) {
     );
   }
 }
+// export async function GET(request) {
+//   try {
+//     const { email } = await request.json();
+//     const user = await db.user.findUnique({
+//       where: {
+//         email,
+//       },
+//     });
+//     return NextResponse.json(user);
+//   } catch (error) {
+//     console.log(error);
+//     return NextResponse.json(
+//       {
+//         message: "Failed to Fetch User",
+//         error,
+//       },
+//       { status: 500 }
+//     );
+//   }
+// }
+
+const prisma = new PrismaClient();
+
 export async function GET(request) {
   try {
-    const { email } = await request.json();
-    const user = await db.user.findUnique({
+    // Extract email from query params
+    const { searchParams } = new URL(request.url);
+    const email = searchParams.get("email");
+
+    if (!email) {
+      return NextResponse.json(
+        { message: "Email is required" },
+        { status: 400 }
+      );
+    }
+
+    // Find the user by email in the database
+    const user = await prisma.user.findUnique({
       where: {
         email,
       },
-    });
-    return NextResponse.json(user);
-  } catch (error) {
-    console.log(error);
-    return NextResponse.json(
-      {
-        message: "Failed to Fetch User",
-        error,
+      select: {
+        id: true,
+        email: true,
+        emailVerified: true, // Only select fields you need
       },
+    });
+
+    // Check if the user exists
+    if (!user) {
+      return NextResponse.json({ message: "User not found" }, { status: 404 });
+    }
+
+    // Return the user data
+    return NextResponse.json(user, { status: 200 });
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    return NextResponse.json(
+      { message: "Failed to fetch user", error: error.message },
       { status: 500 }
     );
   }

@@ -3,14 +3,15 @@
 import { HiInformationCircle } from "react-icons/hi";
 import { Alert } from "flowbite-react";
 
-export default function VerifyAccount({ params: id }) {
+export default function VerifyAccount() {
+  // export default function VerifyAccount({ params: id }) {
   // fetch the data
   // check the verificationRequestCount>2
   // hide the resend button and tell him to come after 24hrs
   // u can use setTimeout Function
-  async function verify() {
-    // call the verify end point using the id
-  }
+  // async function verify() {
+  //   // call the verify end point using the id
+  // }
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
@@ -24,7 +25,7 @@ export default function VerifyAccount({ params: id }) {
               have sent you a Verification Link and Click on the Link to Verify
               your Account. Thank you!
             </Alert>
-            <div className="my-6">
+            {/* <div className="my-6">
               <p className="text-sm font-light text-gray-500 dark:text-gray-400 ">
                 Did not see it?{" "}
                 <button
@@ -34,7 +35,7 @@ export default function VerifyAccount({ params: id }) {
                   Resend the Link
                 </button>
               </p>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

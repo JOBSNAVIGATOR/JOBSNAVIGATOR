@@ -73,6 +73,28 @@ export default function LoginForm() {
     console.log(data);
     try {
       setLoading(true);
+      // Step 1: Fetch the user data based on the email entered in the login form
+      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+      const userResponse = await fetch(
+        `${baseUrl}/api/users?email=${data.email}`
+      );
+      const user = await userResponse.json();
+      if (!user) {
+        setLoading(false);
+        toast.error("User not found. Please check your credentials.");
+        return;
+      }
+
+      // Step 2: Check if email is verified
+      if (!user.emailVerified) {
+        setLoading(false);
+        toast.error(
+          "Email not verified. Please check your email for verification link."
+        );
+        return;
+      }
+
+      // Step 3: Proceed with login if email is verified
       console.log("Attempting to sign in with credentials:", data);
       const loginData = await signIn("credentials", {
         ...data,
