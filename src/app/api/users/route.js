@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 import base64url from "base64url";
 import { Resend } from "resend";
 import EmailTemplate from "@/components/email-template";
+import { LogIn } from "lucide-react";
 
 export async function POST(request) {
   const resend = new Resend(process.env.RESEND_API_KEY);
@@ -83,17 +84,18 @@ export async function POST(request) {
 }
 export async function GET(request) {
   try {
-    const users = await db.user.findMany({
-      orderBy: {
-        createdAt: "desc",
+    const { email } = await request.json();
+    const user = await db.user.findUnique({
+      where: {
+        email,
       },
     });
-    return NextResponse.json(users);
+    return NextResponse.json(user);
   } catch (error) {
     console.log(error);
     return NextResponse.json(
       {
-        message: "Failed to Fetch Users",
+        message: "Failed to Fetch User",
         error,
       },
       { status: 500 }

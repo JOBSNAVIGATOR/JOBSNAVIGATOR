@@ -47,34 +47,39 @@ export default function UserAvatar({ user = {} }) {
       <DropdownMenuContent className="px-4 py-2 pr-8 dark:bg-slate-700 bg-gray-100">
         <DropdownMenuLabel>{name}</DropdownMenuLabel>
         <DropdownMenuSeparator />
+        {/* Home */}
         <DropdownMenuItem className="rounded-full hover:bg-lime-600 focus:bg-lime-600 transition-all duration-200 ">
           <Link href="/" className="flex items-center space-x-2">
             <LayoutDashboard className="mr-2 h-4 w-4" />
             <span>Home</span>
           </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem className="rounded-full hover:bg-lime-600 focus:bg-lime-600 transition-all duration-200 ">
-          <Link href="/" className="flex items-center space-x-2">
-            <Settings className="mr-2 h-4 w-4" />
-            <span>Edit Profile</span>
-          </Link>
-        </DropdownMenuItem>
-        {role === "CONSULTANT" && (
+        {/* Edit Profile */}
+        {role === "CANDIDATE" && (
+          <DropdownMenuItem className="rounded-full hover:bg-lime-600 focus:bg-lime-600 transition-all duration-200 ">
+            <Link href="/" className="flex items-center space-x-2">
+              <Settings className="mr-2 h-4 w-4" />
+              <span>Edit Profile</span>
+            </Link>
+          </DropdownMenuItem>
+        )}
+
+        {role !== "CANDIDATE" && (
+          <DropdownMenuItem className="rounded-full hover:bg-lime-600 focus:bg-lime-600 transition-all duration-200 ">
+            <Link href="/dashboard" className="flex items-center space-x-2">
+              <Settings className="mr-2 h-4 w-4" />
+              <span>Dashboard</span>
+            </Link>
+          </DropdownMenuItem>
+        )}
+        {/* {role === "CLIENT" && (
           <DropdownMenuItem className="rounded-full hover:bg-lime-600 focus:bg-lime-600 transition-all duration-200 ">
             <Link href="/" className="flex items-center space-x-2">
               <Settings className="mr-2 h-4 w-4" />
               <span>Consultant</span>
             </Link>
           </DropdownMenuItem>
-        )}
-        {role === "CLIENT" && (
-          <DropdownMenuItem className="rounded-full hover:bg-lime-600 focus:bg-lime-600 transition-all duration-200 ">
-            <Link href="/" className="flex items-center space-x-2">
-              <Settings className="mr-2 h-4 w-4" />
-              <span>Consultant</span>
-            </Link>
-          </DropdownMenuItem>
-        )}
+        )} */}
         <DropdownMenuItem className="rounded-full hover:bg-lime-600 focus:bg-lime-600 transition-all duration-200 ">
           <button
             onClick={handleLogout}
