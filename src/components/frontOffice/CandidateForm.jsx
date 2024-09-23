@@ -120,48 +120,88 @@ export default function CandidateForm({ user, updateData = {} }) {
           options={genderOptions}
         />
         <TextInput
-          label="Permanent Address"
-          name="permanentAddress"
+          label="Sector"
+          name="sector"
           register={register}
           errors={errors}
           className="w-full"
         />
         <TextInput
-          label="Current Address"
-          name="currentAddress"
+          label="Domain"
+          name="domain"
           register={register}
           errors={errors}
           className="w-full"
         />
         <TextInput
-          label="Aadhar Number"
-          name="aadharNumber"
+          label="Designation"
+          name="designation"
           register={register}
           errors={errors}
           className="w-full"
         />
         <TextInput
-          label="CTC"
-          name="ctcOffered"
+          label="Current Company"
+          name="currentCompany"
           register={register}
           errors={errors}
           className="w-full"
         />
         <TextInput
-          label="Joining Date"
-          name="joiningDate"
+          label="Previous Companies (Separated by Comma)"
+          name="previousCompanyName"
           register={register}
           errors={errors}
           className="w-full"
-          type="date"
         />
-        {/* <ImageInput
-          label="Your Resume"
-          pdfUrl={pdfUrl}
-          setPdfUrl={setPdfUrl}
-          endpoint="categoryImageUploader"
-        /> */}
-
+        <TextInput
+          label="Current Job Location"
+          name="currentJobLocation"
+          register={register}
+          errors={errors}
+          className="w-full"
+        />
+        <TextInput
+          label="Total Working Experience (Yrs)"
+          name="totalWorkingExperience"
+          register={register}
+          errors={errors}
+          className="w-full"
+        />
+        <TextInput
+          label="Current CTC"
+          name="currentCtc"
+          register={register}
+          errors={errors}
+          className="w-full"
+        />
+        <TextInput
+          label="Degree"
+          name="degree"
+          register={register}
+          errors={errors}
+          className="w-full"
+        />
+        <TextInput
+          label="College Name"
+          name="collegeName"
+          register={register}
+          errors={errors}
+          className="w-full"
+        />
+        <TextInput
+          label="Graduation Year"
+          name="graduationYear"
+          register={register}
+          errors={errors}
+          className="w-full"
+        />
+        <ArrayItemsInput
+          itemTitle="Skills"
+          items={skills}
+          setItems={setSkills}
+          defaultValues={updateData?.candidateProfile?.skills}
+        />
         <div className="sm:col-span-2">
           <label
             className="block mb-2 text-md font-medium text-neutral-800 dark:text-neutral-200"
@@ -182,12 +222,6 @@ export default function CandidateForm({ user, updateData = {} }) {
           )}
         </div>
 
-        <ArrayItemsInput
-          itemTitle="Skills"
-          items={skills}
-          setItems={setSkills}
-          defaultValues={updateData?.candidateProfile?.skills}
-        />
         <br />
         <br />
         <br />
