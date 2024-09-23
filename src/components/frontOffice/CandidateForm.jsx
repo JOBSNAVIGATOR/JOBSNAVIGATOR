@@ -7,15 +7,20 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import ArrayItemsInput from "../FormInputs/ArrayItemsInput";
+import SelectInput from "../FormInputs/SelectInput";
+import ToggleInput from "../FormInputs/ToggleInput";
+// import ImageInput from "../FormInputs/ImageInput";
 
 export default function CandidateForm({ user, updateData = {} }) {
   const initialImageUrl = updateData?.farmerProfile?.profileImageUrl ?? "";
-  const initialProducts = updateData?.farmerProfile?.products ?? [];
+  // const initialProducts = updateData?.farmerProfile?.products ?? [];
+  const initialSkills = updateData?.candidateProfile?.skills ?? [];
   const id = updateData?.farmerProfile?.id ?? "";
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState(initialImageUrl);
-  const [products, setProducts] = useState(initialProducts);
+  const [pdfUrl, setPdfUrl] = useState(initialImageUrl);
+  const [skills, setSkills] = useState(initialSkills);
+  const [resume, setResume] = useState(null); // State for resume upload
   const {
     register,
     reset,
@@ -24,19 +29,23 @@ export default function CandidateForm({ user, updateData = {} }) {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      isActive: true,
       ...user,
-      ...updateData.farmerProfile,
+      ...updateData.candidateProfile,
     },
   });
 
-  const isActive = watch("isActive");
+  const genderOptions = [
+    { value: "MALE", label: "Male" },
+    { value: "FEMALE", label: "Female" },
+    { value: "OTHER", label: "Other" },
+  ];
 
   async function onSubmit(data) {
-    console.log(data);
+    data.resume = resume;
+    console.log("Candidate Formdat", data);
 
     // data.products = products;
-    // data.imageUrl = imageUrl;
+    // data.pdfUrl = pdfUrl;
     // console.log(data);
     // if (id) {
     //   // make put request (update)
@@ -49,7 +58,7 @@ export default function CandidateForm({ user, updateData = {} }) {
     //     "Farmer Profile",
     //     reset
     //   );
-    //   setImageUrl("");
+    //   setPdfUrl("");
     //   router.back();
     //   console.log("Update Request:", data);
     // } else {
@@ -57,7 +66,7 @@ export default function CandidateForm({ user, updateData = {} }) {
     //   console.log("2");
     //   data.userId = user.id;
     //   makePostRequest(setLoading, "api/farmers", data, "Farmer Profile", reset);
-    //   setImageUrl("");
+    //   setPdfUrl("");
     //   router.push("/login");
     // }
   }
@@ -74,75 +83,122 @@ export default function CandidateForm({ user, updateData = {} }) {
           register={register}
           errors={errors}
           className="w-full"
+          disabled // Make this field non-editable
+        />
+        <TextInput
+          label="Email Address"
+          name="email"
+          type="email"
+          register={register}
+          errors={errors}
+          className="w-full"
+          disabled // Make this field non-editable
         />
         <TextInput
           label="Contact Number"
-          name="phone"
+          name="contactNumber"
+          type="tel"
+          register={register}
+          errors={errors}
+          className="w-full"
+          disabled // Make this field non-editable
+        />
+        <TextInput
+          label="Emergency Contact Number"
+          name="emergencyContactNumber"
           type="tel"
           register={register}
           errors={errors}
           className="w-full"
         />
+        <SelectInput
+          label="Gender"
+          name="gender"
+          register={register}
+          errors={errors}
+          className="w-full"
+          options={genderOptions}
+        />
         <TextInput
-          label="Farmer's Email Address"
-          name="email"
-          // type="email"
+          label="Permanent Address"
+          name="permanentAddress"
           register={register}
           errors={errors}
           className="w-full"
         />
         <TextInput
-          label="Farmer's Physical Address"
-          name="physicalAddress"
+          label="Current Address"
+          name="currentAddress"
           register={register}
           errors={errors}
           className="w-full"
         />
         <TextInput
-          label="Farmer's Contact Person"
-          name="contactPerson"
+          label="Aadhar Number"
+          name="aadharNumber"
           register={register}
           errors={errors}
           className="w-full"
         />
         <TextInput
-          label="Farmer's Contact Person Phone"
-          name="contactPersonPhone"
-          type="tel"
+          label="CTC"
+          name="ctcOffered"
           register={register}
           errors={errors}
           className="w-full"
         />
         <TextInput
-          label="What is the Size of Your Land in Acre ?"
-          name="landSize"
-          type="number"
+          label="Joining Date"
+          name="joiningDate"
           register={register}
           errors={errors}
           className="w-full"
+          type="date"
         />
-        <TextInput
-          label="What is Your main crop that you Cultivate ?"
-          name="mainCrop"
-          type="text"
-          register={register}
-          errors={errors}
-          className="w-full"
-        />
+        {/* <ImageInput
+          label="Your Resume"
+          pdfUrl={pdfUrl}
+          setPdfUrl={setPdfUrl}
+          endpoint="categoryImageUploader"
+        /> */}
+
+        <div className="sm:col-span-2">
+          <label
+            className="block mb-2 text-md font-medium text-neutral-800 dark:text-neutral-200"
+            htmlFor="resume"
+          >
+            Upload Resume (PDF)
+          </label>
+          <input
+            type="file"
+            id="resume"
+            accept=".pdf"
+            onChange={(e) => setResume(e.target.files[0])} // Update state with selected file
+            className="block w-full text-gray-900 dark:text-gray-200 border rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-lime-700"
+            required // Optional: make it required
+          />
+          {errors.resume && (
+            <small className="text-sm text-red-600">Resume is required</small>
+          )}
+        </div>
+
         <ArrayItemsInput
-          itemTitle="Product"
-          items={products}
-          setItems={setProducts}
-          // defaultValues={updateData.farmerProfile.products}
+          itemTitle="Skills"
+          items={skills}
+          setItems={setSkills}
+          defaultValues={updateData?.candidateProfile?.skills}
         />
+        <br />
+        <br />
+        <br />
       </div>
 
       <SubmitButton
         isLoading={loading}
-        buttonTitle={id ? "Update Candidate" : "Create Candidate "}
+        buttonTitle={id ? "Update Profile" : "Update Profile "}
         loadingButtonTitle={`${
-          id ? "Updating" : "Creating"
-        } Candidate Please wait ...`}
+          id ? "Updating" : "Updating"
+        } Profile Please wait ...`}
       />
     </form>
   );

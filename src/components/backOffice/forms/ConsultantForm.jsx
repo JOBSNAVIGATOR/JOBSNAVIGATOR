@@ -2,6 +2,7 @@
 // import ImageInput from "@/components/FormInputs/ImageInput";
 import SubmitButton from "@/components/FormInputs/SubmitButton";
 import TextInput from "@/components/FormInputs/TextInput";
+import ToggleInput from "@/components/FormInputs/ToggleInput";
 // import { makePostRequest, makePutRequest } from "@/lib/apiRequest";
 // import { generateUserCode } from "@/lib/generateUserCode";
 
@@ -21,11 +22,12 @@ export default function ConsultantForm({ user, updateData = {} }) {
     formState: { errors },
   } = useForm({
     defaultValues: {
+      isActive: true,
       ...user,
       ...updateData.consultantProfile,
     },
   });
-
+  const isActive = watch("isActive");
   async function onSubmit(data) {
     console.log(data);
     // if (id) {
@@ -125,6 +127,13 @@ export default function ConsultantForm({ user, updateData = {} }) {
           errors={errors}
           className="w-full"
           type="date"
+        />
+        <ToggleInput
+          label="Currently Working"
+          name="isActive"
+          trueTitle="Active"
+          falseTitle="Draft"
+          register={register}
         />
       </div>
       <br />

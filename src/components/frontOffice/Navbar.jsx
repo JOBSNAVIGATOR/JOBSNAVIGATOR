@@ -31,7 +31,7 @@ export default function Navbar() {
   // };
 
   const user = session?.user;
-  console.log(user);
+  // console.log(user);
 
   const navMenuItems = [
     { title: "Home", href: "/" },

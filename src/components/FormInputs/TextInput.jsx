@@ -14,6 +14,7 @@ export default function TextInput({
   min,
   max,
   placeholder,
+  disabled = false, // Add this prop
 }) {
   return (
     <div className={className}>
@@ -36,6 +37,7 @@ export default function TextInput({
           placeholder={placeholder}
           min={type === "date" ? min : undefined}
           max={type === "date" ? max : undefined}
+          disabled={disabled} // Set the disabled prop here
         />
       </LabelInputContainer>
 
