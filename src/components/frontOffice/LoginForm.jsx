@@ -105,10 +105,35 @@ export default function LoginForm() {
         setLoading(false);
         toast.error("Sign-in error: Check your credentials");
       } else {
+        // Step 4: Check if the user is a candidate and their profile is empty
+        console.log(user.role);
+
+        if (user.role === "CANDIDATE") {
+          if (
+            !user.candidateProfile ||
+            Object.keys(user.candidateProfile).length === 0
+          ) {
+            // Redirect to onboarding if the candidate profile is empty
+            toast.success("Redirecting to onboarding...");
+            reset();
+            router.push(`/onboarding/${user.id}`);
+          } else {
+            // Redirect to home if the candidate profile is not empty
+            toast.success("Login Successful");
+            reset();
+            router.push("/");
+          }
+        } else {
+          // For non-candidate users, just redirect to the homepage
+          toast.success("Login Successful");
+          reset();
+          router.push("/");
+        }
+
         // Sign-in was successful
-        toast.success("Login Successful");
-        reset();
-        router.push("/");
+        // toast.success("Login Successful");
+        // reset();
+        // router.push("/");
       }
     } catch (error) {
       setLoading(false);

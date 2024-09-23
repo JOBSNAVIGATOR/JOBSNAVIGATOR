@@ -128,6 +128,10 @@ export async function GET(request) {
         id: true,
         email: true,
         emailVerified: true, // Only select fields you need
+        role: true,
+        candidateProfile: true,
+        consultantProfile: true,
+        clientProfile: true,
       },
     });
 
@@ -137,6 +141,8 @@ export async function GET(request) {
     }
 
     // Return the user data
+    console.log(user);
+
     return NextResponse.json(user, { status: 200 });
   } catch (error) {
     console.error("Error fetching user:", error);
