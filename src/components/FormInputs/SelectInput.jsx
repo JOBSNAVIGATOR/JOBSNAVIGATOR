@@ -49,6 +49,7 @@ const SelectInput = ({
   value,
   onChange,
   options,
+  register,
   className,
   disabled = false,
 }) => (
@@ -63,6 +64,7 @@ const SelectInput = ({
     )}
     <select
       id={name}
+      {...register}
       name={name}
       value={value}
       onChange={onChange}

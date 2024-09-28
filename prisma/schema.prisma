@@ -79,6 +79,7 @@ model CandidateProfile {
   graduationYear         String
   previousCompanyName    String
   resume                 String // URL or file path to the resume
+  candidateCode          String
   skills                 String[]
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)

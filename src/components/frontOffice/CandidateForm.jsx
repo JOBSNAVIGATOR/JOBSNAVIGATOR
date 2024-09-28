@@ -9,18 +9,20 @@ import { useForm } from "react-hook-form";
 import ArrayItemsInput from "../FormInputs/ArrayItemsInput";
 import SelectInput from "../FormInputs/SelectInput";
 import ToggleInput from "../FormInputs/ToggleInput";
+import { generateCandidateCode } from "@/lib/generateCandidateCode";
+import { useEffect } from "react";
+import { getData } from "@/lib/getData";
 // import ImageInput from "../FormInputs/ImageInput";
 
 export default function CandidateForm({ user, updateData = {} }) {
-  const initialImageUrl = updateData?.farmerProfile?.profileImageUrl ?? "";
+  const initialResumeUrl = updateData?.candidateProfile?.resume ?? "";
   // const initialProducts = updateData?.farmerProfile?.products ?? [];
   const initialSkills = updateData?.candidateProfile?.skills ?? [];
-  const id = updateData?.farmerProfile?.id ?? "";
+  const id = updateData?.candidateProfile?.id ?? "";
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [pdfUrl, setPdfUrl] = useState(initialImageUrl);
   const [skills, setSkills] = useState(initialSkills);
-  const [resume, setResume] = useState(null); // State for resume upload
+  const [resume, setResume] = useState(initialResumeUrl); // State for resume upload
   const {
     register,
     reset,
@@ -40,35 +42,78 @@ export default function CandidateForm({ user, updateData = {} }) {
     { value: "OTHER", label: "Other" },
   ];
 
+  // Fetch candidate data if updating
+  useEffect(() => {
+    if (id) {
+      const fetchData = async () => {
+        setLoading(true);
+        try {
+          const response = await getData(`candidateProfile/${id}`);
+          const candidateData = response.data; // Assuming response structure
+          reset(candidateData); // Populate the form with fetched data
+        } catch (error) {
+          console.error("Error fetching candidate data:", error);
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchData();
+    } else {
+      reset({ ...user }); // Reset to user data if no id
+    }
+  }, [id, reset, user]);
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        const base64String = reader.result.split(",")[1]; // Get Base64 string without prefix
+        setResume(base64String); // Update state with Base64 string
+      };
+
+      reader.readAsDataURL(file);
+    } else {
+      // Handle case where no file is selected
+      console.log("No file selected.");
+      setResume(""); // Clear the resume state if no file is selected
+    }
+  };
+
   async function onSubmit(data) {
     data.resume = resume;
-    console.log("Candidate Formdat", data);
-
-    // data.products = products;
-    // data.pdfUrl = pdfUrl;
-    // console.log(data);
-    // if (id) {
-    //   // make put request (update)
-    //   console.log(id);
-    //   data.userId = updateData?.id;
-    //   makePutRequest(
-    //     setLoading,
-    //     `api/farmers/${id}`,
-    //     data,
-    //     "Farmer Profile",
-    //     reset
-    //   );
-    //   setPdfUrl("");
-    //   router.back();
-    //   console.log("Update Request:", data);
-    // } else {
-    //   // make post request (create)
-    //   console.log("2");
-    //   data.userId = user.id;
-    //   makePostRequest(setLoading, "api/farmers", data, "Farmer Profile", reset);
-    //   setPdfUrl("");
-    //   router.push("/login");
-    // }
+    data.skills = skills;
+    if (id) {
+      // make put request (update)
+      console.log(id);
+      data.candidateProfileId = updateData?.id;
+      makePutRequest(
+        setLoading,
+        `api/farmers/${id}`,
+        data,
+        "Farmer Profile",
+        reset
+      );
+      setPdfUrl("");
+      router.back();
+      console.log("Update Request:", data);
+    } else {
+      // make post request (create)
+      console.log("2");
+      data.userId = user.id;
+      console.log("Candidate Formdat", data);
+      makePostRequest(
+        setLoading,
+        "api/onboarding",
+        data,
+        "Candidate Profile"
+        // reset
+      );
+      // setPdfUrl("");
+      // router.push("/");
+    }
   }
 
   return (
@@ -114,7 +159,8 @@ export default function CandidateForm({ user, updateData = {} }) {
         <SelectInput
           label="Gender"
           name="gender"
-          register={register}
+          // register={register}
+          register={register("gender", { required: true })} // Ensure gender is registered
           errors={errors}
           className="w-full"
           options={genderOptions}
@@ -213,7 +259,7 @@ export default function CandidateForm({ user, updateData = {} }) {
             type="file"
             id="resume"
             accept=".pdf"
-            onChange={(e) => setResume(e.target.files[0])} // Update state with selected file
+            onChange={handleFileChange} // Update state with selected file
             className="block w-full text-gray-900 dark:text-gray-200 border rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-lime-700"
             required // Optional: make it required
           />
