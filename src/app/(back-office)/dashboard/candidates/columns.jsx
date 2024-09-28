@@ -1,11 +1,18 @@
 "use client";
 import { Checkbox } from "@/components/ui/checkbox";
-import DateColumn from "@/components/DataTableColumns/DateColumn";
-import ImageColumn from "@/components/DataTableColumns/ImageColumn";
 import SortableColumn from "@/components/DataTableColumns/SortableColumn";
 import ActionColumn from "@/components/DataTableColumns/ActionColumn";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+
+const base64ToBlob = (base64, type = "application/pdf") => {
+  const byteCharacters = atob(base64);
+  const byteNumbers = new Uint8Array(byteCharacters.length);
+
+  for (let i = 0; i < byteCharacters.length; i++) {
+    byteNumbers[i] = byteCharacters.charCodeAt(i);
+  }
+
+  return new Blob([byteNumbers], { type });
+};
 
 export const columns = [
   {
@@ -31,23 +38,19 @@ export const columns = [
     enableHiding: false,
   },
   {
-    accessorKey: "firstName",
-    header: ({ column }) => (
-      <SortableColumn column={column} title="First Name" />
-    ),
+    accessorKey: "candidateCode",
+    header: ({ column }) => <SortableColumn column={column} title="Code" />,
   },
   {
-    accessorKey: "lastName",
-    header: ({ column }) => (
-      <SortableColumn column={column} title="Last Name" />
-    ),
+    accessorKey: "name",
+    header: ({ column }) => <SortableColumn column={column} title="Name" />,
   },
   {
     accessorKey: "email",
     header: ({ column }) => <SortableColumn column={column} title="Email" />,
   },
   {
-    accessorKey: "location",
+    accessorKey: "currentJobLocation",
     header: ({ column }) => <SortableColumn column={column} title="Location" />,
   },
   {
@@ -57,33 +60,65 @@ export const columns = [
     ),
   },
   {
-    accessorKey: "currentSalary",
+    accessorKey: "currentCtc",
     header: ({ column }) => (
       <SortableColumn column={column} title="Salary (LPA)" />
     ),
   },
+  // {
+  //   id: "view",
+  //   header: ({ column }) => <SortableColumn column={column} title="CV" />,
+  //   cell: ({ row }) => {
+  //     const candidate = row.original;
+  //     return (
+  //       <button
+  //         onClick={() => {
+  //           // Assuming `resume` contains the Base64 URL string
+  //           const blob = base64ToBlob(candidate.resume); // Convert Base64 to Blob
+  //           const link = document.createElement("a");
+  //           const url = URL.createObjectURL(blob); // Create an object URL
+
+  //           link.href = url; // Set the href to the object URL
+  //           link.download = `${candidate.name}_CV.pdf`; // Set the filename
+  //           document.body.appendChild(link); // Append to body
+  //           link.click(); // Trigger the download
+  //           document.body.removeChild(link); // Clean up
+  //           URL.revokeObjectURL(url); // Free memory
+  //         }}
+  //         className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800"
+  //       >
+  //         <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+  //           Preview/Download
+  //         </span>
+  //       </button>
+  //     );
+  //   },
+  // },
   {
     id: "view",
     header: ({ column }) => <SortableColumn column={column} title="CV" />,
     cell: ({ row }) => {
       const candidate = row.original;
+
+      const handlePreview = () => {
+        const blob = base64ToBlob(candidate.resume); // Convert Base64 to Blob
+        const url = URL.createObjectURL(blob); // Create an object URL
+        window.open(url); // Open the URL in a new tab or window
+      };
+
       return (
         <button
-          onClick={() => {
-            const link = document.createElement("a");
-            link.href = candidate.cvLink; // Assuming `cvLink` contains the URL to the candidate's CV
-            link.download = `${candidate.firstName}_${candidate.lastName}_CV.pdf`; // Filename format for download
-            link.click();
-          }}
+          onClick={handlePreview}
           className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800"
         >
           <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-            Preview/Download
+            Preview
           </span>
         </button>
       );
     },
   },
+
   {
     id: "actions",
     cell: ({ row }) => {
