@@ -1,5 +1,5 @@
 "use client";
-import { AlignJustify } from "lucide-react";
+import { AlignJustify, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -50,7 +50,18 @@ export default function Navbar({ showSideBar, setShowSideBar }) {
           <div className="flex items-center ms-3 md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
             <div className="flex gap-8">
               <ThemeSwitcherBtn />
-              <UserAvatar user={user} />
+              {/* <UserAvatar user={user} /> */}
+              {status === "unauthenticated" ? (
+                <Link
+                  href="/login"
+                  className="flex items-center space-x-1 text-green-950  transition-all duration-200  hover:bg-slate-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-slate-700 dark:hover:text-white md:dark:hover:bg-transparent text-xl"
+                >
+                  <User />
+                  <span>Login</span>
+                </Link>
+              ) : (
+                <UserAvatar user={user} />
+              )}
             </div>
           </div>
           {/* </div> */}
