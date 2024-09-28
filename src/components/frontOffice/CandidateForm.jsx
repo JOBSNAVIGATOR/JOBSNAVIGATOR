@@ -108,7 +108,7 @@ export default function CandidateForm({ user, updateData = {} }) {
         // reset
       );
       // setPdfUrl("");
-      // router.push("/");
+      router.push("/");
     }
   }
 

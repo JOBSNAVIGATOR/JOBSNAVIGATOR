@@ -1,5 +1,6 @@
 import db from "@/lib/db";
 import { generateCandidateCode } from "@/lib/generateCandidateCode";
+import { generateNewCandidateCode } from "@/lib/generateNewCandidateCode";
 import { NextResponse } from "next/server";
 
 export async function PUT(request) {
@@ -46,19 +47,16 @@ export async function PUT(request) {
       candidateCode.split("-");
     console.log(prefix, existingDate, existingInitials, sequence);
 
-    // const candidateData = {
-    //   sector,
-    //   domain,
-    //   currentCtc,
-    //   currentJobLocation,
-    // };
-    // const updatedCodePart = generateCandidateCode(candidateData, sequence);
+    const candidateData = {
+      sector,
+      domain,
+      currentCtc,
+      currentJobLocation,
+    };
+    const updatedCodePart = generateNewCandidateCode(candidateData);
 
     // Rebuild the candidateCode using existing parts + updated sector, domain, level, location
-    // const updatedCandidateCode = `${prefix}-${existingDate}-${existingInitials}-${sequence}-${updatedCodePart
-    //   .split("-")
-    //   .slice(4)
-    //   .join("-")}`;
+    const updatedCandidateCode = `${prefix}-${existingDate}-${existingInitials}-${sequence}-${updatedCodePart}`;
 
     const updatedCandidateProfile = await db.candidateProfile.update({
       where: {
@@ -80,7 +78,7 @@ export async function PUT(request) {
         graduationYear,
         skills,
         resume,
-        // candidateCode: updatedCandidateCode, // Update only sector/domain/level/location part
+        candidateCode: updatedCandidateCode, // Update only sector/domain/level/location part
       },
     });
 
