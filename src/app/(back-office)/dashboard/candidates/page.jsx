@@ -8,7 +8,7 @@ import DownloadExcel from "@/components/backOffice/DownloadExcel";
 import useSWR from "swr";
 import { fetcher } from "@/lib/fetcher";
 
-export default function page() {
+export default function Page() {
   // const jobs = await getData("jobs");
 
   const { data, error } = useSWR("/api/candidates", fetcher, {
