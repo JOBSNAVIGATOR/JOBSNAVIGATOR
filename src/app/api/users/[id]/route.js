@@ -9,6 +9,9 @@ export async function GET(request, { params: { id } }) {
       where: {
         id,
       },
+      include: {
+        candidateProfile: true, // Include candidateProfile if it's related to user
+      },
     });
     console.log("check5", user);
     return NextResponse.json(user);

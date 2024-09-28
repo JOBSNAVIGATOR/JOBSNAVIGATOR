@@ -2,21 +2,17 @@
 import SubmitButton from "@/components/FormInputs/SubmitButton";
 import TextInput from "@/components/FormInputs/TextInput";
 import { makePostRequest, makePutRequest } from "@/lib/apiRequest";
-
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import ArrayItemsInput from "../FormInputs/ArrayItemsInput";
 import SelectInput from "../FormInputs/SelectInput";
-import ToggleInput from "../FormInputs/ToggleInput";
-import { generateCandidateCode } from "@/lib/generateCandidateCode";
 import { useEffect } from "react";
 import { getData } from "@/lib/getData";
 // import ImageInput from "../FormInputs/ImageInput";
 
 export default function CandidateForm({ user, updateData = {} }) {
   const initialResumeUrl = updateData?.candidateProfile?.resume ?? "";
-  // const initialProducts = updateData?.farmerProfile?.products ?? [];
   const initialSkills = updateData?.candidateProfile?.skills ?? [];
   const id = updateData?.candidateProfile?.id ?? "";
   const router = useRouter();
@@ -43,25 +39,25 @@ export default function CandidateForm({ user, updateData = {} }) {
   ];
 
   // Fetch candidate data if updating
-  useEffect(() => {
-    if (id) {
-      const fetchData = async () => {
-        setLoading(true);
-        try {
-          const response = await getData(`candidateProfile/${id}`);
-          const candidateData = response.data; // Assuming response structure
-          reset(candidateData); // Populate the form with fetched data
-        } catch (error) {
-          console.error("Error fetching candidate data:", error);
-        } finally {
-          setLoading(false);
-        }
-      };
-      fetchData();
-    } else {
-      reset({ ...user }); // Reset to user data if no id
-    }
-  }, [id, reset, user]);
+  // useEffect(() => {
+  //   if (id) {
+  //     const fetchData = async () => {
+  //       setLoading(true);
+  //       try {
+  //         const response = await getData(`candidateProfile/${id}`);
+  //         const candidateData = response.data; // Assuming response structure
+  //         reset(candidateData); // Populate the form with fetched data
+  //       } catch (error) {
+  //         console.error("Error fetching candidate data:", error);
+  //       } finally {
+  //         setLoading(false);
+  //       }
+  //     };
+  //     fetchData();
+  //   } else {
+  //     reset({ ...user }); // Reset to user data if no id
+  //   }
+  // }, [id, reset, user]);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -81,6 +77,9 @@ export default function CandidateForm({ user, updateData = {} }) {
       setResume(""); // Clear the resume state if no file is selected
     }
   };
+  const handleRemoveResume = () => {
+    setResume(""); // Clear the resume state when the resume is removed
+  };
 
   async function onSubmit(data) {
     data.resume = resume;
@@ -89,30 +88,28 @@ export default function CandidateForm({ user, updateData = {} }) {
       // make put request (update)
       console.log(id);
       data.candidateProfileId = updateData?.id;
-      makePutRequest(
-        setLoading,
-        `api/farmers/${id}`,
-        data,
-        "Farmer Profile",
-        reset
-      );
-      setPdfUrl("");
-      router.back();
-      console.log("Update Request:", data);
+      // makePutRequest(
+      //   setLoading,
+      //   `api/farmers/${id}`,
+      //   data,
+      //   "Farmer Profile",
+      //   reset
+      // );
+      // setPdfUrl("");
+      // router.back();
+      // console.log("Update Request:", data);
     } else {
       // make post request (create)
-      console.log("2");
       data.userId = user.id;
-      console.log("Candidate Formdat", data);
       makePostRequest(
         setLoading,
         "api/onboarding",
         data,
-        "Candidate Profile"
-        // reset
+        "Candidate Profile",
+        reset
       );
       // setPdfUrl("");
-      // router.push("/");
+      router.push("/");
     }
   }
 
@@ -253,16 +250,41 @@ export default function CandidateForm({ user, updateData = {} }) {
             className="block mb-2 text-md font-medium text-neutral-800 dark:text-neutral-200"
             htmlFor="resume"
           >
-            Upload Resume (PDF)
+            {resume ? "" : "Upload Resume (PDF)"}
           </label>
-          <input
-            type="file"
-            id="resume"
-            accept=".pdf"
-            onChange={handleFileChange} // Update state with selected file
-            className="block w-full text-gray-900 dark:text-gray-200 border rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-lime-700"
-            required // Optional: make it required
-          />
+
+          {/* Display existing resume with option to remove */}
+          {resume && (
+            <div className="mb-4">
+              <a
+                href={`data:application/pdf;base64,${resume}`}
+                download="resume.pdf"
+                className="text-blue-600 underline text-xl"
+              >
+                View Uploaded Resume
+              </a>
+              <button
+                type="button"
+                onClick={handleRemoveResume}
+                className="ml-4 text-red-500 text-xl"
+              >
+                Remove
+              </button>
+            </div>
+          )}
+
+          {!resume && (
+            <input
+              type="file"
+              id="resume"
+              accept=".pdf"
+              onChange={handleFileChange} // Update state with selected file
+              className="block w-full text-gray-900 dark:text-gray-200 border rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-lime-700"
+              required={!resume} // Only required if there's no resume uploaded
+              // required // Optional: make it required
+            />
+          )}
+
           {errors.resume && (
             <small className="text-sm text-red-600">Resume is required</small>
           )}
@@ -275,9 +297,9 @@ export default function CandidateForm({ user, updateData = {} }) {
 
       <SubmitButton
         isLoading={loading}
-        buttonTitle={id ? "Update Profile" : "Update Profile "}
+        buttonTitle={id ? "Update Profile" : "Create Profile "}
         loadingButtonTitle={`${
-          id ? "Updating" : "Updating"
+          id ? "Updating" : "Creating"
         } Profile Please wait ...`}
       />
     </form>

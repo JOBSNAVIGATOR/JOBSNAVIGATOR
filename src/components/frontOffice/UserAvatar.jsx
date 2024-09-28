@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { use } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,6 +18,7 @@ import { Button } from "../ui/button";
 
 export default function UserAvatar({ user = {} }) {
   const { name, image } = user;
+
   const initials = generateInitials(name);
   const role = user?.role;
   const router = useRouter();
@@ -57,7 +58,10 @@ export default function UserAvatar({ user = {} }) {
         {/* Edit Profile */}
         {role === "CANDIDATE" && (
           <DropdownMenuItem className="rounded-full hover:bg-lime-600 focus:bg-lime-600 transition-all duration-200 ">
-            <Link href="/" className="flex items-center space-x-2">
+            <Link
+              href={`/onboarding/${user.id}`}
+              className="flex items-center space-x-2"
+            >
               <Settings className="mr-2 h-4 w-4" />
               <span>Edit Profile</span>
             </Link>

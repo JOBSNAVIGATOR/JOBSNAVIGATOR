@@ -48,7 +48,7 @@ export async function POST(request) {
         verificationToken: token,
       },
     });
-    console.log(newUser);
+    // console.log(newUser);
 
     // Send an email with the token on the link as a search param
     const userId = newUser.id;
@@ -141,7 +141,7 @@ export async function GET(request) {
     }
 
     // Return the user data
-    console.log(user);
+    // console.log(user);
 
     return NextResponse.json(user, { status: 200 });
   } catch (error) {
