@@ -1,4 +1,4 @@
-export function generateCandidateCode(candidateData, sequenceNumber) {
+export function generateCandidateCode(candidateData, sequenceNumber = "") {
   // 1. Fixed part of the code
   const prefix = "JOBSNVG";
 

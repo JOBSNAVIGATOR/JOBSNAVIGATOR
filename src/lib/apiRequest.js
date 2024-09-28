@@ -24,7 +24,7 @@ export async function makePostRequest(
     } else {
       setLoading(false);
       if (response.status === 409) {
-        toast.error("The Giving Warehouse Stock is NOT Enough");
+        toast.error("Some Error has Occurred");
       } else {
         toast.error("Something Went wrong");
       }

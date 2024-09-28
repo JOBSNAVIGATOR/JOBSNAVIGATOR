@@ -86,18 +86,17 @@ export default function CandidateForm({ user, updateData = {} }) {
     data.skills = skills;
     if (id) {
       // make put request (update)
-      console.log(id);
-      data.candidateProfileId = updateData?.id;
-      // makePutRequest(
-      //   setLoading,
-      //   `api/farmers/${id}`,
-      //   data,
-      //   "Farmer Profile",
-      //   reset
-      // );
+      console.log("candidateProfile Id", id);
+      console.log("updated data", data);
+
+      makePutRequest(
+        setLoading,
+        "api/candidateProfile",
+        data,
+        "Candidate Profile"
+      );
       // setPdfUrl("");
-      // router.back();
-      // console.log("Update Request:", data);
+      router.back();
     } else {
       // make post request (create)
       data.userId = user.id;
@@ -105,11 +104,11 @@ export default function CandidateForm({ user, updateData = {} }) {
         setLoading,
         "api/onboarding",
         data,
-        "Candidate Profile",
-        reset
+        "Candidate Profile"
+        // reset
       );
       // setPdfUrl("");
-      router.push("/");
+      // router.push("/");
     }
   }
 
