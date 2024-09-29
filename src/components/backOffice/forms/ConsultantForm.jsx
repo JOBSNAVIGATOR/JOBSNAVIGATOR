@@ -1,8 +1,10 @@
 "use client";
+import SelectInput from "@/components/FormInputs/SelectInput";
 // import ImageInput from "@/components/FormInputs/ImageInput";
 import SubmitButton from "@/components/FormInputs/SubmitButton";
 import TextInput from "@/components/FormInputs/TextInput";
 import ToggleInput from "@/components/FormInputs/ToggleInput";
+import { makePostRequest } from "@/lib/apiRequest";
 // import { makePostRequest, makePutRequest } from "@/lib/apiRequest";
 // import { generateUserCode } from "@/lib/generateUserCode";
 
@@ -28,30 +30,41 @@ export default function ConsultantForm({ user, updateData = {} }) {
     },
   });
   const isActive = watch("isActive");
+
+  const genderOptions = [
+    { value: "MALE", label: "Male" },
+    { value: "FEMALE", label: "Female" },
+    { value: "OTHER", label: "Other" },
+  ];
+
   async function onSubmit(data) {
-    console.log(data);
-    // if (id) {
-    //   // make put request (update)
-    //   console.log(id);
-    //   data.userId = updateData?.id;
-    //   makePutRequest(
-    //     setLoading,
-    //     `api/farmers/${id}`,
-    //     data,
-    //     "Farmer Profile",
-    //     reset
-    //   );
-    //   setImageUrl("");
-    //   router.back();
-    //   console.log("Update Request:", data);
-    // } else {
-    //   // make post request (create)
-    //   console.log("2");
-    //   data.userId = user.id;
-    //   makePostRequest(setLoading, "api/farmers", data, "Farmer Profile", reset);
-    //   setImageUrl("");
-    //   router.push("/login");
-    // }
+    if (id) {
+      // make put request (update)
+      console.log(id);
+      // data.userId = updateData?.id;
+      // makePutRequest(
+      //   setLoading,
+      //   `api/farmers/${id}`,
+      //   data,
+      //   "Farmer Profile",
+      //   reset
+      // );
+      // setImageUrl("");
+      // router.back();
+      // console.log("Update Request:", data);
+    } else {
+      // make post request (create)
+      data.role = "CONSULTANT";
+      console.log("POst Data", data);
+      makePostRequest(
+        setLoading,
+        "api/consultants",
+        data,
+        "Consultant Profile"
+        // reset
+      );
+      // router.push("/");
+    }
   }
 
   return (
@@ -69,7 +82,7 @@ export default function ConsultantForm({ user, updateData = {} }) {
         />
         <TextInput
           label="Contact Number"
-          name="phone"
+          name="contactNumber"
           type="tel"
           register={register}
           errors={errors}
@@ -77,7 +90,7 @@ export default function ConsultantForm({ user, updateData = {} }) {
         />
         <TextInput
           label="Emergency Contact Number"
-          name="emergencyPhone"
+          name="emergencyContactNumber"
           type="tel"
           register={register}
           errors={errors}
@@ -90,6 +103,15 @@ export default function ConsultantForm({ user, updateData = {} }) {
           register={register}
           errors={errors}
           className="w-full"
+        />
+        <SelectInput
+          label="Gender"
+          name="gender"
+          // register={register}
+          register={register("gender", { required: true })} // Ensure gender is registered
+          errors={errors}
+          className="w-full"
+          options={genderOptions}
         />
         <TextInput
           label="Permanent Address"
