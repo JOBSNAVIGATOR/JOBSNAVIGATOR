@@ -74,32 +74,32 @@ export const columns = (updateStatus) => [
       <SortableColumn column={column} title="Current Salary (LPA)" />
     ),
   },
-  {
-    accessorKey: "status",
-    header: ({ column }) => <SortableColumn column={column} title="Status" />,
-    cell: ({ row }) => {
-      const [status, setStatus] = useState(row.original.status);
+  // {
+  //   accessorKey: "status",
+  //   header: ({ column }) => <SortableColumn column={column} title="Status" />,
+  //   cell: ({ row }) => {
+  //     const [status, setStatus] = useState(row.original.status);
 
-      const handleChange = (e) => {
-        const newStatus = e.target.value;
-        setStatus(newStatus);
-        updateStatus(row.original.id, newStatus); // Update status
-      };
+  //     const handleChange = (e) => {
+  //       const newStatus = e.target.value;
+  //       setStatus(newStatus);
+  //       updateStatus(row.original.id, newStatus); // Update status
+  //     };
 
-      return (
-        <SelectInput
-          // label="Status"
-          name="status"
-          register={() => {}} // No need for register here
-          errors={{}} // No need for errors here
-          className="w-full dark:text-black"
-          options={statusOptions}
-          value={status} // Ensure the value reflects the current status
-          onChange={handleChange} // Handle status change
-        />
-      );
-    },
-  },
+  //     return (
+  //       <SelectInput
+  //         // label="Status"
+  //         name="status"
+  //         register={() => {}} // No need for register here
+  //         errors={{}} // No need for errors here
+  //         className="w-full dark:text-black"
+  //         options={statusOptions}
+  //         value={status} // Ensure the value reflects the current status
+  //         onChange={handleChange} // Handle status change
+  //       />
+  //     );
+  //   },
+  // },
   {
     id: "view",
     header: ({ column }) => <SortableColumn column={column} title="CV" />,

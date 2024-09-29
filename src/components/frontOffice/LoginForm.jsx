@@ -58,7 +58,7 @@ export default function LoginForm() {
     }
 
     // console.log(token);
-  }, []);
+  }, [searchParams]);
 
   const {
     register,

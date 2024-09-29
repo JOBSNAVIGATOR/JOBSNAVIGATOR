@@ -72,7 +72,8 @@ export const TextGenerateEffect = ({ words, className, onCompletion }) => {
         onCompletion(); // Call the completion callback
       }
     });
-  }, [scope.current, animate, onCompletion]);
+  }, [animate, onCompletion]);
+  // }, [scope.current, animate, onCompletion]);
 
   const renderWords = () => {
     return (
