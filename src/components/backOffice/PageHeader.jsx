@@ -1,5 +1,5 @@
 import React from "react";
-import Heading from "@/components/backoffice/Heading";
+import Heading from "./Heading";
 import { Plus } from "lucide-react";
 import Link from "next/link";
 export default function PageHeader({ heading, href, linkTitle }) {
