@@ -56,6 +56,8 @@ export const columns = [
     id: "actions",
     cell: ({ row }) => {
       const consultant = row.original;
+      // console.log(consultant);
+
       return (
         <ActionColumn
           row={row}
