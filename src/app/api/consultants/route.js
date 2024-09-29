@@ -146,3 +146,39 @@ export async function POST(request) {
     );
   }
 }
+
+export async function GET(req) {
+  try {
+    // Fetch all consultants from the candidate profile
+    console.log("get of consultants");
+
+    const consultants = await db.consultantProfile.findMany({
+      include: {
+        user: true, // Assuming you have a relation to the user model
+      },
+    });
+
+    // Map the data to include only the necessary fields
+    const formattedConsultants = consultants.map((consultant) => ({
+      id: consultant.id,
+      // candidateCode: consultant.candidateCode,
+      name: consultant.user.name, // Assuming user has a name field
+      email: consultant.user.email, // Assuming user has an email field
+      contactNumber: consultant.user.contactNumber,
+      ctcOffered: consultant.ctcOffered,
+      currentAddress: consultant.currentAddress,
+      // Include any other fields you need
+    }));
+
+    return new Response(JSON.stringify(formattedConsultants), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
+  } catch (error) {
+    console.error("Error fetching Consultants:", error);
+    return new Response(
+      JSON.stringify({ message: "Failed to fetch consultants", error }),
+      { status: 500 }
+    );
+  }
+}

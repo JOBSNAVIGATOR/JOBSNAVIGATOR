@@ -60,10 +60,10 @@ export default function ConsultantForm({ user, updateData = {} }) {
         setLoading,
         "api/consultants",
         data,
-        "Consultant Profile"
-        // reset
+        "Consultant Profile",
+        reset
       );
-      // router.push("/");
+      router.back();
     }
   }
 
