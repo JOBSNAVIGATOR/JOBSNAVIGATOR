@@ -725,7 +725,7 @@ export const consultants = [
   },
 ];
 
-export const companies = [
+export const companiesData = [
   // Banking Sector
   {
     companyId: "00001",
@@ -848,64 +848,6 @@ export const companies = [
       "Unacademy is an Indian online education technology company based in Bengaluru, India.",
   },
 ];
-
-// export const sectors = [
-//   {
-//     sectorId: 0,
-//     sectorName: "Banking",
-//     domains: [
-//       {
-//         domainId: 0,
-//         domainName: "Retail Banking",
-//       },
-//       {
-//         domainId: 1,
-//         domainName: "Corporate Banking",
-//       },
-//       {
-//         domainId: 2,
-//         domainName: "Investment Banking",
-//       },
-//     ],
-//   },
-//   {
-//     sectorId: 1,
-//     sectorName: "Information Technology",
-//     domains: [
-//       {
-//         domainId: 0,
-//         domainName: "Software Development",
-//       },
-//       {
-//         domainId: 1,
-//         domainName: "Cybersecurity",
-//       },
-//       {
-//         domainId: 2,
-//         domainName: "Data Science",
-//       },
-//     ],
-//   },
-//   {
-//     sectorId: 2,
-//     sectorName: "Healthcare",
-//     domains: [
-//       {
-//         domainId: 0,
-//         domainName: "Pharmaceuticals",
-//       },
-//       {
-//         domainId: 1,
-//         domainName: "Medical Devices",
-//       },
-//       {
-//         domainId: 2,
-//         domainName: "Healthcare Services",
-//       },
-//     ],
-//   },
-//   // Add more sectors, domains, and levels as needed
-// ];
 
 export const sectorsData = [
   { value: "INFORMATION_TECHNOLOGY", label: "Information Technology" },

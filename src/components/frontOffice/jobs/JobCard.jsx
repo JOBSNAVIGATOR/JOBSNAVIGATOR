@@ -55,10 +55,11 @@ export default function JobCard({ jobItem }) {
       setIsApplied(true);
       setOpen(false);
       toast.success("You have Successfully Applied to this Job");
+    } else {
+      toast.error("You need to be Logged in to Apply to Jobs ");
+      setOpen(false);
+      router.push("/login");
     }
-    toast.error("You need to be Logged in to Apply to Jobs ");
-    setOpen(false);
-    router.push("/login");
   };
 
   return (

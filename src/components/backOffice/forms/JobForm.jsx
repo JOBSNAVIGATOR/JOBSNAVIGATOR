@@ -186,17 +186,13 @@ import SelectInput from "@/components/FormInputs/SelectInput";
 import SubmitButton from "@/components/FormInputs/SubmitButton";
 import TextAreaInput from "@/components/FormInputs/TextAreaInput";
 import TextInput from "@/components/FormInputs/TextInput";
-import { sectors } from "@/data";
+import { companiesData, domainsData, sectors, sectorsData } from "@/data";
 
 import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-export default function JobForm({
-  companies = [],
-  clients = [],
-  updateData = {},
-}) {
+export default function JobForm({ updateData = {} }) {
   const initialSkills = updateData?.skills ?? [];
   const id = updateData?.id ?? "";
   const router = useRouter();
@@ -216,28 +212,33 @@ export default function JobForm({
 
   const [skills, setSkills] = useState(initialSkills);
 
-  // Initialize selectedSectorId and selectedDomainId from updateData if available
-  const initialSectorId = updateData?.sectorId ?? "";
-  const initialDomainId = updateData?.domainId ?? "";
+  const companies = companiesData;
 
-  // Watch for changes in sectorId and domainId
-  const selectedSectorId = watch("sectorId", initialSectorId);
-  const selectedDomainId = watch("domainId", initialDomainId);
+  // // Initialize selectedSectorId and selectedDomainId from updateData if available
+  // const initialSectorId = updateData?.sectorId ?? "";
+  // const initialDomainId = updateData?.domainId ?? "";
 
-  useEffect(() => {
-    console.log("Selected Sector ID:", selectedSectorId);
-    console.log("Selected Domain ID:", selectedDomainId);
-  }, [selectedSectorId, selectedDomainId]);
+  // // Watch for changes in sectorId and domainId
+  // const selectedSectorId = watch("sectorId", initialSectorId);
+  // const selectedDomainId = watch("domainId", initialDomainId);
 
-  // Find selected sector
-  const selectedSector = sectors.find(
-    (sector) => sector.sectorId === Number(selectedSectorId)
-  );
-  const domains = selectedSector ? selectedSector.domains : [];
-  const selectedDomain = domains.find(
-    (domain) => domain.domainId === Number(selectedDomainId)
-  );
-  const levels = selectedDomain ? selectedDomain.levels : [];
+  // useEffect(() => {
+  //   console.log("Selected Sector ID:", selectedSectorId);
+  //   console.log("Selected Domain ID:", selectedDomainId);
+  // }, [selectedSectorId, selectedDomainId]);
+
+  // // Find selected sector
+  // const selectedSector = sectors.find(
+  //   (sector) => sector.sectorId === Number(selectedSectorId)
+  // );
+  // const domains = selectedSector ? selectedSector.domains : [];
+  // const selectedDomain = domains.find(
+  //   (domain) => domain.domainId === Number(selectedDomainId)
+  // );
+  // const levels = selectedDomain ? selectedDomain.levels : [];
+
+  const sectors = sectorsData;
+  const domains = domainsData;
 
   async function onSubmit(data) {
     data.jobCode = "BJSXSJXVSXVS";
@@ -275,10 +276,11 @@ export default function JobForm({
           register={register}
           errors={errors}
           className="w-full"
-          options={sectors.map((sector) => ({
-            id: sector.sectorId,
-            title: sector.sectorName,
-          }))}
+          // options={sectors.map((sector) => ({
+          //   id: sector.sectorId,
+          //   title: sector.sectorName,
+          // }))}
+          options={sectors}
         />
 
         <SelectInput
@@ -299,10 +301,11 @@ export default function JobForm({
           register={register}
           errors={errors}
           className="w-full"
-          options={domains.map((domain) => ({
-            id: domain.domainId,
-            title: domain.domainName,
-          }))}
+          // options={domains.map((domain) => ({
+          //   id: domain.domainId,
+          //   title: domain.domainName,
+          // }))}
+          options={domains}
         />
 
         {/* <SelectInput
@@ -317,7 +320,7 @@ export default function JobForm({
           }))}
         /> */}
 
-        <SelectInput
+        {/* <SelectInput
           label="Select Client HR"
           name="clientHrId"
           register={register}
@@ -327,7 +330,7 @@ export default function JobForm({
             id: client.id,
             title: client.name,
           }))}
-        />
+        /> */}
 
         <TextInput
           label="Number of Vacancies"
@@ -336,7 +339,15 @@ export default function JobForm({
           register={register}
           errors={errors}
           className="w-full"
-          placeholder="Positions Remaining"
+          placeholder="Positions"
+        />
+        <TextInput
+          label="CTC"
+          type="text"
+          name="ctc"
+          register={register}
+          errors={errors}
+          className="w-full"
         />
 
         <ArrayItemsInput
