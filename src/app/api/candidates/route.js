@@ -5,8 +5,6 @@ import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
 import base64url from "base64url";
 import { Resend } from "resend";
-import { LogIn } from "lucide-react";
-import { PrismaClient } from "@prisma/client";
 import { EmailTemplateTwo } from "@/components/email-template-two";
 import { generateRandomPassword } from "@/lib/generateRandomPassword";
 
