@@ -7,6 +7,8 @@ import Heading from "@/components/backOffice/Heading";
 import DownloadExcel from "@/components/backOffice/DownloadExcel";
 import useSWR from "swr";
 import { fetcher } from "@/lib/fetcher";
+import Link from "next/link";
+import { Plus } from "lucide-react";
 
 export default function Page() {
   // const jobs = await getData("jobs");
@@ -26,7 +28,17 @@ export default function Page() {
         <Heading title="Candidates" />
       </div>
 
-      <div className="flex justify-end">
+      <div className="flex justify-end gap-4">
+        <Link href="/candidate">
+          <button className="bg-gradient-to-br group/btn from-black dark:from-lime-200 dark:to-lime-900 to-neutral-600 block dark:bg-zinc-800 w-80 font-bold text-white dark:text-slate-900 rounded-xl h-10 text-center items-center shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]">
+            Bulk Upload
+          </button>
+        </Link>
+        <Link href="/dashboard/candidates/new">
+          <button className="bg-gradient-to-br group/btn from-black dark:from-lime-200 dark:to-lime-900 to-neutral-600 block dark:bg-zinc-800 w-80 font-bold text-white dark:text-slate-900 rounded-xl h-10 text-center items-center shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]">
+            Add Candidate
+          </button>
+        </Link>
         <DownloadExcel data={data} fileName="candidates.xlsx" />
       </div>
 

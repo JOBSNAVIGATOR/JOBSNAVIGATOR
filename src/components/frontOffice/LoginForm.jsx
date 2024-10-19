@@ -6,17 +6,23 @@ import toast from "react-hot-toast";
 import Link from "next/link";
 import TextInput from "../FormInputs/TextInput";
 import SubmitButton from "../FormInputs/SubmitButton";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { getData } from "@/lib/getData";
 export default function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isVerifying, setIsVerifying] = useState(false);
+  const { data: session, status } = useSession();
 
   useEffect(() => {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
     const token = searchParams.get("token");
     const id = searchParams.get("id");
+
+    // If user is authenticated and there is no token or id in the URL, redirect to home
+    if (status === "authenticated" && (!token || !id)) {
+      router.push("/");
+    }
 
     if (token && id) {
       setIsVerifying(true);
@@ -56,9 +62,8 @@ export default function LoginForm() {
       }
       verify();
     }
-
     // console.log(token);
-  }, [searchParams]);
+  }, [searchParams, status, router]);
 
   const {
     register,
