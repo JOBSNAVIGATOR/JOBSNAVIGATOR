@@ -305,7 +305,7 @@ export default function JobForm({
           }))}
         />
 
-        <SelectInput
+        {/* <SelectInput
           label="Select Profile"
           name="levelId"
           register={register}
@@ -315,7 +315,7 @@ export default function JobForm({
             id: level.levelId,
             title: level.levelName,
           }))}
-        />
+        /> */}
 
         <SelectInput
           label="Select Client HR"

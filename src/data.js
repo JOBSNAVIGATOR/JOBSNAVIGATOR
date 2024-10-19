@@ -849,105 +849,124 @@ export const companies = [
   },
 ];
 
-export const sectors = [
+// export const sectors = [
+//   {
+//     sectorId: 0,
+//     sectorName: "Banking",
+//     domains: [
+//       {
+//         domainId: 0,
+//         domainName: "Retail Banking",
+//       },
+//       {
+//         domainId: 1,
+//         domainName: "Corporate Banking",
+//       },
+//       {
+//         domainId: 2,
+//         domainName: "Investment Banking",
+//       },
+//     ],
+//   },
+//   {
+//     sectorId: 1,
+//     sectorName: "Information Technology",
+//     domains: [
+//       {
+//         domainId: 0,
+//         domainName: "Software Development",
+//       },
+//       {
+//         domainId: 1,
+//         domainName: "Cybersecurity",
+//       },
+//       {
+//         domainId: 2,
+//         domainName: "Data Science",
+//       },
+//     ],
+//   },
+//   {
+//     sectorId: 2,
+//     sectorName: "Healthcare",
+//     domains: [
+//       {
+//         domainId: 0,
+//         domainName: "Pharmaceuticals",
+//       },
+//       {
+//         domainId: 1,
+//         domainName: "Medical Devices",
+//       },
+//       {
+//         domainId: 2,
+//         domainName: "Healthcare Services",
+//       },
+//     ],
+//   },
+//   // Add more sectors, domains, and levels as needed
+// ];
+
+export const sectorsData = [
+  { value: "INFORMATION_TECHNOLOGY", label: "Information Technology" },
+  { value: "FINANCE", label: "Finance" },
+  { value: "HUMAN_RESOURCES", label: "Human Resources" },
+  { value: "MARKETING", label: "Marketing" },
+  { value: "SALES", label: "Sales" },
+  { value: "LEGAL", label: "Legal" },
+  { value: "OPERATIONS", label: "Operations" },
+  { value: "RESEARCH_AND_DEVELOPMENT", label: "Research and Development" },
+  { value: "SUPPLY_CHAIN", label: "Supply Chain" },
+  { value: "PROCUREMENT", label: "Procurement" },
+  { value: "CUSTOMER_SERVICE", label: "Customer Service" },
+  { value: "ADMINISTRATION", label: "Administration" },
+  { value: "PROJECT_MANAGEMENT", label: "Project Management" },
+  { value: "QUALITY_CONTROL", label: "Quality Control" },
+  { value: "BUSINESS_DEVELOPMENT", label: "Business Development" },
+  { value: "PUBLIC_RELATIONS", label: "Public Relations" },
+  { value: "TRAINING_AND_DEVELOPMENT", label: "Training and Development" },
+  { value: "STRATEGY_AND_PLANNING", label: "Strategy and Planning" },
   {
-    sectorId: 0,
-    sectorName: "Banking",
-    domains: [
-      {
-        domainId: 0,
-        domainName: "Retail Banking",
-        levels: [
-          { levelId: 0, levelName: "Entry Level" },
-          { levelId: 1, levelName: "Mid Level" },
-          { levelId: 2, levelName: "Senior Level" },
-        ],
-      },
-      {
-        domainId: 1,
-        domainName: "Corporate Banking",
-        levels: [
-          { levelId: 0, levelName: "Entry Level" },
-          { levelId: 1, levelName: "Mid Level" },
-          { levelId: 2, levelName: "Senior Level" },
-        ],
-      },
-      {
-        domainId: 2,
-        domainName: "Investment Banking",
-        levels: [
-          { levelId: 0, levelName: "Entry Level" },
-          { levelId: 1, levelName: "Mid Level" },
-          { levelId: 2, levelName: "Senior Level" },
-        ],
-      },
-    ],
+    value: "CORPORATE_SOCIAL_RESPONSIBILITY",
+    label: "Corporate Social Responsibility",
   },
-  {
-    sectorId: 1,
-    sectorName: "Information Technology",
-    domains: [
-      {
-        domainId: 0,
-        domainName: "Software Development",
-        levels: [
-          { levelId: 0, levelName: "Junior Developer" },
-          { levelId: 1, levelName: "Mid Level Developer" },
-          { levelId: 2, levelName: "Senior Developer" },
-        ],
-      },
-      {
-        domainId: 1,
-        domainName: "Cybersecurity",
-        levels: [
-          { levelId: 0, levelName: "Analyst" },
-          { levelId: 1, levelName: "Specialist" },
-          { levelId: 2, levelName: "Manager" },
-        ],
-      },
-      {
-        domainId: 2,
-        domainName: "Data Science",
-        levels: [
-          { levelId: 0, levelName: "Data Analyst" },
-          { levelId: 1, levelName: "Data Scientist" },
-          { levelId: 2, levelName: "Data Engineer" },
-        ],
-      },
-    ],
-  },
-  {
-    sectorId: 2,
-    sectorName: "Healthcare",
-    domains: [
-      {
-        domainId: 0,
-        domainName: "Pharmaceuticals",
-        levels: [
-          { levelId: 0, levelName: "Research Assistant" },
-          { levelId: 1, levelName: "Research Scientist" },
-          { levelId: 2, levelName: "Lab Manager" },
-        ],
-      },
-      {
-        domainId: 1,
-        domainName: "Medical Devices",
-        levels: [
-          { levelId: 0, levelName: "Technician" },
-          { levelId: 1, levelName: "Engineer" },
-          { levelId: 2, levelName: "Senior Engineer" },
-        ],
-      },
-      {
-        domainId: 2,
-        domainName: "Healthcare Services",
-        levels: [
-          { levelId: 0, levelName: "Assistant" },
-          { levelId: 1, levelName: "Practitioner" },
-          { levelId: 2, levelName: "Senior Practitioner" },
-        ],
-      },
-    ],
-  },
-  // Add more sectors, domains, and levels as needed
+];
+
+export const domainsData = [
+  { value: "SOFTWARE_DEVELOPMENT", label: "Software Development" },
+  { value: "DATA_ANALYTICS", label: "Data Analytics" },
+  { value: "CYBER_SECURITY", label: "Cyber Security" },
+  { value: "NETWORKING", label: "Networking" },
+  { value: "ACCOUNTING", label: "Accounting" },
+  { value: "INVESTMENT_BANKING", label: "Investment Banking" },
+  { value: "FINANCIAL_PLANNING", label: "Financial Planning" },
+  { value: "TALENT_ACQUISITION", label: "Talent Acquisition" },
+  { value: "PAYROLL", label: "Payroll" },
+  { value: "EMPLOYEE_RELATIONS", label: "Employee Relations" },
+  { value: "DIGITAL_MARKETING", label: "Digital Marketing" },
+  { value: "CONTENT_MARKETING", label: "Content Marketing" },
+  { value: "BRAND_MANAGEMENT", label: "Brand Management" },
+  { value: "B2B_SALES", label: "B2B Sales" },
+  { value: "B2C_SALES", label: "B2C Sales" },
+  { value: "SALES_STRATEGY", label: "Sales Strategy" },
+  { value: "CORPORATE_LAW", label: "Corporate Law" },
+  { value: "INTELLECTUAL_PROPERTY", label: "Intellectual Property" },
+  { value: "LITIGATION", label: "Litigation" },
+  { value: "SUPPLY_CHAIN_PLANNING", label: "Supply Chain Planning" },
+  { value: "LOGISTICS", label: "Logistics" },
+  { value: "INVENTORY_MANAGEMENT", label: "Inventory Management" },
+  { value: "CUSTOMER_SUPPORT", label: "Customer Support" },
+  { value: "TECHNICAL_SUPPORT", label: "Technical Support" },
+  { value: "PROCUREMENT_STRATEGY", label: "Procurement Strategy" },
+  { value: "VENDOR_MANAGEMENT", label: "Vendor Management" },
+  { value: "TRAINING_PROGRAMS", label: "Training Programs" },
+  { value: "LEADERSHIP_DEVELOPMENT", label: "Leadership Development" },
+  { value: "PRODUCT_DEVELOPMENT", label: "Product Development" },
+  { value: "RESEARCH_OPERATIONS", label: "Research Operations" },
+  { value: "RISK_MANAGEMENT", label: "Risk Management" },
+  { value: "PROCESS_IMPROVEMENT", label: "Process Improvement" },
+  { value: "COMMUNITY_ENGAGEMENT", label: "Community Engagement" },
+  { value: "SUSTAINABILITY", label: "Sustainability" },
+  { value: "PUBLICITY", label: "Publicity" },
+  { value: "MEDIA_RELATIONS", label: "Media Relations" },
 ];

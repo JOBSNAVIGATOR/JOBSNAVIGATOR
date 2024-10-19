@@ -9,6 +9,7 @@ import ArrayItemsInput from "../FormInputs/ArrayItemsInput";
 import SelectInput from "../FormInputs/SelectInput";
 import { useEffect } from "react";
 import { getData } from "@/lib/getData";
+import { domainsData, sectorsData } from "@/data";
 // import ImageInput from "../FormInputs/ImageInput";
 
 export default function CandidateForm({ user, updateData = {} }) {
@@ -37,6 +38,9 @@ export default function CandidateForm({ user, updateData = {} }) {
     { value: "FEMALE", label: "Female" },
     { value: "OTHER", label: "Other" },
   ];
+
+  const sectorOptions = sectorsData;
+  const domainOptions = domainsData;
 
   // Fetch candidate data if updating
   // useEffect(() => {
@@ -84,6 +88,8 @@ export default function CandidateForm({ user, updateData = {} }) {
   async function onSubmit(data) {
     data.resume = resume;
     data.skills = skills;
+    console.log(data);
+
     if (id) {
       // make put request (update)
       console.log("candidateProfile Id", id);
@@ -161,19 +167,23 @@ export default function CandidateForm({ user, updateData = {} }) {
           className="w-full"
           options={genderOptions}
         />
-        <TextInput
+        <SelectInput
           label="Sector"
           name="sector"
-          register={register}
+          // register={register}
+          register={register("sector", { required: true })} // Ensure gender is registered
           errors={errors}
           className="w-full"
+          options={sectorOptions}
         />
-        <TextInput
+        <SelectInput
           label="Domain"
           name="domain"
-          register={register}
+          // register={register}
+          register={register("domain", { required: true })} // Ensure gender is registered
           errors={errors}
           className="w-full"
+          options={domainOptions}
         />
         <TextInput
           label="Designation"
@@ -279,7 +289,7 @@ export default function CandidateForm({ user, updateData = {} }) {
               accept=".pdf"
               onChange={handleFileChange} // Update state with selected file
               className="block w-full text-gray-900 dark:text-gray-200 border rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-lime-700"
-              required={!resume} // Only required if there's no resume uploaded
+              // required={!resume} // Only required if there's no resume uploaded
               // required // Optional: make it required
             />
           )}
