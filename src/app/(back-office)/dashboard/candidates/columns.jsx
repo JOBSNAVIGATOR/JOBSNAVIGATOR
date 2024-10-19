@@ -122,13 +122,13 @@ export const columns = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const job = row.original;
+      const candidate = row.original;
       return (
         <ActionColumn
           row={row}
-          title="Jobs"
-          editEndpoint={`jobs/update/${job.id}`}
-          endpoint={`jobs/${job.id}`}
+          title="Candidates"
+          editEndpoint={`candidates/update/${candidate.id}`}
+          endpoint={`candidates/${candidate.id}`}
         />
       );
     },

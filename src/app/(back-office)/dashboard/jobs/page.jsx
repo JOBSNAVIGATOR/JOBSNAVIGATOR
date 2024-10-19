@@ -3,7 +3,7 @@ import React from "react";
 import { jobs } from "@/data";
 import DataTable from "@/components/data-table-components/DataTable";
 import { columns } from "./columns";
-import DownloadExcel from "@/components/backOffice/DownloadExcel";
+import DownloadExcel from "@/components/backOffice/DownloadCsv";
 
 export default function page() {
   // const jobs = await getData("jobs");
