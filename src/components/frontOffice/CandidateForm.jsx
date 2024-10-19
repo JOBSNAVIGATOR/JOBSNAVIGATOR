@@ -10,6 +10,7 @@ import SelectInput from "../FormInputs/SelectInput";
 import { useEffect } from "react";
 import { getData } from "@/lib/getData";
 import { domainsData, sectorsData } from "@/data";
+import { degrees, PDFDocument, rgb } from "pdf-lib";
 // import ImageInput from "../FormInputs/ImageInput";
 
 export default function CandidateForm({ user, updateData = {} }) {
@@ -85,16 +86,79 @@ export default function CandidateForm({ user, updateData = {} }) {
     setResume(""); // Clear the resume state when the resume is removed
   };
 
+  // function convertUint8ArrayToBase64(uint8Array) {
+  //   let binaryString = "";
+  //   const len = uint8Array.length;
+
+  //   for (let i = 0; i < len; i++) {
+  //     binaryString += String.fromCharCode(uint8Array[i]);
+  //   }
+
+  //   return btoa(binaryString);
+  // }
+
+  function convertUint8ArrayToBase64(uint8Array) {
+    const chunkSize = 1024; // Adjust based on your needs
+    let binaryString = "";
+
+    for (let i = 0; i < uint8Array.length; i += chunkSize) {
+      const chunk = uint8Array.subarray(i, i + chunkSize);
+      binaryString += String.fromCharCode.apply(null, chunk);
+    }
+
+    return btoa(binaryString);
+  }
+
+  async function addWatermarkToPdf(base64Pdf) {
+    // Decode base64 string to bytes
+    const pdfBytes = Uint8Array.from(atob(base64Pdf), (c) => c.charCodeAt(0));
+
+    // Load the existing PDF
+    const pdfDoc = await PDFDocument.load(pdfBytes);
+
+    // Get the number of pages
+    const pages = pdfDoc.getPages();
+
+    // Define the watermark text
+    const watermarkText = "JOBSNAVIGATOR";
+
+    for (const page of pages) {
+      const { width, height } = page.getSize();
+
+      // Draw the watermark
+      page.drawText(watermarkText, {
+        x: width / 4,
+        y: height / 2,
+        size: 50,
+        color: rgb(0.5, 0.5, 0.5),
+        opacity: 0.5,
+        rotate: degrees(45),
+      });
+    }
+
+    // Serialize the PDFDocument to bytes (a Uint8Array)
+    const modifiedPdfBytes = await pdfDoc.save();
+
+    // Convert Uint8Array to base64
+    // const base64String = btoa(
+    //   String.fromCharCode.apply(null, modifiedPdfBytes)
+    // );
+    const base64String = convertUint8ArrayToBase64(modifiedPdfBytes);
+
+    return base64String;
+  }
+
   async function onSubmit(data) {
     data.resume = resume;
     data.skills = skills;
-    console.log(data);
+
+    if (resume) {
+      const watermarkedResume = await addWatermarkToPdf(resume);
+      data.resume = watermarkedResume; // Update the resume with the watermarked version
+    }
 
     if (id) {
       // make put request (update)
-      console.log("candidateProfile Id", id);
-      console.log("updated data", data);
-
       makePutRequest(
         setLoading,
         "api/candidateProfile",
@@ -151,12 +215,13 @@ export default function CandidateForm({ user, updateData = {} }) {
           disabled // Make this field non-editable
         />
         <TextInput
-          label="Emergency Contact Number"
+          label="Alternate Contact Number"
           name="emergencyContactNumber"
           type="tel"
           register={register}
           errors={errors}
           className="w-full"
+          isRequired={false}
         />
         <SelectInput
           label="Gender"
