@@ -37,8 +37,17 @@ import Image from "next/image";
 import toast from "react-hot-toast";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import useSWR from "swr";
+import { fetcher } from "@/lib/fetcher";
 
 export default function JobCard({ jobItem }) {
+  // useSWR should always be called at the top level of your component
+  const { data: job, error } = useSWR(`/api/jobs/${jobItem.id}`, fetcher, {
+    refreshInterval: 5000, // refetch data every 5 seconds
+  });
+
+  console.log("jobittem", job);
+
   const [open, setOpen] = useState(false);
   const [isApplied, setIsApplied] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
@@ -51,14 +60,20 @@ export default function JobCard({ jobItem }) {
   }
 
   const handleApply = () => {
-    if (status === "authenticated") {
-      setIsApplied(true);
-      setOpen(false);
-      toast.success("You have Successfully Applied to this Job");
-    } else {
-      toast.error("You need to be Logged in to Apply to Jobs ");
-      setOpen(false);
-      router.push("/login");
+    try {
+      if (status === "authenticated") {
+        setIsApplied(true);
+        setOpen(false);
+        toast.success("You have Successfully Applied to this Job");
+      } else {
+        toast.error("You need to be Logged in to Apply to Jobs ");
+        setOpen(false);
+        router.push("/login");
+      }
+    } catch (error) {
+      setLoading(false);
+      console.error("Network Error:", error);
+      toast.error("Its seems something is wrong with your Network");
     }
   };
 
@@ -72,7 +87,7 @@ export default function JobCard({ jobItem }) {
           </p>
 
           <p className="whitespace-nowrap text-wrap text-md text-neutral-600 dark:text-neutral-300">
-            {jobItem.jobCompany}
+            {job?.jobCompany?.companyName}
           </p>
         </div>
         {/* if desktop then on click view details dialog will appear with job details else drawer will popup with job details */}
@@ -93,8 +108,9 @@ export default function JobCard({ jobItem }) {
             <DialogContent className="sm:max-w-[425px] bg-slate-200  dark:bg-zinc-800 rounded-xl">
               <DialogHeader className="flex flex-col items-center justify-between gap-2">
                 <Image
-                  src="/bankLogo/dcbbank.jpeg"
-                  alt="dcbbank"
+                  // src={jobItem.companyImage}
+                  src={job?.jobCompany?.companyLogo}
+                  alt={job?.jobCompany?.companyName}
                   height={100}
                   width={100}
                   className=""
@@ -111,21 +127,21 @@ export default function JobCard({ jobItem }) {
                   </h2>
                   <div className="flex-1">{jobItem.jobDescription}</div>
                 </div>
-                {/* job level */}
+                {/* job Sector */}
                 <div className="flex mb-2">
                   <h2 className="flex w-40 justify-between">
-                    <span>Level</span>
+                    <span>Sector</span>
                     <ArrowRight className="h-4 w-4 mx-2" />
                   </h2>
-                  <div className="flex-1">{jobItem.jobLevel}</div>
+                  <div className="flex-1">{jobItem.jobSector}</div>
                 </div>
-                {/* job location */}
+                {/* job Domain */}
                 <div className="flex mb-2">
                   <h2 className="flex w-40 justify-between">
-                    <span>Location</span>
+                    <span>Domain</span>
                     <ArrowRight className="h-4 w-4 mx-2" />
                   </h2>
-                  <div className="flex-1">{jobItem.jobLocation}</div>
+                  <div className="flex-1">{jobItem.jobDomain}</div>
                 </div>
                 {/* CTC offered */}
                 <div className="flex mb-2">
