@@ -94,7 +94,12 @@ export async function POST(request) {
 export async function GET(req) {
   try {
     // Fetch all jobs from the candidate profile
-    const jobs = await db.job.findMany({});
+    const jobs = await db.job.findMany({
+      // include: {
+      //   jobApplicants: true, // Include candidateProfile if it's related to user
+      //   jobCompany: true,
+      // },
+    });
 
     return new Response(JSON.stringify(jobs), {
       status: 200,
