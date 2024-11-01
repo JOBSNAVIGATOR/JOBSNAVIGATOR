@@ -35,7 +35,7 @@ export default function Page() {
         <DataTable
           data={jobs}
           columns={columns}
-          filterKeys={["jobSector", "jobDomain", "jobLevel", "jobLocation"]}
+          filterKeys={["jobSector", "jobDomain", "jobLocation"]}
         />
       </div>
     </div>

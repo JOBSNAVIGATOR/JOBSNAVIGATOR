@@ -44,9 +44,7 @@ export const columns = [
   },
   {
     accessorKey: "jobSalary",
-    header: ({ column }) => (
-      <SortableColumn column={column} title="CTC Offered" />
-    ),
+    header: ({ column }) => <SortableColumn column={column} title="CTC" />,
   },
   {
     accessorKey: "jobLocation",
