@@ -155,6 +155,12 @@ export default function JobCard({ jobItem }) {
                   >
                     {isApplied ? "Applied" : "Apply"}
                   </AlertDialogTrigger>
+                  <div className="text-right mt-2">
+                    <p className="text-sm text-gray-500">
+                      Powered By JOBSNAVIGATOR
+                    </p>
+                  </div>
+
                   <AlertDialogContent className="sm:max-w-[425px] bg-slate-200  dark:bg-zinc-800 rounded-xl">
                     <AlertDialogHeader>
                       <AlertDialogTitle>
@@ -257,6 +263,11 @@ export default function JobCard({ jobItem }) {
                   >
                     {isApplied ? "Applied" : "Apply"}
                   </AlertDialogTrigger>
+                  <div className="text-right mt-2">
+                    <p className="text-sm text-gray-500">
+                      Powered By JOBSNAVIGATOR
+                    </p>
+                  </div>
                   <AlertDialogContent className="sm:max-w-[425px] bg-slate-200  dark:bg-zinc-800 rounded-xl">
                     <AlertDialogHeader>
                       <AlertDialogTitle>
