@@ -51,8 +51,6 @@ model ConsultantProfile {
   emergencyContactNumber String
   permanentAddress       String
   currentAddress         String
-  aadharNumber           String
-  ctcOffered             String
   joiningDate            DateTime
   isActive               Boolean  @default(true)
 

@@ -17,8 +17,6 @@ export async function POST(request) {
       emergencyContactNumber,
       permanentAddress,
       currentAddress,
-      aadharNumber,
-      ctcOffered,
       joiningDate,
       isActive,
     } = await request.json();
@@ -93,8 +91,6 @@ export async function POST(request) {
           emergencyContactNumber,
           permanentAddress,
           currentAddress,
-          aadharNumber,
-          ctcOffered,
           joiningDate: validJoiningDate,
           isActive,
           userId: newUser.id, // Link the ConsultantProfile to the newly created user
@@ -165,7 +161,6 @@ export async function GET(req) {
       name: consultant.user.name, // Assuming user has a name field
       email: consultant.user.email, // Assuming user has an email field
       contactNumber: consultant.user.contactNumber,
-      ctcOffered: consultant.ctcOffered,
       currentAddress: consultant.currentAddress,
       // Include any other fields you need
     }));

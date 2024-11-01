@@ -140,7 +140,7 @@ export default function ConsultantForm({ user, updateData = {} }) {
           errors={errors}
           className="w-full"
         />
-        <TextInput
+        {/* <TextInput
           label="Aadhar Number"
           name="aadharNumber"
           register={register}
@@ -155,7 +155,7 @@ export default function ConsultantForm({ user, updateData = {} }) {
           register={register}
           errors={errors}
           className="w-full"
-        />
+        /> */}
         {/* <TextInput
           label="Joining Date"
           name="joiningDate"
