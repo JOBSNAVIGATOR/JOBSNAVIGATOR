@@ -23,6 +23,7 @@ export default function Sidebar({ showSideBar, setShowSideBar }) {
     { title: "Candidates", href: "/dashboard/candidates", icon: User2 },
     { title: "Consultants", href: "/dashboard/consultants", icon: UserCog2 },
     { title: "Clients", href: "/dashboard/clients", icon: UserCheck },
+    { title: "Companies", href: "/dashboard/clientCompanies", icon: UserCheck },
     { title: "Learning", href: "/dashboard/learning", icon: Book },
     { title: "News Letter", href: "/dashboard/newsLetter", icon: Newspaper },
   ];

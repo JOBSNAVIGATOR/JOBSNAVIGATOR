@@ -5,7 +5,7 @@ import SubmitButton from "@/components/FormInputs/SubmitButton";
 import TextInput from "@/components/FormInputs/TextInput";
 // import { makePostRequest, makePutRequest } from "@/lib/apiRequest";
 // import { generateUserCode } from "@/lib/generateUserCode";
-import { sectors } from "@/data";
+import { sectorsData } from "@/data";
 
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -50,7 +50,7 @@ export default function ClientForm({
   }, [selectedSectorId, selectedDomainId]);
 
   // Find selected sector
-  const selectedSector = sectors.find(
+  const selectedSector = sectorsData.find(
     (sector) => sector.sectorId === Number(selectedSectorId)
   );
   const domains = selectedSector ? selectedSector.domains : [];
@@ -100,7 +100,7 @@ export default function ClientForm({
           register={register}
           errors={errors}
           className="w-full"
-          options={sectors.map((sector) => ({
+          options={sectorsData.map((sector) => ({
             id: sector.sectorId,
             title: sector.sectorName,
           }))}

@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { jobs, candidates } from "@/data";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
@@ -20,7 +20,46 @@ const JobDetail = ({ title, detail }) => (
 
 export default function Page({ params: { id } }) {
   const isDesktop = useMediaQuery("(min-width: 768px)");
-  const job = jobs.find((job) => job.jobId === id);
+  const [job, setJob] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    // Fetch the job from the API
+    const fetchJob = async () => {
+      try {
+        const response = await fetch(`/api/jobs/${id}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch job");
+        }
+        const data = await response.json();
+        setJob(data);
+      } catch (err) {
+        console.error("Error fetching job:", err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchJob();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        Loading...
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        {error}
+      </div>
+    );
+  }
 
   if (!job) {
     return (
@@ -33,23 +72,7 @@ export default function Page({ params: { id } }) {
   const updateStatus = (candidateId, newStatus) => {
     // Update status in your state or backend
     console.log(`Updating status for candidate ${candidateId} to ${newStatus}`);
-    // Example: call API or update local state
   };
-
-  // const updateStatus = async (candidateId, newStatus) => {
-  //   try {
-  //     await fetch(`/api/candidates/${candidateId}`, {
-  //       method: 'PUT',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({ status: newStatus }),
-  //     });
-  //     console.log(`Status updated for candidate ${candidateId}`);
-  //   } catch (error) {
-  //     console.error('Failed to update status:', error);
-  //   }
-  // };
 
   const applicants = candidates
     .map((candidate) => {
@@ -63,8 +86,7 @@ export default function Page({ params: { id } }) {
       };
     })
     .filter((candidate) => job.jobApplicants.includes(candidate.id));
-
-  console.log(applicants);
+  console.log(job);
 
   return (
     <div className="min-h-screen gap-4">
@@ -74,11 +96,12 @@ export default function Page({ params: { id } }) {
           isDesktop ? "flex gap-4" : "flex flex-col gap-4"
         } py-4 px-4`}
       >
-        {/* Company Icon and Job Title */}
-        <div className="flex flex-col items-center justify-between gap-2 space-y-1.5 text-center sm:text-left">
+        {/* Company Icon and Job Title: Takes 1/3 of the screen */}
+        <div className="w-full md:w-1/3 flex flex-col items-center justify-between gap-2 space-y-1.5 text-center sm:text-left">
           <Image
-            src={job.companyLogo || "/bankLogo/dcbbank.jpeg"}
+            src={job?.jobCompany?.companyLogo || "/bankLogo/dcbbank.jpeg"}
             alt={job.companyName || "Company Logo"}
+            unoptimized={true}
             height={400}
             width={400}
             className="h-40 w-40"
@@ -86,10 +109,13 @@ export default function Page({ params: { id } }) {
           <h1 className="text-2xl">{job.jobTitle}</h1>
         </div>
 
-        {/* Other Job Details */}
-        <div className="overflow-auto">
+        {/* Other Job Details: Takes 2/3 of the screen */}
+        <div className="w-full md:w-2/3 overflow-auto">
+          <JobDetail
+            title="Company Name"
+            detail={job?.jobCompany?.companyName}
+          />
           <JobDetail title="Job Description" detail={job.jobDescription} />
-          <JobDetail title="Level" detail={job.jobLevel} />
           <JobDetail title="Location" detail={job.jobLocation} />
           <JobDetail title="CTC" detail={`${job.jobSalary} LPA`} />
           <JobDetail
@@ -101,11 +127,6 @@ export default function Page({ params: { id } }) {
 
       {/* Applicants Table */}
       <div className="py-8">
-        {/* <DataTable
-          data={applicants}
-          columns={columns(updateStatus)}
-          filterKeys={["fullName", "location"]}
-        /> */}
         {applicants.length > 0 ? (
           <DataTable
             data={applicants}

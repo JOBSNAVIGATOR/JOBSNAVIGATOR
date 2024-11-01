@@ -57,6 +57,8 @@ model ConsultantProfile {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @unique @db.ObjectId
 
+  jobsPosted Job[] // Relation to jobs posted by the consultant
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -83,6 +85,8 @@ model CandidateProfile {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @unique @db.ObjectId
 
+  jobs JobApplicant[] // Array of jobs the candidate has applied for with status
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -102,3 +106,48 @@ model ClientProfile {
   updatedAt DateTime @updatedAt
 }
 
+model Company {
+  id                 String  @id @default(auto()) @map("_id") @db.ObjectId
+  companyName        String  @unique // Unique name for the company
+  companyDescription String? // Optional description about the company
+  companyLogo        String? // Optional description about the company
+
+  jobs Job[] // Relation to jobs offered by the company
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Job {
+  id                    String            @id @default(auto()) @map("_id") @db.ObjectId
+  jobId                 String?
+  jobTitle              String
+  jobSector             String
+  jobDomain             String
+  jobDescription        String
+  jobSalary             Float // Salary in LPA
+  skillsRequired        String[] // Array of skills
+  jobLocation           String
+  jobVacancies          Int
+  jobVacanciesRemaining Int
+  jobApplicants         JobApplicant[] // Array of job applicants
+  postedBy              ConsultantProfile @relation(fields: [consultantId], references: [id], onDelete: Cascade)
+  consultantId          String            @db.ObjectId
+
+  jobCompany Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  companyId  String  @db.ObjectId
+
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model JobApplicant {
+  id               String           @id @default(auto()) @map("_id") @db.ObjectId
+  candidateProfile CandidateProfile @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  candidateId      String           @db.ObjectId
+  job              Job              @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  jobId            String           @db.ObjectId
+  status           String // Status of the application (e.g., "Applied", "Interviewed", "Selected", etc.)
+}

@@ -725,126 +725,236 @@ export const consultants = [
   },
 ];
 
+// export const companiesData = [
+//   // Banking Sector
+//   {
+//     companyId: "00001",
+//     companyName: "State Bank of India",
+//     companyLogo: "https://example.com/logos/sbi_logo.png",
+//     companySector: "Banking",
+//     companyDescription:
+//       "State Bank of India (SBI) is a multinational, public sector banking and financial services statutory body headquartered in Mumbai, India.",
+//   },
+//   {
+//     companyId: "00002",
+//     companyName: "HDFC Bank",
+//     companyLogo: "https://example.com/logos/hdfc_logo.png",
+//     companySector: "Banking",
+//     companyDescription:
+//       "HDFC Bank Limited is an Indian banking and financial services company headquartered in Mumbai.",
+//   },
+//   {
+//     companyId: "00003",
+//     companyName: "ICICI Bank",
+//     companyLogo: "https://example.com/logos/icici_logo.png",
+//     companySector: "Banking",
+//     companyDescription:
+//       "ICICI Bank Limited is an Indian multinational banking and financial services company headquartered in Vadodara.",
+//   },
+//   {
+//     companyId: "00004",
+//     companyName: "Axis Bank",
+//     companyLogo: "https://example.com/logos/axis_logo.png",
+//     companySector: "Banking",
+//     companyDescription:
+//       "Axis Bank is an Indian banking and financial services company headquartered in Mumbai, Maharashtra.",
+//   },
+//   {
+//     companyId: "00005",
+//     companyName: "Punjab National Bank",
+//     companyLogo: "https://example.com/logos/pnb_logo.png",
+//     companySector: "Banking",
+//     companyDescription:
+//       "Punjab National Bank (PNB) is an Indian public sector bank headquartered in New Delhi, India.",
+//   },
+
+//   // Technology Sector
+//   {
+//     companyId: "00006",
+//     companyName: "Infosys",
+//     companyLogo: "https://example.com/logos/infosys_logo.png",
+//     companySector: "Technology",
+//     companyDescription:
+//       "Infosys Limited is an Indian multinational corporation that provides business consulting, information technology, and outsourcing services.",
+//   },
+//   {
+//     companyId: "00007",
+//     companyName: "Tata Consultancy Services",
+//     companyLogo: "https://example.com/logos/tcs_logo.png",
+//     companySector: "Technology",
+//     companyDescription:
+//       "Tata Consultancy Services (TCS) is an Indian multinational information technology services and consulting company headquartered in Mumbai, Maharashtra.",
+//   },
+//   {
+//     companyId: "00008",
+//     companyName: "Wipro",
+//     companyLogo: "https://example.com/logos/wipro_logo.png",
+//     companySector: "Technology",
+//     companyDescription:
+//       "Wipro Limited is an Indian multinational corporation that provides information technology, consulting, and business process services.",
+//   },
+
+//   // Healthcare Sector
+//   {
+//     companyId: "00009",
+//     companyName: "Apollo Hospitals",
+//     companyLogo: "https://example.com/logos/apollo_logo.png",
+//     companySector: "Healthcare",
+//     companyDescription:
+//       "Apollo Hospitals Enterprise Limited is an Indian multinational hospital chain headquartered in Chennai, India.",
+//   },
+//   {
+//     companyId: "00010",
+//     companyName: "Fortis Healthcare",
+//     companyLogo: "https://example.com/logos/fortis_logo.png",
+//     companySector: "Healthcare",
+//     companyDescription:
+//       "Fortis Healthcare Limited is a leading integrated healthcare delivery service provider in India.",
+//   },
+
+//   // Finance Sector
+//   {
+//     companyId: "00011",
+//     companyName: "Bajaj Finance",
+//     companyLogo: "https://example.com/logos/bajaj_finance_logo.png",
+//     companySector: "Finance",
+//     companyDescription:
+//       "Bajaj Finance Limited is an Indian non-banking financial company headquartered in Pune, India.",
+//   },
+//   {
+//     companyId: "00012",
+//     companyName: "HDFC Asset Management",
+//     companyLogo: "https://example.com/logos/hdfc_amc_logo.png",
+//     companySector: "Finance",
+//     companyDescription:
+//       "HDFC Asset Management Company Limited (HDFC AMC) is one of the largest mutual fund managers in India.",
+//   },
+
+//   // Education Sector
+//   {
+//     companyId: "00013",
+//     companyName: "Byju's",
+//     companyLogo: "https://example.com/logos/byjus_logo.png",
+//     companySector: "Education",
+//     companyDescription:
+//       "Byju's is an Indian multinational educational technology company headquartered in Bengaluru, India.",
+//   },
+//   {
+//     companyId: "00014",
+//     companyName: "Unacademy",
+//     companyLogo: "https://example.com/logos/unacademy_logo.png",
+//     companySector: "Education",
+//     companyDescription:
+//       "Unacademy is an Indian online education technology company based in Bengaluru, India.",
+//   },
+// ];
+
 export const companiesData = [
   // Banking Sector
   {
-    companyId: "00001",
-    companyName: "State Bank of India",
-    companyLogo: "https://example.com/logos/sbi_logo.png",
-    companySector: "Banking",
-    companyDescription:
+    value: "STATE_BANK_OF_INDIA",
+    label: "State Bank of India",
+    logo: "https://example.com/logos/sbi_logo.png",
+    description:
       "State Bank of India (SBI) is a multinational, public sector banking and financial services statutory body headquartered in Mumbai, India.",
   },
   {
-    companyId: "00002",
-    companyName: "HDFC Bank",
-    companyLogo: "https://example.com/logos/hdfc_logo.png",
-    companySector: "Banking",
-    companyDescription:
+    value: "HDFC_BANK",
+    label: "HDFC Bank",
+    logo: "https://example.com/logos/hdfc_logo.png",
+    description:
       "HDFC Bank Limited is an Indian banking and financial services company headquartered in Mumbai.",
   },
   {
-    companyId: "00003",
-    companyName: "ICICI Bank",
-    companyLogo: "https://example.com/logos/icici_logo.png",
-    companySector: "Banking",
-    companyDescription:
+    value: "ICICI_BANK",
+    label: "ICICI Bank",
+    logo: "https://example.com/logos/icici_logo.png",
+    description:
       "ICICI Bank Limited is an Indian multinational banking and financial services company headquartered in Vadodara.",
   },
   {
-    companyId: "00004",
-    companyName: "Axis Bank",
-    companyLogo: "https://example.com/logos/axis_logo.png",
-    companySector: "Banking",
-    companyDescription:
+    value: "AXIS_BANK",
+    label: "Axis Bank",
+    logo: "https://example.com/logos/axis_logo.png",
+    description:
       "Axis Bank is an Indian banking and financial services company headquartered in Mumbai, Maharashtra.",
   },
   {
-    companyId: "00005",
-    companyName: "Punjab National Bank",
-    companyLogo: "https://example.com/logos/pnb_logo.png",
-    companySector: "Banking",
-    companyDescription:
+    value: "PUNJAB_NATIONAL_BANK",
+    label: "Punjab National Bank",
+    logo: "https://example.com/logos/pnb_logo.png",
+    description:
       "Punjab National Bank (PNB) is an Indian public sector bank headquartered in New Delhi, India.",
   },
 
   // Technology Sector
   {
-    companyId: "00006",
-    companyName: "Infosys",
-    companyLogo: "https://example.com/logos/infosys_logo.png",
-    companySector: "Technology",
-    companyDescription:
+    value: "INFOSYS",
+    label: "Infosys",
+    logo: "https://example.com/logos/infosys_logo.png",
+    description:
       "Infosys Limited is an Indian multinational corporation that provides business consulting, information technology, and outsourcing services.",
   },
   {
-    companyId: "00007",
-    companyName: "Tata Consultancy Services",
-    companyLogo: "https://example.com/logos/tcs_logo.png",
-    companySector: "Technology",
-    companyDescription:
+    value: "TATA_CONSULTANCY_SERVICES",
+    label: "Tata Consultancy Services",
+    logo: "https://example.com/logos/tcs_logo.png",
+    description:
       "Tata Consultancy Services (TCS) is an Indian multinational information technology services and consulting company headquartered in Mumbai, Maharashtra.",
   },
   {
-    companyId: "00008",
-    companyName: "Wipro",
-    companyLogo: "https://example.com/logos/wipro_logo.png",
-    companySector: "Technology",
-    companyDescription:
+    value: "WIPRO",
+    label: "Wipro",
+    logo: "https://example.com/logos/wipro_logo.png",
+    description:
       "Wipro Limited is an Indian multinational corporation that provides information technology, consulting, and business process services.",
   },
 
   // Healthcare Sector
   {
-    companyId: "00009",
-    companyName: "Apollo Hospitals",
-    companyLogo: "https://example.com/logos/apollo_logo.png",
-    companySector: "Healthcare",
-    companyDescription:
+    value: "APOLLO_HOSPITALS",
+    label: "Apollo Hospitals",
+    logo: "https://example.com/logos/apollo_logo.png",
+    description:
       "Apollo Hospitals Enterprise Limited is an Indian multinational hospital chain headquartered in Chennai, India.",
   },
   {
-    companyId: "00010",
-    companyName: "Fortis Healthcare",
-    companyLogo: "https://example.com/logos/fortis_logo.png",
-    companySector: "Healthcare",
-    companyDescription:
+    value: "FORTIS_HEALTHCARE",
+    label: "Fortis Healthcare",
+    logo: "https://example.com/logos/fortis_logo.png",
+    description:
       "Fortis Healthcare Limited is a leading integrated healthcare delivery service provider in India.",
   },
 
   // Finance Sector
   {
-    companyId: "00011",
-    companyName: "Bajaj Finance",
-    companyLogo: "https://example.com/logos/bajaj_finance_logo.png",
-    companySector: "Finance",
-    companyDescription:
+    value: "BAJAJ_FINANCE",
+    label: "Bajaj Finance",
+    logo: "https://example.com/logos/bajaj_finance_logo.png",
+    description:
       "Bajaj Finance Limited is an Indian non-banking financial company headquartered in Pune, India.",
   },
   {
-    companyId: "00012",
-    companyName: "HDFC Asset Management",
-    companyLogo: "https://example.com/logos/hdfc_amc_logo.png",
-    companySector: "Finance",
-    companyDescription:
+    value: "HDFC_ASSET_MANAGEMENT",
+    label: "HDFC Asset Management",
+    logo: "https://example.com/logos/hdfc_amc_logo.png",
+    description:
       "HDFC Asset Management Company Limited (HDFC AMC) is one of the largest mutual fund managers in India.",
   },
 
   // Education Sector
   {
-    companyId: "00013",
-    companyName: "Byju's",
-    companyLogo: "https://example.com/logos/byjus_logo.png",
-    companySector: "Education",
-    companyDescription:
+    value: "BYJUS",
+    label: "Byju's",
+    logo: "https://example.com/logos/byjus_logo.png",
+    description:
       "Byju's is an Indian multinational educational technology company headquartered in Bengaluru, India.",
   },
   {
-    companyId: "00014",
-    companyName: "Unacademy",
-    companyLogo: "https://example.com/logos/unacademy_logo.png",
-    companySector: "Education",
-    companyDescription:
+    value: "UNACADEMY",
+    label: "Unacademy",
+    logo: "https://example.com/logos/unacademy_logo.png",
+    description:
       "Unacademy is an Indian online education technology company based in Bengaluru, India.",
   },
 ];
