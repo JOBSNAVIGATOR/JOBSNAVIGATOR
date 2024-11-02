@@ -19,7 +19,13 @@ export async function POST(request) {
       where: { id: jobId },
     });
     if (!userData || !job) {
-      return res.status(404).json({ message: "Candidate or Job not found" });
+      return NextResponse.json(
+        {
+          data: null,
+          message: `Candidate or Job not found`,
+        },
+        { status: 404 }
+      );
     }
     // Check if the candidate has already applied for the job
     const existingApplication = await db.jobApplicant.findFirst({
@@ -29,9 +35,13 @@ export async function POST(request) {
       },
     });
     if (existingApplication) {
-      return res
-        .status(400)
-        .json({ message: "Candidate has already applied for this job" });
+      return NextResponse.json(
+        {
+          data: null,
+          message: `Candidate has already applied for this job`,
+        },
+        { status: 400 }
+      );
     }
 
     // Create a new job applicant
