@@ -13,7 +13,7 @@ export async function GET(request, { params: { id } }) {
         candidateProfile: true, // Include candidateProfile if it's related to user
       },
     });
-    console.log("check5", user);
+    // console.log("check5", user);
     return NextResponse.json(user);
   } catch (error) {
     console.log(error);

@@ -46,11 +46,10 @@ export default function JobCard({ jobItem }) {
     refreshInterval: 5000, // refetch data every 5 seconds
   });
 
-  console.log("jobittem", job);
-
   const [open, setOpen] = useState(false);
   const [isApplied, setIsApplied] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const { data: session, status } = useSession();
@@ -58,13 +57,43 @@ export default function JobCard({ jobItem }) {
     // <Loading />;
     <p>loading...</p>;
   }
+  // const userId = session?.user?.id;
+  // console.log(userId);
 
-  const handleApply = () => {
+  const handleApply = async () => {
     try {
+      console.log("check1");
       if (status === "authenticated") {
-        setIsApplied(true);
-        setOpen(false);
-        toast.success("You have Successfully Applied to this Job");
+        console.log("check2");
+        setLoading(true);
+        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+        const response = await fetch(`${baseUrl}/api/jobApplicant`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            jobId: jobItem.id,
+            userId: session?.user?.id,
+          }), // Adjust payload as needed
+          // body: JSON.stringify(data),
+        });
+        console.log("check3");
+        const responseData = await response.json();
+        setLoading(false);
+        if (response.ok) {
+          toast.success("You have Successfully Applied to this Job");
+          setIsApplied(true);
+          setOpen(false);
+        } else {
+          if (response.status === 400) {
+            toast.error("You have already applied to this job");
+          } else {
+            // Handle other errors
+            console.error("Server Error:", responseData.message);
+            toast.error("Oops Something Went wrong");
+          }
+        }
       } else {
         toast.error("You need to be Logged in to Apply to Jobs ");
         setOpen(false);

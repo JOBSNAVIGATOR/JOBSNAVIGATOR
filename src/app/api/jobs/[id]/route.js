@@ -14,7 +14,7 @@ export async function GET(request, { params: { id } }) {
         jobCompany: true,
       },
     });
-    console.log("check5", job);
+    // console.log("check5", job);
     return NextResponse.json(job);
   } catch (error) {
     console.log(error);
