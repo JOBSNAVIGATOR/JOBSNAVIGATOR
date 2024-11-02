@@ -9,8 +9,20 @@ export async function GET(request, { params: { id } }) {
       where: {
         id,
       },
+      // include: {
+      //   jobApplicants: true, // Include candidateProfile if it's related to user
+      //   jobCompany: true,
+      // },
       include: {
-        jobApplicants: true, // Include candidateProfile if it's related to user
+        jobApplicants: {
+          include: {
+            candidateProfile: {
+              include: {
+                user: true, // Include user in candidateProfile
+              },
+            },
+          },
+        },
         jobCompany: true,
       },
     });

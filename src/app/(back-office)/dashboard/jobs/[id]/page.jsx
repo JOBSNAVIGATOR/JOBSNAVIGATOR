@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { jobs, candidates } from "@/data";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import useMediaQuery from "@custom-react-hooks/use-media-query";
@@ -23,6 +22,7 @@ export default function Page({ params: { id } }) {
   const [job, setJob] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [formattedApplicants, setFormattedApplicants] = useState([]);
 
   useEffect(() => {
     // Fetch the job from the API
@@ -34,6 +34,22 @@ export default function Page({ params: { id } }) {
         }
         const data = await response.json();
         setJob(data);
+
+        // Format applicants when job data is fetched
+        const applicants = data?.jobApplicants || [];
+        const formatted = applicants.map((applicant) => ({
+          id: applicant?.id,
+          candidateCode: applicant?.candidateProfile?.candidateCode,
+          name: applicant?.candidateProfile?.user?.name,
+          email: applicant?.candidateProfile?.user?.email,
+          contactNumber: applicant?.candidateProfile?.user?.contactNumber,
+          currentCtc: applicant?.candidateProfile?.currentCtc,
+          currentJobLocation: applicant?.candidateProfile?.currentJobLocation,
+          currentCompany: applicant?.candidateProfile?.currentCompany,
+          status: applicant?.status,
+          resume: applicant?.candidateProfile?.resume,
+        }));
+        setFormattedApplicants(formatted);
       } catch (err) {
         console.error("Error fetching job:", err);
         setError(err.message);
@@ -44,6 +60,17 @@ export default function Page({ params: { id } }) {
 
     fetchJob();
   }, [id]);
+
+  const updateStatus = (candidateId, newStatus) => {
+    // Update status in your state
+    setFormattedApplicants((prevApplicants) =>
+      prevApplicants.map((applicant) =>
+        applicant.id === candidateId
+          ? { ...applicant, status: newStatus }
+          : applicant
+      )
+    );
+  };
 
   if (loading) {
     return (
@@ -69,25 +96,6 @@ export default function Page({ params: { id } }) {
     );
   }
 
-  const updateStatus = (candidateId, newStatus) => {
-    // Update status in your state or backend
-    console.log(`Updating status for candidate ${candidateId} to ${newStatus}`);
-  };
-
-  const applicants = candidates
-    .map((candidate) => {
-      // Find the application status for the job
-      const application = candidate.applications.find(
-        (app) => app.jobId === id
-      );
-      return {
-        ...candidate,
-        status: application ? application.status : "Not Applied",
-      };
-    })
-    .filter((candidate) => job.jobApplicants.includes(candidate.id));
-  console.log(job);
-
   return (
     <div className="min-h-screen gap-4">
       {/* Job Detail Section */}
@@ -96,7 +104,7 @@ export default function Page({ params: { id } }) {
           isDesktop ? "flex gap-4" : "flex flex-col gap-4"
         } py-4 px-4`}
       >
-        {/* Company Icon and Job Title: Takes 1/3 of the screen */}
+        {/* Company Icon and Job Title */}
         <div className="w-full md:w-1/3 flex flex-col items-center justify-between gap-2 space-y-1.5 text-center sm:text-left">
           <Image
             src={job?.jobCompany?.companyLogo || "/bankLogo/dcbbank.jpeg"}
@@ -109,7 +117,7 @@ export default function Page({ params: { id } }) {
           <h1 className="text-2xl">{job.jobTitle}</h1>
         </div>
 
-        {/* Other Job Details: Takes 2/3 of the screen */}
+        {/* Other Job Details */}
         <div className="w-full md:w-2/3 overflow-auto">
           <JobDetail
             title="Company Name"
@@ -127,11 +135,11 @@ export default function Page({ params: { id } }) {
 
       {/* Applicants Table */}
       <div className="py-8">
-        {applicants.length > 0 ? (
+        {formattedApplicants.length > 0 ? (
           <DataTable
-            data={applicants}
+            data={formattedApplicants}
             columns={columns(updateStatus)}
-            filterKeys={["firstName", "lastName", "location"]}
+            filterKeys={["name"]}
           />
         ) : (
           <div className="text-center text-gray-500">
