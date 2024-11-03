@@ -36,8 +36,8 @@ export default function Navbar() {
   const navMenuItems = [
     { title: "Home", href: "/" },
     { title: "Jobs", href: "/jobs" },
-    { title: "Activity", href: "/activity" },
-    { title: "Learning", href: "/learning" },
+    // { title: "Activity", href: "/activity" },
+    // { title: "Learning", href: "/learning" },
   ];
 
   return (
