@@ -9,6 +9,7 @@ import { domainsData, sectorsData } from "@/data";
 import { degrees, PDFDocument, rgb } from "pdf-lib";
 import SelectInput from "@/components/FormInputs/SelectInput";
 import ArrayItemsInput from "@/components/FormInputs/ArrayItemsInput";
+import SelectInputThree from "@/components/FormInputs/SelectInputThree";
 
 export default function CandidateFormTwo({ updateData = {} }) {
   const initialResumeUrl = updateData?.candidateProfile?.resume ?? "";
@@ -129,11 +130,11 @@ export default function CandidateFormTwo({ updateData = {} }) {
       setLoading,
       "api/candidates",
       data,
-      "Candidate Profile"
-      // reset
+      "Candidate Profile",
+      reset
     );
     // setPdfUrl("");
-    // router.push("/");
+    router.push("/");
   }
 
   return (
@@ -174,7 +175,7 @@ export default function CandidateFormTwo({ updateData = {} }) {
           className="w-full"
           isRequired={false}
         />
-        <SelectInput
+        <SelectInputThree
           label="Gender"
           name="gender"
           // register={register}
@@ -183,7 +184,7 @@ export default function CandidateFormTwo({ updateData = {} }) {
           className="w-full"
           options={genderOptions}
         />
-        <SelectInput
+        <SelectInputThree
           label="Sector"
           name="sector"
           // register={register}
@@ -192,7 +193,7 @@ export default function CandidateFormTwo({ updateData = {} }) {
           className="w-full"
           options={sectorOptions}
         />
-        <SelectInput
+        <SelectInputThree
           label="Domain"
           name="domain"
           // register={register}

@@ -1,5 +1,6 @@
 "use client";
 import SelectInput from "@/components/FormInputs/SelectInput";
+import SelectInputThree from "@/components/FormInputs/SelectInputThree";
 // import ImageInput from "@/components/FormInputs/ImageInput";
 import SubmitButton from "@/components/FormInputs/SubmitButton";
 import TextInput from "@/components/FormInputs/TextInput";
@@ -117,7 +118,7 @@ export default function ConsultantForm({ user, updateData = {} }) {
           className="w-full"
           disabled={!!id} // Disable if updating
         />
-        <SelectInput
+        <SelectInputThree
           label="Gender"
           name="gender"
           // register={register}
