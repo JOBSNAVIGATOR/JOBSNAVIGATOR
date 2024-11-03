@@ -51,7 +51,7 @@ export default function ConsultantForm({ user, updateData = {} }) {
   async function onSubmit(data) {
     if (id) {
       // make put request (update)
-      console.log(id);
+      // console.log(id);
       // data.userId = updateData?.id;
       // makePutRequest(
       //   setLoading,
@@ -66,7 +66,7 @@ export default function ConsultantForm({ user, updateData = {} }) {
     } else {
       // make post request (create)
       data.role = "CONSULTANT";
-      console.log("POst Data", data);
+      // console.log("POst Data", data);
       makePostRequest(
         setLoading,
         "api/consultants",

@@ -32,9 +32,9 @@ export default function LoginForm() {
       };
       async function verify() {
         const data = await getData(`users/${id}`);
-        console.log("check2", data);
+        // console.log("check2", data);
         if (data) {
-          console.log("check3");
+          // console.log("check3");
           // update the email verified to True
           try {
             const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
@@ -56,7 +56,7 @@ export default function LoginForm() {
               toast.error("Something Went wrong");
             }
           } catch (error) {
-            console.log(error);
+            // console.log(error);
           }
         }
       }
@@ -75,7 +75,7 @@ export default function LoginForm() {
   const [emailErr, setEmailErr] = useState("");
 
   async function onSubmit(data) {
-    console.log(data);
+    // console.log(data);
     try {
       setLoading(true);
       // Step 1: Fetch the user data based on the email entered in the login form
@@ -100,18 +100,18 @@ export default function LoginForm() {
       }
 
       // Step 3: Proceed with login if email is verified
-      console.log("Attempting to sign in with credentials:", data);
+      // console.log("Attempting to sign in with credentials:", data);
       const loginData = await signIn("credentials", {
         ...data,
         redirect: false,
       });
-      console.log("SignIn response:", loginData);
+      // console.log("SignIn response:", loginData);
       if (loginData?.error) {
         setLoading(false);
         toast.error("Sign-in error: Check your credentials");
       } else {
         // Step 4: Check if the user is a candidate and their profile is empty
-        console.log(user.role);
+        // console.log(user.role);
 
         if (user.role === "CANDIDATE") {
           if (
@@ -142,7 +142,7 @@ export default function LoginForm() {
       }
     } catch (error) {
       setLoading(false);
-      console.error("Network Error:", error);
+      // console.error("Network Error:", error);
       toast.error("Its seems something is wrong with your Network");
     }
   }

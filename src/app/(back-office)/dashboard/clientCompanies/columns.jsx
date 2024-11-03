@@ -44,7 +44,7 @@ export const columns = [
     id: "actions",
     cell: ({ row }) => {
       const company = row.original;
-      console.log(company);
+      // console.log(company);
 
       return (
         <ActionColumn

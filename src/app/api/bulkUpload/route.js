@@ -149,7 +149,7 @@ export async function POST(request) {
       { status: 201 }
     );
   } catch (error) {
-    console.error("Error in bulk upload:", error);
+    // console.error("Error in bulk upload:", error);
     return NextResponse.json(
       {
         message: "Server error during bulk upload",

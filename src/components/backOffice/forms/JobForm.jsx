@@ -62,10 +62,10 @@ export default function JobForm({ updateData = {} }) {
   async function onSubmit(data) {
     data.skillsRequired = skillsRequired;
     data.postedBy = session?.user?.id;
-    console.log(data);
+    // console.log(data);
     // Handle form submission logic
     if (id) {
-      console.log("1");
+      // console.log("1");
       // data.id = id;
       // // make put request (update)
       // makePutRequest(setLoading, `api/products/${id}`, data, "Product", reset);
@@ -75,7 +75,7 @@ export default function JobForm({ updateData = {} }) {
       // console.log("Update Request:", data);
     } else {
       // make post request (create)
-      console.log("2", data);
+      // console.log("2", data);
       makePostRequest(setLoading, "api/jobs", data, "Jobs", reset);
       router.back();
     }

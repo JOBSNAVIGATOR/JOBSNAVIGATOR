@@ -38,7 +38,7 @@ export async function POST(request) {
       { status: 201 }
     );
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return NextResponse.json(
       {
         error,
@@ -59,7 +59,7 @@ export async function GET(req) {
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
-    console.error("Error fetching companies:", error);
+    // console.error("Error fetching companies:", error);
     return new Response(
       JSON.stringify({ message: "Failed to fetch companies", error }),
       { status: 500 }

@@ -62,9 +62,9 @@ export default function JobCard({ jobItem }) {
 
   const handleApply = async () => {
     try {
-      console.log("check1");
+      // console.log("check1");
       if (status === "authenticated") {
-        console.log("check2");
+        // console.log("check2");
         setLoading(true);
         const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
         const response = await fetch(`${baseUrl}/api/jobApplicant`, {
@@ -78,7 +78,7 @@ export default function JobCard({ jobItem }) {
           }), // Adjust payload as needed
           // body: JSON.stringify(data),
         });
-        console.log("check3");
+        // console.log("check3");
         const responseData = await response.json();
         setLoading(false);
         if (response.ok) {
@@ -90,7 +90,7 @@ export default function JobCard({ jobItem }) {
             toast.error("You have already applied to this job");
           } else {
             // Handle other errors
-            console.error("Server Error:", responseData.message);
+            // console.error("Server Error:", responseData.message);
             toast.error("Oops Something Went wrong");
           }
         }
@@ -101,7 +101,7 @@ export default function JobCard({ jobItem }) {
       }
     } catch (error) {
       setLoading(false);
-      console.error("Network Error:", error);
+      // console.error("Network Error:", error);
       toast.error("Its seems something is wrong with your Network");
     }
   };

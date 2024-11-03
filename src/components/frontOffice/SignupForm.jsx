@@ -21,7 +21,7 @@ export default function SignupForm({ role = "CANDIDATE" }) {
   async function onSubmit(data) {
     try {
       data.role = role;
-      console.log(data);
+      // console.log(data);
       setLoading(true);
       const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
       const response = await fetch(`${baseUrl}/api/users`, {
@@ -35,7 +35,7 @@ export default function SignupForm({ role = "CANDIDATE" }) {
       if (response.ok) {
         setLoading(false);
         toast.success("User Created Successfully");
-        console.log(responseData.data);
+        // console.log(responseData.data);
         reset();
         if (role === "CANDIDATE") {
           router.push("/verify-account");
@@ -50,13 +50,13 @@ export default function SignupForm({ role = "CANDIDATE" }) {
           toast.error("User with this Email already exists");
         } else {
           // Handle other errors
-          console.error("Server Error:", responseData.message);
+          // console.error("Server Error:", responseData.message);
           toast.error("Oops Something Went wrong");
         }
       }
     } catch (error) {
       setLoading(false);
-      console.error("Network Error:", error);
+      // console.error("Network Error:", error);
       toast.error("Something Went wrong, Please Try Again");
     }
   }

@@ -18,7 +18,7 @@ export default function Jobs() {
   if (error) return <div>Error loading jobs.</div>;
   if (!jobs) return <div>Loading...</div>;
 
-  console.log(jobs);
+  // console.log(jobs);
 
   return (
     <div className="max-w-7xl mx-auto">

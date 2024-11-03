@@ -5,14 +5,14 @@ export async function POST(request) {
   try {
     //extract the credentials
     const { userId, jobId } = await request.json();
-    console.log(userId, jobId);
+    // console.log(userId, jobId);
 
     // Check if the candidate and job exist
     const userData = await db.user.findUnique({
       where: { id: userId },
       include: { candidateProfile: true },
     });
-    console.log(userData?.candidateProfile?.id);
+    // console.log(userData?.candidateProfile?.id);
     const candidateId = userData?.candidateProfile?.id;
 
     const job = await db.job.findUnique({
@@ -61,7 +61,7 @@ export async function POST(request) {
       { status: 201 }
     );
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return NextResponse.json(
       {
         error,

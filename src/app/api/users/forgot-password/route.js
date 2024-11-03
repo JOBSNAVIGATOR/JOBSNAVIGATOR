@@ -44,7 +44,7 @@ export async function PUT(request) {
         passwordResetToken: token,
       },
     });
-    console.log(updatedUser);
+    // console.log(updatedUser);
 
     // Send an email with the token on the link as a search param
 
@@ -59,9 +59,9 @@ export async function PUT(request) {
       react: EmailTemplate({ name, redirectUrl, linkText }),
     });
 
-    console.log(sendMail);
-    console.log(rawToken);
-    console.log(token);
+    // console.log(sendMail);
+    // console.log(rawToken);
+    // console.log(token);
     return NextResponse.json(
       {
         data: updatedUser,
@@ -70,7 +70,7 @@ export async function PUT(request) {
       { status: 201 }
     );
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return NextResponse.json(
       {
         error,
@@ -89,7 +89,7 @@ export async function GET(request) {
     });
     return NextResponse.json(users);
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return NextResponse.json(
       {
         message: "Failed to Fetch Users",

@@ -22,18 +22,18 @@ export default function DeleteBtn({ endpoint, title }) {
       confirmButtonText: "Yes, delete it!",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        console.log("Yes have been clicked", endpoint);
+        // console.log("Yes have been clicked", endpoint);
         const res = await fetch(`${baseUrl}/api/${endpoint}`, {
           method: "DELETE",
         });
-        console.log(res);
+        // console.log(res);
         if (res.ok) {
           router.refresh();
           setLoading(false);
           toast.success(`${title} Deleted Successfully`);
         }
       } else {
-        console.log("No has been clicked");
+        // console.log("No has been clicked");
         setLoading(false);
       }
     });

@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 export async function PUT(request) {
   try {
     const { id, status } = await request.json();
-    console.log("backend", id, status);
+    // console.log("backend", id, status);
 
     const jobApplicantData = await db.jobApplicant.findUnique({
       where: {
@@ -32,7 +32,7 @@ export async function PUT(request) {
 
     return NextResponse.json(updatedJobApplicantData);
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return NextResponse.json(
       {
         message: "Failed to Update Status",

@@ -20,7 +20,7 @@ export default function ResetPasswordForm() {
   const [loading, setLoading] = useState(false);
 
   async function onSubmit(data) {
-    console.log(data);
+    // console.log(data);
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
     const token = searchParams.get("token");
     const id = searchParams.get("id");
@@ -44,7 +44,7 @@ export default function ResetPasswordForm() {
       }
     } catch (error) {
       setLoading(false);
-      console.error("Network Error:", error);
+      // console.error("Network Error:", error);
       toast.error("Its seems something is wrong with your Network");
     }
   }

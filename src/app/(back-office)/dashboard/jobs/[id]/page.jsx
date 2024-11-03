@@ -51,7 +51,7 @@ export default function Page({ params: { id } }) {
         }));
         setFormattedApplicants(formatted);
       } catch (err) {
-        console.error("Error fetching job:", err);
+        // console.error("Error fetching job:", err);
         setError(err.message);
       } finally {
         setLoading(false);

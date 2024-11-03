@@ -54,7 +54,7 @@ export default function CandidateFormTwo({ updateData = {} }) {
       reader.readAsDataURL(file);
     } else {
       // Handle case where no file is selected
-      console.log("No file selected.");
+      // console.log("No file selected.");
       setResume(""); // Clear the resume state if no file is selected
     }
   };
@@ -123,7 +123,7 @@ export default function CandidateFormTwo({ updateData = {} }) {
       data.resume = watermarkedResume; // Update the resume with the watermarked version
     }
 
-    console.log(data);
+    // console.log(data);
 
     // make post request (create)
     makePostRequest(

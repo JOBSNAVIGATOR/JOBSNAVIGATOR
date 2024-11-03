@@ -75,7 +75,7 @@ export const columns = [
     id: "actions",
     cell: ({ row }) => {
       const job = row.original;
-      console.log(job);
+      // console.log(job);
 
       return (
         <ActionColumn

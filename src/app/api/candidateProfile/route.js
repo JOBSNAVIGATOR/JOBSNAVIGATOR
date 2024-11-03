@@ -45,7 +45,7 @@ export async function PUT(request) {
     // Skip the sector, as we will replace it // Skip the domain initials, as we will replace it // Skip the level, as we will replace it // Skip the location initials, as we will replace it
     const [prefix, existingDate, existingInitials, sequence] =
       candidateCode.split("-");
-    console.log(prefix, existingDate, existingInitials, sequence);
+    // console.log(prefix, existingDate, existingInitials, sequence);
 
     const candidateData = {
       sector,
@@ -84,7 +84,7 @@ export async function PUT(request) {
 
     return NextResponse.json(updatedCandidateProfile);
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return NextResponse.json(
       {
         message: "Failed to Update User",

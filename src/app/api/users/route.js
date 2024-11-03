@@ -61,9 +61,9 @@ export async function POST(request) {
       react: EmailTemplate({ name, redirectUrl, linkText }),
     });
 
-    console.log(sendMail);
-    console.log(rawToken);
-    console.log(token);
+    // console.log(sendMail);
+    // console.log(rawToken);
+    // console.log(token);
 
     return NextResponse.json(
       {
@@ -73,7 +73,7 @@ export async function POST(request) {
       { status: 201 }
     );
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return NextResponse.json(
       {
         error,
@@ -145,7 +145,7 @@ export async function GET(request) {
 
     return NextResponse.json(user, { status: 200 });
   } catch (error) {
-    console.error("Error fetching user:", error);
+    // console.error("Error fetching user:", error);
     return NextResponse.json(
       { message: "Failed to fetch user", error: error.message },
       { status: 500 }

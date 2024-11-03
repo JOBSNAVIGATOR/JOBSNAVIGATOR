@@ -83,10 +83,10 @@ import * as XLSX from "xlsx";
 
 const DownloadCSV = ({ data, fileName }) => {
   const handleDownload = () => {
-    console.log("Data for CSV download:", data);
+    // console.log("Data for CSV download:", data);
     // Make sure data is in an array of objects format
     if (!Array.isArray(data) || data.length === 0) {
-      console.error("Invalid data format");
+      // console.error("Invalid data format");
       return;
     }
 

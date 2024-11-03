@@ -23,7 +23,7 @@ export default function ForgotPasswordForm() {
   // const [emailErr, setEmailErr] = useState("");
 
   async function onSubmit(data) {
-    console.log(data);
+    // console.log(data);
     try {
       setLoading(true);
       const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
@@ -46,7 +46,7 @@ export default function ForgotPasswordForm() {
       }
     } catch (error) {
       setLoading(false);
-      console.error("Network Error:", error);
+      // console.error("Network Error:", error);
       toast.error("Its seems something is wrong with your Network");
     }
   }

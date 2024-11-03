@@ -116,7 +116,7 @@ export async function POST(request) {
         },
       },
     });
-    console.log(newCandidateProfile);
+    // console.log(newCandidateProfile);
 
     return NextResponse.json(
       {
@@ -126,7 +126,7 @@ export async function POST(request) {
       { status: 201 }
     );
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return NextResponse.json(
       {
         error,
@@ -165,7 +165,7 @@ export async function GET(req) {
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
-    console.error("Error fetching candidates:", error);
+    // console.error("Error fetching candidates:", error);
     return new Response(
       JSON.stringify({ message: "Failed to fetch candidates", error }),
       { status: 500 }

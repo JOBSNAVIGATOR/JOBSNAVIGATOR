@@ -46,13 +46,13 @@ export default function ImageInput({
             setImageUrl(res[0].url);
             // Do something with the response
             toast.success("Image Upload Complete");
-            console.log("Files: ", res);
-            console.log("Upload Completed");
+            // console.log("Files: ", res);
+            // console.log("Upload Completed");
           }}
           onUploadError={(error) => {
             // Do something with the error.
             toast.error("Image Upload Failed,Try Again");
-            console.log(`ERROR! ${error.message}`, error);
+            // console.log(`ERROR! ${error.message}`, error);
           }}
         />
       )}

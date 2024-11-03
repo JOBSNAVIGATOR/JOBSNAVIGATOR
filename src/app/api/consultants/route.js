@@ -132,7 +132,7 @@ export async function POST(request) {
       { status: 201 }
     );
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     return NextResponse.json(
       {
         error,
@@ -146,7 +146,7 @@ export async function POST(request) {
 export async function GET(req) {
   try {
     // Fetch all consultants from the candidate profile
-    console.log("get of consultants");
+    // console.log("get of consultants");
 
     const consultants = await db.consultantProfile.findMany({
       include: {
@@ -170,7 +170,7 @@ export async function GET(req) {
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
-    console.error("Error fetching Consultants:", error);
+    // console.error("Error fetching Consultants:", error);
     return new Response(
       JSON.stringify({ message: "Failed to fetch consultants", error }),
       { status: 500 }

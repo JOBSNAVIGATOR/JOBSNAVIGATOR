@@ -37,7 +37,7 @@ export const fetcher = async (url, options = {}) => {
 
     return await response.json(); // Return parsed JSON response
   } catch (error) {
-    console.error("Fetcher Error: ", error.message);
+    // console.error("Fetcher Error: ", error.message);
     throw error; // Re-throw the error to handle in SWR or other caller functions
   }
 };

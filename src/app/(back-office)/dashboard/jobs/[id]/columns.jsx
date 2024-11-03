@@ -136,10 +136,10 @@ export const columns = (updateStatus) => [
     header: ({ column }) => <SortableColumn column={column} title="Status" />,
     cell: ({ row }) => {
       const { status: initialStatus, id } = row.original;
-      console.log("initial Status", initialStatus);
+      // console.log("initial Status", initialStatus);
 
       const handleChange = async (e) => {
-        console.log("Dropdown changed"); // Add this line
+        // console.log("Dropdown changed"); // Add this line
         const newStatus = e.target.value;
 
         // Show a confirmation dialog
@@ -168,7 +168,7 @@ export const columns = (updateStatus) => [
             updateStatus(id, newStatus); // Call parent function to update state if needed
             alert("Status updated successfully!");
           } catch (error) {
-            console.error("Error updating status:", error);
+            // console.error("Error updating status:", error);
             alert("Failed to update status. Please try again.");
           }
         }

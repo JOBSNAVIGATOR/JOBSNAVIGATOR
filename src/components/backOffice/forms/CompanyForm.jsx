@@ -42,7 +42,7 @@ export default function CompanyForm({ updateData = {} }) {
       }
       if (id) {
         // make put request (update)
-        console.log(id);
+        // console.log(id);
         // data.userId = updateData?.id;
         // makePutRequest(
         //   setLoading,
@@ -56,12 +56,12 @@ export default function CompanyForm({ updateData = {} }) {
         // console.log("Update Request:", data);
       } else {
         // make post request (create)
-        console.log("POst Data", data);
+        // console.log("POst Data", data);
         makePostRequest(setLoading, "api/companies", data, "Company", reset);
         router.back();
       }
     } catch (error) {
-      console.error("Error converting image to base64:", error);
+      // console.error("Error converting image to base64:", error);
     }
   }
 

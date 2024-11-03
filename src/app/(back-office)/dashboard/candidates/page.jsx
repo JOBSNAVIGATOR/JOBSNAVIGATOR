@@ -17,7 +17,7 @@ export default function Page() {
 
   if (error) return <div>Error loading candidates.</div>;
   if (!data) return <div>Loading...</div>;
-  console.log(data);
+  // console.log(data);
 
   // Clean the data to remove noise
   // const cleanData = data.map((row) => {

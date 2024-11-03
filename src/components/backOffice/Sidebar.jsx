@@ -117,7 +117,7 @@ export default function Sidebar({ showSideBar, setShowSideBar }) {
 
   const user = session?.user;
   const userRole = user?.role;
-  console.log("role", userRole);
+  // console.log("role", userRole);
 
   // Navigation menu items with titles, links, and icons
   let sideNavMenuItems = [
@@ -138,7 +138,7 @@ export default function Sidebar({ showSideBar, setShowSideBar }) {
   async function handleLogout() {
     // Handle the logout logic here
     await signOut();
-    console.log("logged out");
+    // console.log("logged out");
     router.push("/");
   }
 

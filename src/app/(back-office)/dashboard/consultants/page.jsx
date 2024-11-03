@@ -14,7 +14,7 @@ export default function Page() {
 
   if (error) return <div>Error loading conslutants.</div>;
   if (!data) return <div>Loading...</div>;
-  console.log(data);
+  // console.log(data);
 
   return (
     <div>

@@ -45,8 +45,8 @@ export default function ClientForm({
   const selectedDomainId = watch("domainId", initialDomainId);
 
   useEffect(() => {
-    console.log("Selected Sector ID:", selectedSectorId);
-    console.log("Selected Domain ID:", selectedDomainId);
+    // console.log("Selected Sector ID:", selectedSectorId);
+    // console.log("Selected Domain ID:", selectedDomainId);
   }, [selectedSectorId, selectedDomainId]);
 
   // Find selected sector

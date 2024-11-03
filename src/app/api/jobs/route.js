@@ -49,7 +49,7 @@ export async function POST(request) {
       where: { id: postedBy },
       include: { consultantProfile: true }, // Use the User ID here
     });
-    console.log(userProfile);
+    // console.log(userProfile);
 
     const newJob = await db.job.create({
       data: {
@@ -80,7 +80,7 @@ export async function POST(request) {
       { status: 201 }
     );
   } catch (error) {
-    console.error(error); // Improved error logging
+    // console.error(error); // Improved error logging
     return NextResponse.json(
       {
         error,
@@ -106,7 +106,7 @@ export async function GET(req) {
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
-    console.error("Error fetching jobs:", error);
+    // console.error("Error fetching jobs:", error);
     return new Response(
       JSON.stringify({ message: "Failed to fetch jobs", error }),
       { status: 500 }
