@@ -6,11 +6,9 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import ArrayItemsInput from "../FormInputs/ArrayItemsInput";
-import SelectInput from "../FormInputs/SelectInput";
-import { useEffect } from "react";
-import { getData } from "@/lib/getData";
 import { domainsData, sectorsData } from "@/data";
 import { degrees, PDFDocument, rgb } from "pdf-lib";
+import SelectInputThree from "../FormInputs/SelectInputThree";
 // import ImageInput from "../FormInputs/ImageInput";
 
 export default function CandidateForm({ user, updateData = {} }) {
@@ -223,7 +221,7 @@ export default function CandidateForm({ user, updateData = {} }) {
           className="w-full"
           isRequired={false}
         />
-        <SelectInput
+        <SelectInputThree
           label="Gender"
           name="gender"
           // register={register}
@@ -232,7 +230,7 @@ export default function CandidateForm({ user, updateData = {} }) {
           className="w-full"
           options={genderOptions}
         />
-        <SelectInput
+        <SelectInputThree
           label="Sector"
           name="sector"
           // register={register}
@@ -241,7 +239,7 @@ export default function CandidateForm({ user, updateData = {} }) {
           className="w-full"
           options={sectorOptions}
         />
-        <SelectInput
+        <SelectInputThree
           label="Domain"
           name="domain"
           // register={register}
