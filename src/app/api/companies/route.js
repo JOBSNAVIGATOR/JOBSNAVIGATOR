@@ -66,27 +66,3 @@ export async function GET(req) {
     );
   }
 }
-
-// export async function GET(req) {
-//   try {
-//     // Fetch all companies from the candidate profile
-//     const companies = await db.company.findMany({});
-
-//     // Transform the data to the required format
-//     const transformedCompanies = companies.map((company) => ({
-//       // value: company.name, // Assuming 'id' is the unique identifier
-//       label: company.name, // Assuming 'name' is the display name
-//     }));
-
-//     return new Response(JSON.stringify(transformedCompanies), {
-//       status: 200,
-//       headers: { "Content-Type": "application/json" },
-//     });
-//   } catch (error) {
-//     console.error("Error fetching companies:", error);
-//     return new Response(
-//       JSON.stringify({ message: "Failed to fetch companies", error }),
-//       { status: 500 }
-//     );
-//   }
-// }

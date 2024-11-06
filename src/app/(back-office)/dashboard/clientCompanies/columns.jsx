@@ -51,7 +51,7 @@ export const columns = [
           row={row}
           title="Company"
           editEndpoint={`clientCompanies/update/${company.id}`}
-          endpoint={`company/${company.id}`}
+          endpoint={`companies/${company.id}`}
         />
       );
     },
