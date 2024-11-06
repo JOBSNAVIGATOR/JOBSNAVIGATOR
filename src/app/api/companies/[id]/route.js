@@ -3,16 +3,16 @@ import { NextResponse } from "next/server";
 
 export async function DELETE(request, { params }) {
   const { id } = params;
-  console.log("delete id is selected", id);
+  // console.log("delete id is selected", id);
 
   try {
     // Check if company exists
-    console.log("1");
+    // console.log("1");
 
     const existingCompany = await db.company.findUnique({
       where: { id },
     });
-    console.log("2");
+    // console.log("2");
 
     if (!existingCompany) {
       return NextResponse.json(
@@ -32,7 +32,7 @@ export async function DELETE(request, { params }) {
       message: "Company deleted successfully",
     });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return NextResponse.json(
       {
         message: "Failed to delete Company",

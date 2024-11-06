@@ -72,12 +72,12 @@ export default function CompanyForm({ updateData = {} }) {
   async function onSubmit(data) {
     try {
       if (id) {
-        console.log("updateddddd", data);
+        // console.log("updateddddd", data);
         const payload = {
           ...data,
           companyLogo, // Include Base64-encoded image
         };
-        console.log("payload", payload); // Check the final payload in the console
+        // console.log("payload", payload); // Check the final payload in the console
         // make put request (update)
         makePutRequest(
           setLoading,
@@ -87,9 +87,9 @@ export default function CompanyForm({ updateData = {} }) {
           reset
         );
         router.back();
-        console.log("Update Request:", data);
+        // console.log("Update Request:", data);
       } else {
-        console.log("POst Data", data);
+        // console.log("POst Data", data);
         // make post request (create)
         makePostRequest(setLoading, "api/companies", data, "Company", reset);
         router.back();

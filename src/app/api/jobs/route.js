@@ -97,7 +97,7 @@ export async function GET(req) {
     const url = new URL(req.url);
     // Get the query parameter 'candidate' from the URL
     const isCandidate = url.searchParams.get("candidate") === "true";
-    console.log("isCandidate:", isCandidate);
+    // console.log("isCandidate:", isCandidate);
 
     // Fetch all jobs from the candidate profile
     const jobs = await db.job.findMany({

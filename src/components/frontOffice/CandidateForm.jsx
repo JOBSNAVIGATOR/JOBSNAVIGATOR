@@ -76,7 +76,7 @@ export default function CandidateForm({ user, updateData = {} }) {
       reader.readAsDataURL(file);
     } else {
       // Handle case where no file is selected
-      console.log("No file selected.");
+      // console.log("No file selected.");
       setResume(""); // Clear the resume state if no file is selected
     }
   };

@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 export async function DELETE(request, { params }) {
   const { id } = params;
-  console.log(id);
+  // console.log(id);
 
   try {
     // Check if event exists
@@ -33,7 +33,7 @@ export async function DELETE(request, { params }) {
       message: "User deleted successfully",
     });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return NextResponse.json(
       {
         message: "Failed to delete event",

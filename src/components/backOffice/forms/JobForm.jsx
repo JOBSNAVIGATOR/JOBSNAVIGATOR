@@ -66,12 +66,12 @@ export default function JobForm({ updateData = {} }) {
     // console.log(data);
     // Handle form submission logic
     if (id) {
-      console.log("1");
-      console.log(data);
+      // console.log("1");
+      // console.log(data);
       // make put request (update)
       makePutRequest(setLoading, `api/jobs/${id}`, data, "Job", reset);
       router.back();
-      console.log("Update Request:", data);
+      // console.log("Update Request:", data);
     } else {
       // make post request (create)
       // console.log("2", data);

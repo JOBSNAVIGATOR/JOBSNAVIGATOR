@@ -46,7 +46,7 @@ export default function Jobs() {
     refreshInterval: 5000, // refetch data every 5 seconds
   });
 
-  console.log(jobs);
+  // console.log(jobs);
 
   // Initialize state outside of any conditional logic
   const [filteredJobs, setFilteredJobs] = useState([]);
