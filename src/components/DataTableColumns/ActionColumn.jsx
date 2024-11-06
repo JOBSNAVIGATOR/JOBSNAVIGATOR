@@ -26,10 +26,10 @@ export default function ActionColumn({ row, title, endpoint, editEndpoint }) {
         <DropdownMenuLabel className="text-center">Actions</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
-          <DeleteBtn title={title} endpoint={endpoint} />
+          <EditBtn title={title} editEndpoint={editEndpoint} />
         </DropdownMenuItem>
         <DropdownMenuItem>
-          <EditBtn title={title} editEndpoint={editEndpoint} />
+          <DeleteBtn title={title} endpoint={endpoint} />
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
