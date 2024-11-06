@@ -1,8 +1,6 @@
 "use client";
 import { Checkbox } from "@/components/ui/checkbox";
 import SortableColumn from "@/components/DataTableColumns/SortableColumn";
-import { useState } from "react";
-import SelectInput from "@/components/FormInputs/SelectInput";
 import { useForm } from "react-hook-form";
 import { statusData } from "@/data";
 import SelectInputTwo from "@/components/FormInputs/SelectInputTwo";
@@ -119,7 +117,7 @@ export const columns = (updateStatus) => [
   //     };
 
   //     return (
-  //       <SelectInput
+  //       <
   //         name="status"
   //         register={() => {}} // No need for register here
   //         errors={{}} // No need for errors here

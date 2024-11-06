@@ -224,7 +224,6 @@ export default function CandidateForm({ user, updateData = {} }) {
         <SelectInputThree
           label="Gender"
           name="gender"
-          // register={register}
           register={register("gender", { required: true })} // Ensure gender is registered
           errors={errors}
           className="w-full"
@@ -233,7 +232,6 @@ export default function CandidateForm({ user, updateData = {} }) {
         <SelectInputThree
           label="Sector"
           name="sector"
-          // register={register}
           register={register("sector", { required: true })} // Ensure gender is registered
           errors={errors}
           className="w-full"
@@ -242,7 +240,6 @@ export default function CandidateForm({ user, updateData = {} }) {
         <SelectInputThree
           label="Domain"
           name="domain"
-          // register={register}
           register={register("domain", { required: true })} // Ensure gender is registered
           errors={errors}
           className="w-full"

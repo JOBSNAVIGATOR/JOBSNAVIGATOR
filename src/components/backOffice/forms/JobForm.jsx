@@ -6,7 +6,7 @@ import TextAreaInput from "@/components/FormInputs/TextAreaInput";
 import TextInput from "@/components/FormInputs/TextInput";
 import ToggleInput from "@/components/FormInputs/ToggleInput";
 import { domainsData, sectorsData } from "@/data";
-import { makePostRequest } from "@/lib/apiRequest";
+import { makePostRequest, makePutRequest } from "@/lib/apiRequest";
 import { fetcher } from "@/lib/fetcher";
 import { data } from "autoprefixer";
 import { useSession } from "next-auth/react";
@@ -66,14 +66,12 @@ export default function JobForm({ updateData = {} }) {
     // console.log(data);
     // Handle form submission logic
     if (id) {
-      // console.log("1");
-      // data.id = id;
-      // // make put request (update)
-      // makePutRequest(setLoading, `api/products/${id}`, data, "Product", reset);
-      // setImageUrl("");
-      // setTags([]);
-      // router.back();
-      // console.log("Update Request:", data);
+      console.log("1");
+      console.log(data);
+      // make put request (update)
+      makePutRequest(setLoading, `api/jobs/${id}`, data, "Job", reset);
+      router.back();
+      console.log("Update Request:", data);
     } else {
       // make post request (create)
       // console.log("2", data);

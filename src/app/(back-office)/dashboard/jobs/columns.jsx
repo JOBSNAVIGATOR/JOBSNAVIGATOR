@@ -57,6 +57,10 @@ export const columns = [
     ),
   },
   {
+    accessorKey: "isActive",
+    header: ({ column }) => <SortableColumn column={column} title="Status" />,
+  },
+  {
     id: "view",
     cell: ({ row }) => {
       const job = row.original;

@@ -42,9 +42,11 @@ import useSWR from "swr";
 
 export default function Jobs() {
   // useSWR should always be called at the top level of your component
-  const { data: jobs, error } = useSWR("/api/jobs", fetcher, {
+  const { data: jobs, error } = useSWR("/api/jobs?candidate=true", fetcher, {
     refreshInterval: 5000, // refetch data every 5 seconds
   });
+
+  console.log(jobs);
 
   // Initialize state outside of any conditional logic
   const [filteredJobs, setFilteredJobs] = useState([]);

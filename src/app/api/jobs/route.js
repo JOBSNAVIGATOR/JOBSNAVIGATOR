@@ -93,8 +93,15 @@ export async function POST(request) {
 
 export async function GET(req) {
   try {
+    // Get the URL from the request
+    const url = new URL(req.url);
+    // Get the query parameter 'candidate' from the URL
+    const isCandidate = url.searchParams.get("candidate") === "true";
+    console.log("isCandidate:", isCandidate);
+
     // Fetch all jobs from the candidate profile
     const jobs = await db.job.findMany({
+      where: isCandidate ? { isActive: true } : {}, // Apply isActive: true filter only if it is candidate
       include: {
         jobApplicants: true, // Include candidateProfile if it's related to user
         // jobCompany: true,

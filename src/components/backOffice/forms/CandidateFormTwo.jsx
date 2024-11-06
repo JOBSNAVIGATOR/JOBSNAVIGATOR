@@ -7,7 +7,6 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { domainsData, sectorsData } from "@/data";
 import { degrees, PDFDocument, rgb } from "pdf-lib";
-import SelectInput from "@/components/FormInputs/SelectInput";
 import ArrayItemsInput from "@/components/FormInputs/ArrayItemsInput";
 import SelectInputThree from "@/components/FormInputs/SelectInputThree";
 

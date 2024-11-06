@@ -456,14 +456,6 @@ export const domainsData = [
   { value: "SALES_MANAGER", label: "Sales Manager" },
   { value: "LENDING_OTHER", label: "Lending - Other" },
   { value: "LIFE_INSURANCE", label: "Life Insurance" },
-  { value: "CLAIMS_EXECUTIVE", label: "Claims Executive" },
-  { value: "INSURANCE_AGENT_ADVISOR", label: "Insurance Agent / Advisor" },
-  {
-    value: "INSURANCE_OPERATIONS_EXECUTIVE",
-    label: "Insurance Operations Executive",
-  },
-  { value: "PRICING_MANAGER", label: "Pricing Manager" },
-  { value: "UNDERWRITER", label: "Underwriter" },
   { value: "LIFE_INSURANCE_OTHER", label: "Life Insurance - Other" },
   {
     value: "TRADING_ASSET_MANAGEMENT",
