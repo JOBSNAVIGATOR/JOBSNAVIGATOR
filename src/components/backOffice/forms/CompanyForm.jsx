@@ -2,7 +2,7 @@
 import SubmitButton from "@/components/FormInputs/SubmitButton";
 import TextAreaInput from "@/components/FormInputs/TextAreaInput";
 import TextInput from "@/components/FormInputs/TextInput";
-import { makePostRequest } from "@/lib/apiRequest";
+import { makePostRequest, makePutRequest } from "@/lib/apiRequest";
 // import { makePostRequest, makePutRequest } from "@/lib/apiRequest";
 
 import { useRouter } from "next/navigation";
@@ -10,7 +10,10 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
 export default function CompanyForm({ updateData = {} }) {
-  const id = updateData?.company?.id ?? "";
+  // console.log("updateData", updateData);
+  const id = updateData?.id ?? "";
+  const initialCompanyLogo = updateData?.companyLogo ?? "";
+  const [companyLogo, setCompanyLogo] = useState(initialCompanyLogo); // Image Base64 state
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
@@ -21,42 +24,73 @@ export default function CompanyForm({ updateData = {} }) {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    defaultValues: {},
+    defaultValues: {
+      ...updateData,
+      companyName: updateData?.companyName ? updateData?.companyName : "",
+      companyDescription: updateData?.companyDescription
+        ? updateData?.companyDescription
+        : "",
+    },
   });
 
-  // Function to convert file to base64
-  const convertToBase64 = (file) =>
-    new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
-    });
+  const handleRemoveImage = () => {
+    setCompanyLogo(""); // Clear the resume state when the resume is removed
+  };
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0]; // Get the selected file
+
+    if (file) {
+      // Check if the file is an image
+      const validImageTypes = ["image/jpeg", "image/png", "image/gif"];
+      if (!validImageTypes.includes(file.type)) {
+        alert("Please upload a valid image file (JPEG, PNG, GIF).");
+        return;
+      }
+
+      // Check if the file size exceeds a limit (e.g., 2MB)
+      const maxSizeInBytes = 2 * 1024 * 1024; // 2MB
+      if (file.size > maxSizeInBytes) {
+        alert("File size exceeds 2MB limit.");
+        return;
+      }
+
+      const reader = new FileReader(); // Create FileReader
+
+      // Set the callback for when file reading is finished
+      reader.onloadend = () => {
+        setCompanyLogo(reader.result); // Save the base64 string in state
+      };
+
+      reader.onerror = () => {
+        alert("Error reading the file. Please try again.");
+      };
+
+      reader.readAsDataURL(file); // Start reading the file
+    }
+  };
 
   async function onSubmit(data) {
     try {
-      const file = watch("companyLogo")[0]; // Get the selected file
-      if (file) {
-        const base64Logo = await convertToBase64(file); // Convert file to base64
-        data.companyLogo = base64Logo; // Add base64 string to form data
-      }
       if (id) {
+        console.log("updateddddd", data);
+        const payload = {
+          ...data,
+          companyLogo, // Include Base64-encoded image
+        };
+        console.log("payload", payload); // Check the final payload in the console
         // make put request (update)
-        // console.log(id);
-        // data.userId = updateData?.id;
-        // makePutRequest(
-        //   setLoading,
-        //   `api/company/${id}`,
-        //   data,
-        //   "Company",
-        //   reset
-        // );
-        // setImageUrl("");
-        // router.back();
-        // console.log("Update Request:", data);
+        makePutRequest(
+          setLoading,
+          `api/companies/${id}`,
+          payload,
+          "Company",
+          reset
+        );
+        router.back();
+        console.log("Update Request:", data);
       } else {
+        console.log("POst Data", data);
         // make post request (create)
-        // console.log("POst Data", data);
         makePostRequest(setLoading, "api/companies", data, "Company", reset);
         router.back();
       }
@@ -77,7 +111,6 @@ export default function CompanyForm({ updateData = {} }) {
           register={register}
           errors={errors}
           className="w-full"
-          disabled={!!id} // Disable if updating
         />
         <TextAreaInput
           label="Company Description"
@@ -85,7 +118,47 @@ export default function CompanyForm({ updateData = {} }) {
           register={register}
           errors={errors}
         />
-        <div className="col-span-2">
+
+        {/* Display existing resume with option to remove */}
+        {companyLogo && (
+          <div className="mb-4">
+            <a
+              href={companyLogo}
+              download="companyLogo.jpeg"
+              className="text-blue-600 underline text-xl"
+            >
+              View Uploaded Image
+            </a>
+            <button
+              type="button"
+              onClick={handleRemoveImage}
+              className="ml-4 text-red-500 text-xl"
+            >
+              Remove
+            </button>
+          </div>
+        )}
+
+        {!companyLogo && (
+          <div className="w-full">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-400">
+              Company Logo
+            </label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageUpload} // Handle image file change
+              className="mt-2 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+            />
+            {companyLogo && (
+              <p className="text-sm text-green-600 mt-2">
+                Image is ready to be uploaded
+              </p>
+            )}
+          </div>
+        )}
+
+        {/* <div className="col-span-2">
           <label
             htmlFor="companyLogo"
             className="block text-sm font-medium text-gray-700 dark:text-gray-300"
@@ -104,7 +177,7 @@ export default function CompanyForm({ updateData = {} }) {
               {errors.companyLogo.message}
             </p>
           )}
-        </div>
+        </div> */}
       </div>
       <br />
       <br />
