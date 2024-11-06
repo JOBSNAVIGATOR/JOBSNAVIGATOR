@@ -119,3 +119,42 @@ export async function PUT(request) {
     );
   }
 }
+
+export async function DELETE(request, { params }) {
+  const { id } = params;
+  console.log(id);
+
+  try {
+    // Check if event exists
+    const existingJob = await db.job.findUnique({
+      where: { id },
+    });
+
+    if (!existingJob) {
+      return NextResponse.json(
+        {
+          error: "Job not found",
+        },
+        { status: 404 }
+      );
+    }
+
+    // Delete the event from the database
+    await db.job.delete({
+      where: { id },
+    });
+
+    return NextResponse.json({
+      message: "Job deleted successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json(
+      {
+        message: "Failed to delete event",
+        error,
+      },
+      { status: 500 }
+    );
+  }
+}
