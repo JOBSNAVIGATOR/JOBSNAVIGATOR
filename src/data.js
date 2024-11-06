@@ -1,497 +1,3 @@
-export const jobs = [
-  {
-    jobId: "49790139",
-    jobTitle: "Corporate Integration Executive",
-    jobCompany: "HDFC Bank",
-    jobSector: "Finance",
-    jobDomain: "Corporate Finance",
-    jobLevel: "Senior",
-    jobDescription:
-      "Responsible for overseeing corporate integration projects and ensuring seamless processes across departments.",
-    jobSalary: 15, // in LPA
-    skillsRequired: [
-      "Project Management",
-      "Corporate Strategy",
-      "Financial Analysis",
-    ],
-    jobLocation: "Mumbai",
-    jobVacancies: 5,
-    jobVacanciesRemaining: 2,
-    jobApplicants: ["JOBSN202308060001", "JOBSN202308060002"],
-  },
-  {
-    jobId: "63958436",
-    jobTitle: "Global Implementation Architect",
-    jobCompany: "Infosys",
-    jobSector: "IT",
-    jobDomain: "Software Implementation",
-    jobLevel: "Mid",
-    jobDescription:
-      "Leads global software implementation projects, ensuring adherence to accountability standards and timelines.",
-    jobSalary: 18, // in LPA
-    skillsRequired: [
-      "Software Architecture",
-      "Global Implementation",
-      "Stakeholder Management",
-    ],
-    jobLocation: "Bengaluru",
-    jobVacancies: 3,
-    jobVacanciesRemaining: 1,
-    jobApplicants: ["JOBSN202308060003"],
-  },
-  {
-    jobId: "85430218",
-    jobTitle: "Senior Software Engineer",
-    jobCompany: "Tata Consultancy Services",
-    jobSector: "Technology",
-    jobDomain: "Software Development",
-    jobLevel: "Senior",
-    jobDescription:
-      "Develop and maintain software applications, ensuring high performance and scalability.",
-    jobSalary: 20, // in LPA
-    skillsRequired: ["JavaScript", "React", "Node.js"],
-    jobLocation: "Pune",
-    jobVacancies: 4,
-    jobVacanciesRemaining: 3,
-    jobApplicants: ["JOBSN202308060004", "JOBSN202308060005"],
-  },
-  {
-    jobId: "22948320",
-    jobTitle: "Healthcare Data Analyst",
-    jobCompany: "Apollo Hospitals",
-    jobSector: "Healthcare",
-    jobDomain: "Data Analysis",
-    jobLevel: "Mid",
-    jobDescription:
-      "Analyze healthcare data to provide actionable insights and improve patient outcomes.",
-    jobSalary: 12, // in LPA
-    skillsRequired: ["Data Analysis", "SQL", "Healthcare Analytics"],
-    jobLocation: "Chennai",
-    jobVacancies: 2,
-    jobVacanciesRemaining: 2,
-    jobApplicants: [],
-  },
-  {
-    jobId: "94830217",
-    jobTitle: "Financial Advisor",
-    jobCompany: "Bajaj Finance",
-    jobSector: "Finance",
-    jobDomain: "Financial Planning",
-    jobLevel: "Junior",
-    jobDescription:
-      "Provide financial advice and planning services to clients, helping them achieve their financial goals.",
-    jobSalary: 10, // in LPA
-    skillsRequired: [
-      "Financial Planning",
-      "Client Management",
-      "Investment Strategies",
-    ],
-    jobLocation: "Delhi",
-    jobVacancies: 3,
-    jobVacanciesRemaining: 1,
-    jobApplicants: ["JOBSN202308060006", "JOBSN202308060007"],
-  },
-  {
-    jobId: "57382910",
-    jobTitle: "IT Support Specialist",
-    jobCompany: "Wipro",
-    jobSector: "IT",
-    jobDomain: "Technical Support",
-    jobLevel: "Entry",
-    jobDescription:
-      "Provide technical support and troubleshooting services for IT systems and applications.",
-    jobSalary: 8, // in LPA
-    skillsRequired: [
-      "Technical Support",
-      "Troubleshooting",
-      "Customer Service",
-    ],
-    jobLocation: "Hyderabad",
-    jobVacancies: 5,
-    jobVacanciesRemaining: 4,
-    jobApplicants: ["JOBSN202308060008"],
-  },
-  {
-    jobId: "28493716",
-    jobTitle: "Marketing Manager",
-    jobCompany: "Unacademy",
-    jobSector: "Education",
-    jobDomain: "Digital Marketing",
-    jobLevel: "Mid",
-    jobDescription:
-      "Develop and implement marketing strategies to promote educational products and services.",
-    jobSalary: 14, // in LPA
-    skillsRequired: ["Digital Marketing", "Campaign Management", "SEO/SEM"],
-    jobLocation: "Bengaluru",
-    jobVacancies: 4,
-    jobVacanciesRemaining: 3,
-    jobApplicants: ["JOBSN202308060001", "JOBSN202308060003"],
-  },
-  {
-    jobId: "39485721",
-    jobTitle: "Product Manager",
-    jobCompany: "Byju's",
-    jobSector: "Education",
-    jobDomain: "Product Management",
-    jobLevel: "Senior",
-    jobDescription:
-      "Lead product development efforts, ensuring alignment with business goals and customer needs.",
-    jobSalary: 22, // in LPA
-    skillsRequired: [
-      "Product Management",
-      "Agile Methodologies",
-      "User Experience",
-    ],
-    jobLocation: "Bengaluru",
-    jobVacancies: 2,
-    jobVacanciesRemaining: 1,
-    jobApplicants: ["JOBSN202308060002", "JOBSN202308060004"],
-  },
-  {
-    jobId: "48592031",
-    jobTitle: "Chief Marketing Officer",
-    jobCompany: "Reliance Industries",
-    jobSector: "Retail",
-    jobDomain: "Marketing Strategy",
-    jobLevel: "Executive",
-    jobDescription:
-      "Oversee the development and execution of marketing strategies to drive business growth.",
-    jobSalary: 35, // in LPA
-    skillsRequired: ["Marketing Strategy", "Leadership", "Brand Management"],
-    jobLocation: "Mumbai",
-    jobVacancies: 1,
-    jobVacanciesRemaining: 0,
-    jobApplicants: ["JOBSN202308060006", "JOBSN202308060008"],
-  },
-  {
-    jobId: "57382145",
-    jobTitle: "Network Security Engineer",
-    jobCompany: "Tata Communications",
-    jobSector: "Telecommunications",
-    jobDomain: "Network Security",
-    jobLevel: "Mid",
-    jobDescription:
-      "Implement and manage network security measures to protect the organization's IT infrastructure.",
-    jobSalary: 16, // in LPA
-    skillsRequired: [
-      "Network Security",
-      "Firewall Management",
-      "Incident Response",
-    ],
-    jobLocation: "Chennai",
-    jobVacancies: 3,
-    jobVacanciesRemaining: 3,
-    jobApplicants: [],
-  },
-  {
-    jobId: "84736290",
-    jobTitle: "Operations Manager",
-    jobCompany: "Flipkart",
-    jobSector: "E-commerce",
-    jobDomain: "Operations Management",
-    jobLevel: "Senior",
-    jobDescription:
-      "Oversee and optimize operational processes to ensure efficiency and effectiveness.",
-    jobSalary: 25, // in LPA
-    skillsRequired: [
-      "Operations Management",
-      "Process Improvement",
-      "Team Leadership",
-    ],
-    jobLocation: "Bengaluru",
-    jobVacancies: 2,
-    jobVacanciesRemaining: 1,
-    jobApplicants: ["JOBSN202308060004", "JOBSN202308060007"],
-  },
-  {
-    jobId: "92735481",
-    jobTitle: "UX/UI Designer",
-    jobCompany: "Ola",
-    jobSector: "Transport",
-    jobDomain: "UX/UI Design",
-    jobLevel: "Mid",
-    jobDescription:
-      "Design user interfaces and experiences for the company's digital products.",
-    jobSalary: 15, // in LPA
-    skillsRequired: ["UX Design", "UI Design", "Prototyping"],
-    jobLocation: "Bengaluru",
-    jobVacancies: 3,
-    jobVacanciesRemaining: 2,
-    jobApplicants: ["JOBSN202308060003", "JOBSN202308060008"],
-  },
-  {
-    jobId: "36478215",
-    jobTitle: "Business Development Executive",
-    jobCompany: "Paytm",
-    jobSector: "Fintech",
-    jobDomain: "Business Development",
-    jobLevel: "Junior",
-    jobDescription:
-      "Identify and pursue new business opportunities to drive company growth.",
-    jobSalary: 12, // in LPA
-    skillsRequired: [
-      "Business Development",
-      "Sales Strategy",
-      "Client Relations",
-    ],
-    jobLocation: "Noida",
-    jobVacancies: 4,
-    jobVacanciesRemaining: 2,
-    jobApplicants: ["JOBSN202308060002", "JOBSN202308060008"],
-  },
-  {
-    jobId: "48293761",
-    jobTitle: "Data Scientist",
-    jobCompany: "Zomato",
-    jobSector: "Foodtech",
-    jobDomain: "Data Analysis",
-    jobLevel: "Mid",
-    jobDescription:
-      "Analyze and interpret complex data to provide actionable insights for business decision-making.",
-    jobSalary: 18, // in LPA
-    skillsRequired: ["Data Analysis", "Machine Learning", "Python"],
-    jobLocation: "Gurgaon",
-    jobVacancies: 2,
-    jobVacanciesRemaining: 1,
-    jobApplicants: ["JOBSN202308060001"],
-  },
-  {
-    jobId: "57384921",
-    jobTitle: "Content Writer",
-    jobCompany: "Swiggy",
-    jobSector: "Foodtech",
-    jobDomain: "Content Creation",
-    jobLevel: "Entry",
-    jobDescription:
-      "Create engaging and informative content for the company's digital platforms.",
-    jobSalary: 9, // in LPA
-    skillsRequired: ["Content Writing", "SEO", "Creativity"],
-    jobLocation: "Bengaluru",
-    jobVacancies: 5,
-    jobVacanciesRemaining: 3,
-    jobApplicants: ["JOBSN202308060002", "JOBSN202308060007"],
-  },
-];
-
-export const candidates = [
-  {
-    id: "JOBSN202308060001",
-    firstName: "John",
-    lastName: "Doe",
-    email: "john.doe@example.com",
-    currentJobLocation: "Bangalore",
-    preferredJobLocation: ["Mumbai", "Pune"],
-    currentSalary: 12, // in LPA
-    noticePeriod: 60, // in days
-    skills: ["JavaScript", "React", "Node.js"],
-    currentCompany: "Infosys",
-    previousCompanies: ["TCS", "Wipro"],
-    totalExperience: 5, // in years
-    collegeName: "IIT Bombay",
-    collegeLocation: "Mumbai",
-    graduationYear: 2018,
-    linkedinProfile: "https://www.linkedin.com/in/johndoe",
-    githubProfile: "https://github.com/johndoe",
-    resume: "resume_johndoe.pdf",
-    applications: [
-      { jobId: "49790139", status: "Applied" },
-      { jobId: "49790140", status: "Interviewed" },
-    ],
-    dateOfBirth: "1990-05-15", // in YYYY-MM-DD format
-    location: "Bangalore",
-    contactNumber: "+91-9876543210",
-  },
-  {
-    id: "JOBSN202308060002",
-    firstName: "Jane",
-    lastName: "Smith",
-    email: "jane.smith@example.com",
-    currentJobLocation: "Delhi",
-    preferredJobLocation: ["Delhi", "Gurgaon"],
-    currentSalary: 10, // in LPA
-    noticePeriod: 30, // in days
-    skills: ["Python", "Django", "Machine Learning"],
-    currentCompany: "HCL",
-    previousCompanies: ["Tech Mahindra", "Cognizant"],
-    totalExperience: 4, // in years
-    collegeName: "NIT Delhi",
-    collegeLocation: "Delhi",
-    graduationYear: 2019,
-    linkedinProfile: "https://www.linkedin.com/in/janesmith",
-    githubProfile: "https://github.com/janesmith",
-    resume: "resume_janesmith.pdf",
-    applications: [
-      { jobId: "49790141", status: "Shortlisted" },
-      { jobId: "49790142", status: "Rejected" },
-    ],
-    dateOfBirth: "1992-08-22", // in YYYY-MM-DD format
-    location: "Delhi",
-    contactNumber: "+91-9123456789",
-  },
-  {
-    id: "JOBSN202308060003",
-    firstName: "Alice",
-    lastName: "Johnson",
-    email: "alice.johnson@example.com",
-    currentJobLocation: "Hyderabad",
-    preferredJobLocation: ["Hyderabad", "Chennai"],
-    currentSalary: 14, // in LPA
-    noticePeriod: 45, // in days
-    skills: ["Java", "Spring Boot", "Microservices"],
-    currentCompany: "Accenture",
-    previousCompanies: ["Capgemini", "Oracle"],
-    totalExperience: 6, // in years
-    collegeName: "IIT Hyderabad",
-    collegeLocation: "Hyderabad",
-    graduationYear: 2017,
-    linkedinProfile: "https://www.linkedin.com/in/alicejohnson",
-    githubProfile: "https://github.com/alicejohnson",
-    resume: "resume_alicejohnson.pdf",
-    applications: [
-      { jobId: "49790143", status: "Applied" },
-      { jobId: "49790144", status: "Offer Extended" },
-    ],
-    dateOfBirth: "1989-11-05", // in YYYY-MM-DD format
-    location: "Hyderabad",
-    contactNumber: "+91-9234567890",
-  },
-  {
-    id: "JOBSN202308060004",
-    firstName: "Robert",
-    lastName: "Williams",
-    email: "robert.williams@example.com",
-    currentJobLocation: "Pune",
-    preferredJobLocation: ["Pune", "Mumbai"],
-    currentSalary: 11, // in LPA
-    noticePeriod: 90, // in days
-    skills: ["C#", ".NET Core", "Azure"],
-    currentCompany: "Microsoft",
-    previousCompanies: ["IBM", "SAP"],
-    totalExperience: 7, // in years
-    collegeName: "BITS Pilani",
-    collegeLocation: "Pilani",
-    graduationYear: 2016,
-    linkedinProfile: "https://www.linkedin.com/in/robertwilliams",
-    githubProfile: "https://github.com/robertwilliams",
-    resume: "resume_robertwilliams.pdf",
-    applications: [
-      { jobId: "49790145", status: "Applied" },
-      { jobId: "49790146", status: "Interviewed" },
-    ],
-    dateOfBirth: "1987-03-30", // in YYYY-MM-DD format
-    location: "Pune",
-    contactNumber: "+91-9345678901",
-  },
-  {
-    id: "JOBSN202308060005",
-    firstName: "Emily",
-    lastName: "Brown",
-    email: "emily.brown@example.com",
-    currentJobLocation: "Chennai",
-    preferredJobLocation: ["Chennai", "Bangalore"],
-    currentSalary: 9, // in LPA
-    noticePeriod: 30, // in days
-    skills: ["PHP", "Laravel", "MySQL"],
-    currentCompany: "Zoho",
-    previousCompanies: ["Freshworks", "Mindtree"],
-    totalExperience: 3, // in years
-    collegeName: "Anna University",
-    collegeLocation: "Chennai",
-    graduationYear: 2020,
-    linkedinProfile: "https://www.linkedin.com/in/emilybrown",
-    githubProfile: "https://github.com/emilybrown",
-    resume: "resume_emilybrown.pdf",
-    applications: [
-      { jobId: "49790147", status: "Applied" },
-      { jobId: "49790148", status: "Shortlisted" },
-    ],
-    dateOfBirth: "1995-07-19", // in YYYY-MM-DD format
-    location: "Chennai",
-    contactNumber: "+91-9456789012",
-  },
-  {
-    id: "JOBSN202308060006",
-    firstName: "Michael",
-    lastName: "Taylor",
-    email: "michael.taylor@example.com",
-    currentJobLocation: "Mumbai",
-    preferredJobLocation: ["Mumbai", "Bangalore"],
-    currentSalary: 13, // in LPA
-    noticePeriod: 60, // in days
-    skills: ["Angular", "TypeScript", "Node.js"],
-    currentCompany: "TCS",
-    previousCompanies: ["Cognizant", "Infosys"],
-    totalExperience: 5, // in years
-    collegeName: "IIT Bombay",
-    collegeLocation: "Mumbai",
-    graduationYear: 2018,
-    linkedinProfile: "https://www.linkedin.com/in/michaeltaylor",
-    githubProfile: "https://github.com/michaeltaylor",
-    resume: "resume_michaeltaylor.pdf",
-    applications: [
-      { jobId: "49790149", status: "Applied" },
-      { jobId: "49790150", status: "Offer Extended" },
-    ],
-    dateOfBirth: "1991-04-28", // in YYYY-MM-DD format
-    location: "Mumbai",
-    contactNumber: "+91-9567890123",
-  },
-  {
-    id: "JOBSN202308060007",
-    firstName: "Jessica",
-    lastName: "Davis",
-    email: "jessica.davis@example.com",
-    currentJobLocation: "Kolkata",
-    preferredJobLocation: ["Kolkata", "Delhi"],
-    currentSalary: 8, // in LPA
-    noticePeriod: 45, // in days
-    skills: ["Ruby on Rails", "PostgreSQL", "Redis"],
-    currentCompany: "Tech Mahindra",
-    previousCompanies: ["Wipro", "HCL"],
-    totalExperience: 4, // in years
-    collegeName: "Jadavpur University",
-    collegeLocation: "Kolkata",
-    graduationYear: 2019,
-    linkedinProfile: "https://www.linkedin.com/in/jessicadavis",
-    githubProfile: "https://github.com/jessicadavis",
-    resume: "resume_jessicadavis.pdf",
-    applications: [
-      { jobId: "49790151", status: "Applied" },
-      { jobId: "49790152", status: "Rejected" },
-    ],
-    dateOfBirth: "1992-09-14", // in YYYY-MM-DD format
-    location: "Kolkata",
-    contactNumber: "+91-9678901234",
-  },
-  {
-    id: "JOBSN202308060008",
-    firstName: "Daniel",
-    lastName: "Moore",
-    email: "daniel.moore@example.com",
-    currentJobLocation: "Ahmedabad",
-    preferredJobLocation: ["Ahmedabad", "Surat"],
-    currentSalary: 7, // in LPA
-    noticePeriod: 60, // in days
-    skills: ["Go", "Kubernetes", "Docker"],
-    currentCompany: "Zomato",
-    previousCompanies: ["Swiggy", "Paytm"],
-    totalExperience: 3, // in years
-    collegeName: "IIT Gandhinagar",
-    collegeLocation: "Gandhinagar",
-    graduationYear: 2020,
-    linkedinProfile: "https://www.linkedin.com/in/danielmoore",
-    githubProfile: "https://github.com/danielmoore",
-    resume: "resume_danielmoore.pdf",
-    applications: [
-      { jobId: "49790153", status: "Applied" },
-      { jobId: "49790154", status: "Shortlisted" },
-    ],
-    dateOfBirth: "1996-06-25", // in YYYY-MM-DD format
-    location: "Ahmedabad",
-    contactNumber: "+91-9801234567",
-  },
-];
-
 export const consultants = [
   {
     id: "JOBSNV0001",
@@ -725,302 +231,271 @@ export const consultants = [
   },
 ];
 
-// export const companiesData = [
-//   // Banking Sector
-//   {
-//     companyId: "00001",
-//     companyName: "State Bank of India",
-//     companyLogo: "https://example.com/logos/sbi_logo.png",
-//     companySector: "Banking",
-//     companyDescription:
-//       "State Bank of India (SBI) is a multinational, public sector banking and financial services statutory body headquartered in Mumbai, India.",
-//   },
-//   {
-//     companyId: "00002",
-//     companyName: "HDFC Bank",
-//     companyLogo: "https://example.com/logos/hdfc_logo.png",
-//     companySector: "Banking",
-//     companyDescription:
-//       "HDFC Bank Limited is an Indian banking and financial services company headquartered in Mumbai.",
-//   },
-//   {
-//     companyId: "00003",
-//     companyName: "ICICI Bank",
-//     companyLogo: "https://example.com/logos/icici_logo.png",
-//     companySector: "Banking",
-//     companyDescription:
-//       "ICICI Bank Limited is an Indian multinational banking and financial services company headquartered in Vadodara.",
-//   },
-//   {
-//     companyId: "00004",
-//     companyName: "Axis Bank",
-//     companyLogo: "https://example.com/logos/axis_logo.png",
-//     companySector: "Banking",
-//     companyDescription:
-//       "Axis Bank is an Indian banking and financial services company headquartered in Mumbai, Maharashtra.",
-//   },
-//   {
-//     companyId: "00005",
-//     companyName: "Punjab National Bank",
-//     companyLogo: "https://example.com/logos/pnb_logo.png",
-//     companySector: "Banking",
-//     companyDescription:
-//       "Punjab National Bank (PNB) is an Indian public sector bank headquartered in New Delhi, India.",
-//   },
-
-//   // Technology Sector
-//   {
-//     companyId: "00006",
-//     companyName: "Infosys",
-//     companyLogo: "https://example.com/logos/infosys_logo.png",
-//     companySector: "Technology",
-//     companyDescription:
-//       "Infosys Limited is an Indian multinational corporation that provides business consulting, information technology, and outsourcing services.",
-//   },
-//   {
-//     companyId: "00007",
-//     companyName: "Tata Consultancy Services",
-//     companyLogo: "https://example.com/logos/tcs_logo.png",
-//     companySector: "Technology",
-//     companyDescription:
-//       "Tata Consultancy Services (TCS) is an Indian multinational information technology services and consulting company headquartered in Mumbai, Maharashtra.",
-//   },
-//   {
-//     companyId: "00008",
-//     companyName: "Wipro",
-//     companyLogo: "https://example.com/logos/wipro_logo.png",
-//     companySector: "Technology",
-//     companyDescription:
-//       "Wipro Limited is an Indian multinational corporation that provides information technology, consulting, and business process services.",
-//   },
-
-//   // Healthcare Sector
-//   {
-//     companyId: "00009",
-//     companyName: "Apollo Hospitals",
-//     companyLogo: "https://example.com/logos/apollo_logo.png",
-//     companySector: "Healthcare",
-//     companyDescription:
-//       "Apollo Hospitals Enterprise Limited is an Indian multinational hospital chain headquartered in Chennai, India.",
-//   },
-//   {
-//     companyId: "00010",
-//     companyName: "Fortis Healthcare",
-//     companyLogo: "https://example.com/logos/fortis_logo.png",
-//     companySector: "Healthcare",
-//     companyDescription:
-//       "Fortis Healthcare Limited is a leading integrated healthcare delivery service provider in India.",
-//   },
-
-//   // Finance Sector
-//   {
-//     companyId: "00011",
-//     companyName: "Bajaj Finance",
-//     companyLogo: "https://example.com/logos/bajaj_finance_logo.png",
-//     companySector: "Finance",
-//     companyDescription:
-//       "Bajaj Finance Limited is an Indian non-banking financial company headquartered in Pune, India.",
-//   },
-//   {
-//     companyId: "00012",
-//     companyName: "HDFC Asset Management",
-//     companyLogo: "https://example.com/logos/hdfc_amc_logo.png",
-//     companySector: "Finance",
-//     companyDescription:
-//       "HDFC Asset Management Company Limited (HDFC AMC) is one of the largest mutual fund managers in India.",
-//   },
-
-//   // Education Sector
-//   {
-//     companyId: "00013",
-//     companyName: "Byju's",
-//     companyLogo: "https://example.com/logos/byjus_logo.png",
-//     companySector: "Education",
-//     companyDescription:
-//       "Byju's is an Indian multinational educational technology company headquartered in Bengaluru, India.",
-//   },
-//   {
-//     companyId: "00014",
-//     companyName: "Unacademy",
-//     companyLogo: "https://example.com/logos/unacademy_logo.png",
-//     companySector: "Education",
-//     companyDescription:
-//       "Unacademy is an Indian online education technology company based in Bengaluru, India.",
-//   },
-// ];
-
-export const companiesData = [
-  // Banking Sector
-  {
-    value: "STATE_BANK_OF_INDIA",
-    label: "State Bank of India",
-    logo: "https://example.com/logos/sbi_logo.png",
-    description:
-      "State Bank of India (SBI) is a multinational, public sector banking and financial services statutory body headquartered in Mumbai, India.",
-  },
-  {
-    value: "HDFC_BANK",
-    label: "HDFC Bank",
-    logo: "https://example.com/logos/hdfc_logo.png",
-    description:
-      "HDFC Bank Limited is an Indian banking and financial services company headquartered in Mumbai.",
-  },
-  {
-    value: "ICICI_BANK",
-    label: "ICICI Bank",
-    logo: "https://example.com/logos/icici_logo.png",
-    description:
-      "ICICI Bank Limited is an Indian multinational banking and financial services company headquartered in Vadodara.",
-  },
-  {
-    value: "AXIS_BANK",
-    label: "Axis Bank",
-    logo: "https://example.com/logos/axis_logo.png",
-    description:
-      "Axis Bank is an Indian banking and financial services company headquartered in Mumbai, Maharashtra.",
-  },
-  {
-    value: "PUNJAB_NATIONAL_BANK",
-    label: "Punjab National Bank",
-    logo: "https://example.com/logos/pnb_logo.png",
-    description:
-      "Punjab National Bank (PNB) is an Indian public sector bank headquartered in New Delhi, India.",
-  },
-
-  // Technology Sector
-  {
-    value: "INFOSYS",
-    label: "Infosys",
-    logo: "https://example.com/logos/infosys_logo.png",
-    description:
-      "Infosys Limited is an Indian multinational corporation that provides business consulting, information technology, and outsourcing services.",
-  },
-  {
-    value: "TATA_CONSULTANCY_SERVICES",
-    label: "Tata Consultancy Services",
-    logo: "https://example.com/logos/tcs_logo.png",
-    description:
-      "Tata Consultancy Services (TCS) is an Indian multinational information technology services and consulting company headquartered in Mumbai, Maharashtra.",
-  },
-  {
-    value: "WIPRO",
-    label: "Wipro",
-    logo: "https://example.com/logos/wipro_logo.png",
-    description:
-      "Wipro Limited is an Indian multinational corporation that provides information technology, consulting, and business process services.",
-  },
-
-  // Healthcare Sector
-  {
-    value: "APOLLO_HOSPITALS",
-    label: "Apollo Hospitals",
-    logo: "https://example.com/logos/apollo_logo.png",
-    description:
-      "Apollo Hospitals Enterprise Limited is an Indian multinational hospital chain headquartered in Chennai, India.",
-  },
-  {
-    value: "FORTIS_HEALTHCARE",
-    label: "Fortis Healthcare",
-    logo: "https://example.com/logos/fortis_logo.png",
-    description:
-      "Fortis Healthcare Limited is a leading integrated healthcare delivery service provider in India.",
-  },
-
-  // Finance Sector
-  {
-    value: "BAJAJ_FINANCE",
-    label: "Bajaj Finance",
-    logo: "https://example.com/logos/bajaj_finance_logo.png",
-    description:
-      "Bajaj Finance Limited is an Indian non-banking financial company headquartered in Pune, India.",
-  },
-  {
-    value: "HDFC_ASSET_MANAGEMENT",
-    label: "HDFC Asset Management",
-    logo: "https://example.com/logos/hdfc_amc_logo.png",
-    description:
-      "HDFC Asset Management Company Limited (HDFC AMC) is one of the largest mutual fund managers in India.",
-  },
-
-  // Education Sector
-  {
-    value: "BYJUS",
-    label: "Byju's",
-    logo: "https://example.com/logos/byjus_logo.png",
-    description:
-      "Byju's is an Indian multinational educational technology company headquartered in Bengaluru, India.",
-  },
-  {
-    value: "UNACADEMY",
-    label: "Unacademy",
-    logo: "https://example.com/logos/unacademy_logo.png",
-    description:
-      "Unacademy is an Indian online education technology company based in Bengaluru, India.",
-  },
-];
-
 export const sectorsData = [
-  { value: "INFORMATION_TECHNOLOGY", label: "Information Technology" },
-  { value: "FINANCE", label: "Finance" },
-  { value: "HUMAN_RESOURCES", label: "Human Resources" },
-  { value: "MARKETING", label: "Marketing" },
-  { value: "SALES", label: "Sales" },
-  { value: "LEGAL", label: "Legal" },
-  { value: "OPERATIONS", label: "Operations" },
-  { value: "RESEARCH_AND_DEVELOPMENT", label: "Research and Development" },
-  { value: "SUPPLY_CHAIN", label: "Supply Chain" },
-  { value: "PROCUREMENT", label: "Procurement" },
-  { value: "CUSTOMER_SERVICE", label: "Customer Service" },
-  { value: "ADMINISTRATION", label: "Administration" },
-  { value: "PROJECT_MANAGEMENT", label: "Project Management" },
-  { value: "QUALITY_CONTROL", label: "Quality Control" },
-  { value: "BUSINESS_DEVELOPMENT", label: "Business Development" },
-  { value: "PUBLIC_RELATIONS", label: "Public Relations" },
-  { value: "TRAINING_AND_DEVELOPMENT", label: "Training and Development" },
-  { value: "STRATEGY_AND_PLANNING", label: "Strategy and Planning" },
+  { value: "BPM_BPO", label: "BPM / BPO" },
+  { value: "ANALYTICS_KPO_RESEARCH", label: "Analytics / KPO / Research" },
+  { value: "IT_SERVICES", label: "IT Services" },
+  { value: "IT_SERVICES_CONSULTING", label: "IT Services & Consulting" },
+  { value: "TECHNOLOGY", label: "Technology" },
   {
-    value: "CORPORATE_SOCIAL_RESPONSIBILITY",
-    label: "Corporate Social Responsibility",
+    value: "ELECTRONIC_COMPONENTS_SEMICONDUCTORS",
+    label: "Electronic Components / Semiconductors",
+  },
+  { value: "ELECTRONICS_MANUFACTURING", label: "Electronics Manufacturing" },
+  { value: "EMERGING_TECHNOLOGIES", label: "Emerging Technologies" },
+  { value: "HARDWARE_NETWORKING", label: "Hardware & Networking" },
+  { value: "INTERNET", label: "Internet" },
+  { value: "SOFTWARE_PRODUCT", label: "Software Product" },
+  { value: "BFSI", label: "BFSI" },
+  { value: "BANKING", label: "Banking" },
+  { value: "FINANCIAL_SERVICES", label: "Financial Services" },
+  { value: "FINTECH_PAYMENTS", label: "FinTech / Payments" },
+  { value: "INSURANCE", label: "Insurance" },
+  {
+    value: "INVESTMENT_BANKING_VC_PE",
+    label: "Investment Banking / Venture Capital / Private Equity",
+  },
+  { value: "NBFC", label: "NBFC" },
+  { value: "EDUCATION", label: "Education" },
+  { value: "EDUCATION_TRAINING", label: "Education / Training" },
+  { value: "E_LEARNING_EDTECH", label: "E-Learning / EdTech" },
+  { value: "MANUFACTURING_PRODUCTION", label: "Manufacturing & Production" },
+  { value: "AUTO_COMPONENTS", label: "Auto Components" },
+  { value: "AUTOMOBILE", label: "Automobile" },
+  { value: "BUILDING_MATERIAL", label: "Building Material" },
+  { value: "CHEMICALS", label: "Chemicals" },
+  { value: "DEFENCE_AEROSPACE", label: "Defence & Aerospace" },
+  { value: "ELECTRICAL_EQUIPMENT", label: "Electrical Equipment" },
+  {
+    value: "FERTILIZERS_PESTICIDES_AGRO_CHEMICALS",
+    label: "Fertilizers / Pesticides / Agro chemicals",
+  },
+  { value: "INDUSTRIAL_AUTOMATION", label: "Industrial Automation" },
+  {
+    value: "INDUSTRIAL_EQUIPMENT_MACHINERY",
+    label: "Industrial Equipment / Machinery",
+  },
+  { value: "IRON_STEEL", label: "Iron & Steel" },
+  { value: "METALS_MINING", label: "Metals & Mining" },
+  { value: "PACKAGING_CONTAINERS", label: "Packaging & Containers" },
+  {
+    value: "PETROCHEMICAL_PLASTICS_RUBBER",
+    label: "Petrochemical / Plastics / Rubber",
+  },
+  { value: "PULP_PAPER", label: "Pulp & Paper" },
+  {
+    value: "INFRASTRUCTURE_TRANSPORT_REAL_ESTATE",
+    label: "Infrastructure, Transport & Real Estate",
+  },
+  { value: "AVIATION", label: "Aviation" },
+  { value: "COURIER_LOGISTICS", label: "Courier / Logistics" },
+  { value: "ENGINEERING_CONSTRUCTION", label: "Engineering & Construction" },
+  { value: "OIL_GAS", label: "Oil & Gas" },
+  { value: "PORTS_SHIPPING", label: "Ports & Shipping" },
+  { value: "POWER", label: "Power" },
+  { value: "RAILWAYS", label: "Railways" },
+  { value: "REAL_ESTATE", label: "Real Estate" },
+  { value: "URBAN_TRANSPORT", label: "Urban Transport" },
+  {
+    value: "WATER_TREATMENT_WASTE_MANAGEMENT",
+    label: "Water Treatment / Waste Management",
+  },
+  {
+    value: "CONSUMER_RETAIL_HOSPITALITY",
+    label: "Consumer, Retail & Hospitality",
+  },
+  { value: "BEAUTY_PERSONAL_CARE", label: "Beauty & Personal Care" },
+  { value: "BEVERAGE", label: "Beverage" },
+  {
+    value: "CONSUMER_ELECTRONICS_APPLIANCES",
+    label: "Consumer Electronics & Appliances",
+  },
+  { value: "FITNESS_WELLNESS", label: "Fitness & Wellness" },
+  { value: "FMCG", label: "FMCG" },
+  { value: "FOOD_PROCESSING", label: "Food Processing" },
+  { value: "FURNITURE_FURNISHING", label: "Furniture & Furnishing" },
+  { value: "GEMS_JEWELLERY", label: "Gems & Jewellery" },
+  { value: "HOTELS_RESTAURANTS", label: "Hotels & Restaurants" },
+  { value: "LEATHER", label: "Leather" },
+  { value: "RETAIL", label: "Retail" },
+  { value: "TEXTILE_APPAREL", label: "Textile & Apparel" },
+  { value: "TRAVEL_TOURISM", label: "Travel & Tourism" },
+  { value: "HEALTHCARE_LIFE_SCIENCES", label: "Healthcare & Life Sciences" },
+  { value: "BIOTECHNOLOGY", label: "Biotechnology" },
+  {
+    value: "CLINICAL_RESEARCH_CONTRACT_RESEARCH",
+    label: "Clinical Research / Contract Research",
+  },
+  { value: "MEDICAL_DEVICES_EQUIPMENT", label: "Medical Devices & Equipment" },
+  { value: "MEDICAL_SERVICES_HOSPITAL", label: "Medical Services / Hospital" },
+  {
+    value: "PHARMACEUTICAL_LIFE_SCIENCES",
+    label: "Pharmaceutical & Life Sciences",
+  },
+  {
+    value: "MEDIA_ENTERTAINMENT_TELECOM",
+    label: "Media, Entertainment & Telecom",
+  },
+  { value: "ADVERTISING_MARKETING", label: "Advertising & Marketing" },
+  { value: "ANIMATION_VFX", label: "Animation & VFX" },
+  { value: "EVENTS_LIVE_ENTERTAINMENT", label: "Events / Live Entertainment" },
+  { value: "FILM_MUSIC_ENTERTAINMENT", label: "Film / Music / Entertainment" },
+  { value: "GAMING", label: "Gaming" },
+  { value: "PRINTING_PUBLISHING", label: "Printing & Publishing" },
+  {
+    value: "SPORTS_LEISURE_RECREATION",
+    label: "Sports / Leisure & Recreation",
+  },
+  { value: "TELECOM_ISP", label: "Telecom / ISP" },
+  { value: "TV_RADIO", label: "TV / Radio" },
+  { value: "PROFESSIONAL_SERVICES", label: "Professional Services" },
+  { value: "ACCOUNTING_AUDITING", label: "Accounting / Auditing" },
+  {
+    value: "ARCHITECTURE_INTERIOR_DESIGN",
+    label: "Architecture / Interior Design",
+  },
+  {
+    value: "CONTENT_DEVELOPMENT_LANGUAGE",
+    label: "Content Development / Language",
+  },
+  { value: "DESIGN", label: "Design" },
+  {
+    value: "FACILITY_MANAGEMENT_SERVICES",
+    label: "Facility Management Services",
+  },
+  { value: "LEGAL", label: "Legal" },
+  { value: "MANAGEMENT_CONSULTING", label: "Management Consulting" },
+  { value: "RECRUITMENT_STAFFING", label: "Recruitment / Staffing" },
+  { value: "MISCELLANEOUS", label: "Miscellaneous" },
+  {
+    value: "AGRICULTURE_FORESTRY_FISHING",
+    label: "Agriculture / Forestry / Fishing",
+  },
+  {
+    value: "GOVERNMENT_PUBLIC_ADMINISTRATION",
+    label: "Government / Public Administration",
+  },
+  { value: "IMPORT_EXPORT", label: "Import & Export" },
+  {
+    value: "NGO_SOCIAL_SERVICES_INDUSTRY_ASSOCIATIONS",
+    label: "NGO / Social Services / Industry Associations",
   },
 ];
 
 export const domainsData = [
-  { value: "SOFTWARE_DEVELOPMENT", label: "Software Development" },
-  { value: "DATA_ANALYTICS", label: "Data Analytics" },
-  { value: "CYBER_SECURITY", label: "Cyber Security" },
-  { value: "NETWORKING", label: "Networking" },
-  { value: "ACCOUNTING", label: "Accounting" },
-  { value: "INVESTMENT_BANKING", label: "Investment Banking" },
-  { value: "FINANCIAL_PLANNING", label: "Financial Planning" },
-  { value: "TALENT_ACQUISITION", label: "Talent Acquisition" },
-  { value: "PAYROLL", label: "Payroll" },
-  { value: "EMPLOYEE_RELATIONS", label: "Employee Relations" },
-  { value: "DIGITAL_MARKETING", label: "Digital Marketing" },
-  { value: "CONTENT_MARKETING", label: "Content Marketing" },
-  { value: "BRAND_MANAGEMENT", label: "Brand Management" },
-  { value: "B2B_SALES", label: "B2B Sales" },
-  { value: "B2C_SALES", label: "B2C Sales" },
-  { value: "SALES_STRATEGY", label: "Sales Strategy" },
-  { value: "CORPORATE_LAW", label: "Corporate Law" },
-  { value: "INTELLECTUAL_PROPERTY", label: "Intellectual Property" },
-  { value: "LITIGATION", label: "Litigation" },
-  { value: "SUPPLY_CHAIN_PLANNING", label: "Supply Chain Planning" },
-  { value: "LOGISTICS", label: "Logistics" },
-  { value: "INVENTORY_MANAGEMENT", label: "Inventory Management" },
-  { value: "CUSTOMER_SUPPORT", label: "Customer Support" },
-  { value: "TECHNICAL_SUPPORT", label: "Technical Support" },
-  { value: "PROCUREMENT_STRATEGY", label: "Procurement Strategy" },
-  { value: "VENDOR_MANAGEMENT", label: "Vendor Management" },
-  { value: "TRAINING_PROGRAMS", label: "Training Programs" },
-  { value: "LEADERSHIP_DEVELOPMENT", label: "Leadership Development" },
-  { value: "PRODUCT_DEVELOPMENT", label: "Product Development" },
-  { value: "RESEARCH_OPERATIONS", label: "Research Operations" },
-  { value: "RISK_MANAGEMENT", label: "Risk Management" },
-  { value: "PROCESS_IMPROVEMENT", label: "Process Improvement" },
-  { value: "COMMUNITY_ENGAGEMENT", label: "Community Engagement" },
-  { value: "SUSTAINABILITY", label: "Sustainability" },
-  { value: "PUBLICITY", label: "Publicity" },
-  { value: "MEDIA_RELATIONS", label: "Media Relations" },
+  { value: "BANKING_OPERATIONS", label: "Banking Operations" },
+  { value: "ACQUISITION_MANAGER", label: "Acquisition Manager" },
+  { value: "AREA_TERRITORY_MANAGER", label: "Area / Territory Manager" },
+  { value: "ASSET_OPERATIONS", label: "Asset Operations" },
+  { value: "ATM_OPERATIONS_MANAGER", label: "ATM Operations Manager" },
+  { value: "BACK_OFFICE_EXECUTIVE", label: "Back Office Executive" },
+  { value: "BANK_TELLER_CLERK", label: "Bank Teller / Clerk" },
+  { value: "BRANCH_MANAGER", label: "Branch Manager" },
+  { value: "BRANCH_OPERATIONS_MANAGER", label: "Branch Operations Manager" },
+  { value: "BUSINESS_CORRESPONDENT", label: "Business Correspondent" },
+  {
+    value: "CARD_OPERATIONS_EXECUTIVE",
+    label: "Card Operations Executive / Lead",
+  },
+  { value: "CASHIER", label: "Cashier" },
+  { value: "PERSONAL_BANKER", label: "Personal Banker" },
+  { value: "PHONE_BANKING_OFFICER", label: "Phone Banking Officer" },
+  { value: "REGIONAL_MANAGER", label: "Regional Manager" },
+  { value: "RELATIONSHIP_MANAGER", label: "Relationship Manager" },
+  { value: "SALES_OFFICER", label: "Sales Officer" },
+  { value: "BANKING_OPERATIONS_OTHER", label: "Banking Operations - Other" },
+  { value: "GENERAL_INSURANCE", label: "General Insurance" },
+  { value: "ACTUARIAL_ANALYST", label: "Actuarial Analyst" },
+  { value: "ACTUARIAL_MANAGER", label: "Actuarial Manager" },
+  { value: "AGENCY_MANAGER", label: "Agency Manager" },
+  { value: "BANCASSURANCE_MANAGER", label: "Bancassurance Manager" },
+  { value: "CLAIMS_EXECUTIVE", label: "Claims Executive" },
+  { value: "CLAIMS_MANAGER", label: "Claims Manager" },
+  { value: "INSURANCE_AGENT_ADVISOR", label: "Insurance Agent / Advisor" },
+  { value: "INSURANCE_ANALYST", label: "Insurance Analyst" },
+  {
+    value: "INSURANCE_OPERATIONS_EXECUTIVE",
+    label: "Insurance Operations Executive",
+  },
+  {
+    value: "INSURANCE_OPERATIONS_MANAGER",
+    label: "Insurance Operations Manager",
+  },
+  { value: "INSURANCE_SALES_MANAGER", label: "Insurance Sales / BD Manager" },
+  { value: "PRICING_MANAGER", label: "Pricing Manager" },
+  { value: "UNDERWRITER", label: "Underwriter" },
+  { value: "GENERAL_INSURANCE_OTHER", label: "General Insurance - Other" },
+  {
+    value: "INVESTMENT_BANKING_PE_VC",
+    label: "Investment Banking, Private Equity & VC",
+  },
+  { value: "HEDGE_FUND_MANAGER", label: "Hedge Fund Manager" },
+  { value: "INVESTMENT_BANKING_ANALYST", label: "Investment Banking Analyst" },
+  {
+    value: "INVESTMENT_BANKING_ASSOCIATE",
+    label: "Investment Banking Associate",
+  },
+  {
+    value: "PRINCIPAL_PARTNER_DIRECTOR",
+    label: "Principal / Partner / Director",
+  },
+  { value: "PRIVATE_EQUITY_ANALYST", label: "Private Equity Analyst" },
+  { value: "VENTURE_CAPITAL_INVESTOR", label: "Venture Capital Investor" },
+  {
+    value: "INVESTMENT_BANKING_OTHER",
+    label: "Investment Banking, Private Equity & VC - Other",
+  },
+  { value: "LENDING", label: "Lending" },
+  { value: "AGENCY_DEVELOPMENT_MANAGER", label: "Agency Development Manager" },
+  { value: "COLLECTION_MANAGER", label: "Collection / Recovery Manager" },
+  { value: "CREDIT_ANALYST", label: "Credit Analyst" },
+  { value: "CREDIT_MANAGER", label: "Credit Manager" },
+  { value: "LOAN_OFFICER", label: "Loan Officer" },
+  { value: "RISK_ANALYST", label: "Risk Analyst" },
+  { value: "RISK_MANAGER", label: "Risk Manager" },
+  { value: "SALES_MANAGER", label: "Sales Manager" },
+  { value: "LENDING_OTHER", label: "Lending - Other" },
+  { value: "LIFE_INSURANCE", label: "Life Insurance" },
+  { value: "CLAIMS_EXECUTIVE", label: "Claims Executive" },
+  { value: "INSURANCE_AGENT_ADVISOR", label: "Insurance Agent / Advisor" },
+  {
+    value: "INSURANCE_OPERATIONS_EXECUTIVE",
+    label: "Insurance Operations Executive",
+  },
+  { value: "PRICING_MANAGER", label: "Pricing Manager" },
+  { value: "UNDERWRITER", label: "Underwriter" },
+  { value: "LIFE_INSURANCE_OTHER", label: "Life Insurance - Other" },
+  {
+    value: "TRADING_ASSET_MANAGEMENT",
+    label: "Trading, Asset & Wealth Management",
+  },
+  { value: "FINANCIAL_ADVISOR", label: "Financial Advisor" },
+  { value: "PORTFOLIO_MANAGER", label: "Portfolio Manager" },
+  { value: "RESEARCH_ANALYST", label: "Research Analyst" },
+  { value: "STOCK_BROKER", label: "Stock Broker" },
+  { value: "WEALTH_MANAGER", label: "Wealth Manager" },
+  {
+    value: "TRADING_OTHER",
+    label: "Trading, Asset & Wealth Management - Other",
+  },
+  { value: "TREASURY_FOREX", label: "Treasury & Forex" },
+  { value: "FOREX_DEALER", label: "Forex Dealer" },
+  { value: "TREASURY_ANALYST", label: "Treasury Analyst" },
+  { value: "TREASURY_HEAD", label: "Treasury Head" },
+  { value: "TREASURY_OTHER", label: "Treasury & Forex - Other" },
+  { value: "CUSTOMER_SUCCESS", label: "Customer Success" },
+  { value: "DATA_ANALYST", label: "Data Analyst" },
+  { value: "HEAD_ANALYTICS", label: "Head - Analytics / BI" },
+  { value: "DATA_SCIENTIST", label: "Data Scientist" },
+  { value: "HARDWARE_ENGINEER", label: "Hardware Engineer" },
+  { value: "DEVOPS_ENGINEER", label: "DevOps Engineer" },
+  { value: "QA_ENGINEER", label: "Quality Assurance Engineer" },
+  { value: "SOFTWARE_DEVELOPER", label: "Software Developer" },
+  { value: "ACCOUNTANT", label: "Accountant" },
+  { value: "AUDITOR", label: "Auditor" },
+  { value: "FINANCIAL_ANALYST", label: "Financial Analyst" },
+  { value: "TREASURY_MANAGER", label: "Treasury Manager" },
+  { value: "FINANCE_OTHER", label: "Finance & Accounting - Other" },
 ];
 
 export const statusData = [

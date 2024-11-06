@@ -5,7 +5,7 @@ import SubmitButton from "@/components/FormInputs/SubmitButton";
 import TextAreaInput from "@/components/FormInputs/TextAreaInput";
 import TextInput from "@/components/FormInputs/TextInput";
 import ToggleInput from "@/components/FormInputs/ToggleInput";
-import { companiesData, domainsData, sectors, sectorsData } from "@/data";
+import { domainsData, sectorsData } from "@/data";
 import { makePostRequest } from "@/lib/apiRequest";
 import { fetcher } from "@/lib/fetcher";
 import { data } from "autoprefixer";
@@ -50,6 +50,7 @@ export default function JobForm({ updateData = {} }) {
   } = useForm({
     defaultValues: {
       ...updateData,
+      isActive: true,
     },
   });
   const isActive = watch("isActive");
@@ -110,7 +111,7 @@ export default function JobForm({ updateData = {} }) {
           errors={errors}
         />
         <SelectInput
-          label="Select Sector"
+          label="Sector"
           name="jobSector"
           register={register}
           errors={errors}
@@ -119,7 +120,7 @@ export default function JobForm({ updateData = {} }) {
         />
 
         <SelectInput
-          label="Select Domain"
+          label="Domain"
           name="jobDomain"
           register={register}
           errors={errors}
