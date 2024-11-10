@@ -6,12 +6,14 @@ import "rc-slider/assets/index.css";
 import { FaFilter } from "react-icons/fa"; // Import an icon from react-icons
 
 export default function FilterSection({ jobs, setFilteredJobs }) {
+  // Calculate min and max salary for dynamic salary range initialization
+  const minSalary = Math.min(...jobs.map((job) => job.jobSalary));
+  const maxSalary = Math.max(...jobs.map((job) => job.jobSalary));
   const [selectedSectors, setSelectedSectors] = useState([]);
   const [selectedDomains, setSelectedDomains] = useState([]);
-  // const [selectedCompanies, setSelectedCompanies] = useState([]); // Commented out
   const [selectedLocations, setSelectedLocations] = useState([]);
   const [searchSkills, setSearchSkills] = useState("");
-  const [salaryRange, setSalaryRange] = useState([0, 20]);
+  const [salaryRange, setSalaryRange] = useState([minSalary, maxSalary]);
   const [isFilterVisible, setIsFilterVisible] = useState(false); // State to manage filter visibility
 
   // Extract unique values for each filter category
@@ -29,15 +31,6 @@ export default function FilterSection({ jobs, setFilteredJobs }) {
       label: domain,
     }));
 
-  // const jobCompanies = [
-  //   ...new Set(jobs.map((job) => job?.jobCompany?.companyName)),
-  // ]
-  //   .sort()
-  //   .map((company) => ({
-  //     value: company,
-  //     label: company,
-  //   })); // Commented out
-
   const jobLocations = [...new Set(jobs.map((job) => job.jobLocation))]
     .sort()
     .map((location) => ({
@@ -53,11 +46,6 @@ export default function FilterSection({ jobs, setFilteredJobs }) {
       const domainMatch = selectedDomains.length
         ? selectedDomains.some((domain) => job.jobDomain === domain.value)
         : true;
-      // const companyMatch = selectedCompanies.length
-      //   ? selectedCompanies.some(
-      //       (company) => job?.jobCompany?.companyName === company.value
-      //     )
-      //   : true; // Commented out
       const locationMatch = selectedLocations.length
         ? selectedLocations.some(
             (location) => job.jobLocation === location.value
@@ -74,7 +62,6 @@ export default function FilterSection({ jobs, setFilteredJobs }) {
       return (
         sectorMatch &&
         domainMatch &&
-        // companyMatch && // Commented out
         locationMatch &&
         skillsMatch &&
         salaryMatch
@@ -140,17 +127,6 @@ export default function FilterSection({ jobs, setFilteredJobs }) {
             className="w-full rounded-xl dark:text-black"
           />
         </div>
-        {/* Commented out Companies filter */}
-        {/* <div className="mb-4">
-          <Select
-            isMulti
-            value={selectedCompanies}
-            onChange={setSelectedCompanies}
-            options={jobCompanies}
-            placeholder="Select Companies"
-            className="w-full rounded-xl dark:text-black"
-          />
-        </div> */}
         <div className="mb-4">
           <Select
             isMulti
@@ -171,7 +147,7 @@ export default function FilterSection({ jobs, setFilteredJobs }) {
           <Slider
             range
             min={0}
-            max={20}
+            max={maxSalary}
             step={1}
             value={salaryRange}
             onChange={(range) => setSalaryRange(range)}

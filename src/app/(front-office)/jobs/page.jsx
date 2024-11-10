@@ -7,6 +7,7 @@
 // import useSWR from "swr";
 
 // export default function Jobs() {
+//   const [filteredJobs, setFilteredJobs] = useState([]);
 //   const { data: jobs, error } = useSWR("/api/jobs", fetcher, {
 //     refreshInterval: 5000, // refetch data every 5 seconds
 //   }); // replace with your API endpoint
@@ -14,7 +15,6 @@
 //   if (error) return <div>Error loading jobs.</div>;
 //   if (!jobs) return <div>Loading...</div>;
 //   console.log(jobs);
-//   const [filteredJobs, setFilteredJobs] = useState([]);
 //   return (
 //     <div className="max-w-7xl mx-auto">
 //       {/* will contain 2 sections , left section will have different filters and right side will render the jobs on the basis of filters */}
@@ -55,7 +55,8 @@ export default function Jobs() {
   if (error) return <div>Error loading jobs.</div>;
   if (!jobs) return <div>Loading...</div>;
 
-  // console.log(jobs);
+  console.log("jobs", jobs);
+  console.log("filteredjobs", filteredJobs);
 
   return (
     <div className="max-w-7xl mx-auto">
