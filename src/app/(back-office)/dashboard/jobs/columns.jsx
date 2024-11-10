@@ -31,16 +31,26 @@ export const columns = [
     enableHiding: false,
   },
   {
-    accessorKey: "jobSector",
-    header: ({ column }) => <SortableColumn column={column} title="Sector" />,
+    accessorKey: "companyName",
+    header: ({ column }) => <SortableColumn column={column} title="Company" />,
   },
+  // {
+  //   accessorKey: "jobSector",
+  //   header: ({ column }) => <SortableColumn column={column} title="Sector" />,
+  // },
   {
     accessorKey: "jobDomain",
     header: ({ column }) => <SortableColumn column={column} title="Domain" />,
   },
   {
     accessorKey: "jobTitle",
-    header: ({ column }) => <SortableColumn column={column} title="Title" />,
+    header: ({ column }) => <SortableColumn column={column} title="Position" />,
+  },
+  {
+    accessorKey: "xsax",
+    header: ({ column }) => (
+      <SortableColumn column={column} title="Experience" />
+    ),
   },
   {
     accessorKey: "jobSalary",

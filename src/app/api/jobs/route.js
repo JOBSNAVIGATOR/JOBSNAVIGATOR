@@ -104,7 +104,7 @@ export async function GET(req) {
       where: isCandidate ? { isActive: true } : {}, // Apply isActive: true filter only if it is candidate
       include: {
         jobApplicants: true, // Include candidateProfile if it's related to user
-        // jobCompany: true,
+        jobCompany: true,
       },
     });
 

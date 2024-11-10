@@ -16,7 +16,64 @@ export default function Page() {
 
   if (error) return <div>Error loading jobs.</div>;
   if (!jobs) return <div>Loading...</div>;
-  // console.log(jobs);
+  console.log("jobs", jobs);
+
+  // Customize job data
+  const customizedJobData = jobs.map((job) => {
+    const {
+      id,
+      jobId,
+      jobTitle,
+      jobSector,
+      jobDomain,
+      jobLocation,
+      jobSalary,
+      jobVacancies,
+      jobVacanciesRemaining,
+      skillsRequired,
+      createdAt,
+      updatedAt,
+      consultantId,
+      isActive,
+      jobDescription,
+      jobApplicants,
+      jobCompany: {
+        companyDescription,
+        companyLogo,
+        companyName,
+        createdAt: companyCreatedAt,
+        id: companyId,
+        updatedAt: companyUpdatedAt,
+      },
+    } = job;
+
+    return {
+      id,
+      jobId,
+      jobTitle,
+      jobSector,
+      jobDomain,
+      jobLocation,
+      jobSalary,
+      jobVacancies,
+      jobVacanciesRemaining,
+      skillsRequired,
+      createdAt,
+      updatedAt,
+      consultantId,
+      isActive,
+      jobDescription,
+      jobApplicants,
+      companyId,
+      companyDescription,
+      companyLogo,
+      companyName,
+      companyCreatedAt,
+      companyUpdatedAt,
+    };
+  });
+
+  console.log("customized ", customizedJobData);
 
   return (
     <div>
@@ -33,7 +90,7 @@ export default function Page() {
       {/* table */}
       <div className="py-8">
         <DataTable
-          data={jobs}
+          data={customizedJobData}
           columns={columns}
           filterKeys={["jobSector", "jobDomain", "jobLocation"]}
         />
