@@ -430,3 +430,9 @@ export const statusData = [
   { value: "JoiningDate", label: "Joining Date" },
   { value: "Joined", label: "Joined" },
 ];
+
+export const genderData = [
+  { value: "MALE", label: "Male" },
+  { value: "FEMALE", label: "Female" },
+  { value: "OTHER", label: "Other" },
+];

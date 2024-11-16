@@ -93,11 +93,13 @@ model CandidateProfile {
 
 model ClientProfile {
   id                     String @id @default(auto()) @map("_id") @db.ObjectId
-  gender                 Gender
-  designation            String
-  company                String
-  currentJobLocation     String
   emergencyContactNumber String
+  gender                 Gender
+  sector                 String
+  domain                 String
+  company                String
+  designation            String
+  currentJobLocation     String
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @unique @db.ObjectId

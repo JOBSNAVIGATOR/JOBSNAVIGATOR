@@ -1,12 +1,12 @@
 import FormHeader from "@/components/backOffice/FormHeader";
-import ClientForm from "@/components/backOffice/forms/ClientForm";
+import ClientFormTwo from "@/components/backOffice/forms/ClientFormTwo";
 import React from "react";
 
 export default function page() {
   return (
     <div>
       <FormHeader title="New Client" />
-      <ClientForm />
+      <ClientFormTwo />
     </div>
   );
 }

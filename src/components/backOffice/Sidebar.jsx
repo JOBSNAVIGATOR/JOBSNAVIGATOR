@@ -124,6 +124,7 @@ export default function Sidebar({ showSideBar, setShowSideBar }) {
     { title: "Dashboard", href: "/dashboard", icon: PieChart },
     { title: "Jobs", href: "/dashboard/jobs", icon: Briefcase },
     { title: "Candidates", href: "/dashboard/candidates", icon: User2 },
+    { title: "Client", href: "/dashboard/clients", icon: User2 },
     { title: "Consultants", href: "/dashboard/consultants", icon: UserCog2 },
     { title: "Companies", href: "/dashboard/clientCompanies", icon: UserCheck },
   ];
