@@ -45,6 +45,7 @@ export default function Page() {
         id: companyId,
         updatedAt: companyUpdatedAt,
       },
+      clientSpoc,
     } = job;
 
     return {
@@ -70,6 +71,7 @@ export default function Page() {
       companyName,
       companyCreatedAt,
       companyUpdatedAt,
+      clientSpocName: clientSpoc?.user?.name.toUpperCase() || "N/A", // safely access clientSpoc.user.name
     };
   });
 

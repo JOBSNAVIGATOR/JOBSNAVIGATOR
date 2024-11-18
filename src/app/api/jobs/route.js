@@ -11,6 +11,7 @@ export async function POST(request) {
       jobSector,
       jobDomain,
       jobLocation,
+      clientId,
       jobSalary,
       jobVacancies,
       jobVacanciesRemaining,
@@ -23,6 +24,7 @@ export async function POST(request) {
       where: {
         jobTitle,
         jobCompany: { id: jobCompany }, // Correctly reference the company
+        clientSpoc: { id: clientId },
         jobLocation,
         jobSalary: parseFloat(jobSalary), // Ensure jobSalary is a Float
         jobSector,
@@ -56,6 +58,9 @@ export async function POST(request) {
         jobTitle,
         jobCompany: {
           connect: { id: jobCompany }, // Use connect to link with the Company
+        },
+        clientSpoc: {
+          connect: { id: clientId },
         },
         jobDescription,
         jobSector,
@@ -105,6 +110,7 @@ export async function GET(req) {
       include: {
         jobApplicants: true, // Include candidateProfile if it's related to user
         jobCompany: true,
+        clientSpoc: { include: { user: true } }, // Include user within clientSpoc if necessary
       },
     });
 

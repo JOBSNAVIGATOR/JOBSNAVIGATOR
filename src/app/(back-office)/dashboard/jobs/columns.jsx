@@ -34,10 +34,10 @@ export const columns = [
     accessorKey: "companyName",
     header: ({ column }) => <SortableColumn column={column} title="Company" />,
   },
-  // {
-  //   accessorKey: "jobSector",
-  //   header: ({ column }) => <SortableColumn column={column} title="Sector" />,
-  // },
+  {
+    accessorKey: "jobSector",
+    header: ({ column }) => <SortableColumn column={column} title="Sector" />,
+  },
   {
     accessorKey: "jobDomain",
     header: ({ column }) => <SortableColumn column={column} title="Domain" />,
@@ -59,6 +59,12 @@ export const columns = [
   {
     accessorKey: "jobLocation",
     header: ({ column }) => <SortableColumn column={column} title="Location" />,
+  },
+  {
+    accessorKey: "clientSpocName",
+    header: ({ column }) => (
+      <SortableColumn column={column} title="Client SPOC" />
+    ),
   },
   {
     accessorKey: "jobVacanciesRemaining",

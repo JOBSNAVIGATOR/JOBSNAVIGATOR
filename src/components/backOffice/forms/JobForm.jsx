@@ -26,11 +26,23 @@ export default function JobForm({ updateData = {} }) {
     refreshInterval: 5000, // refetch data every 5 seconds
   }); // replace with your API endpoint
 
+  const { data: clients, errorClients } = useSWR("/api/clients", fetcher, {
+    refreshInterval: 5000, // refetch data every 5 seconds
+  }); // replace with your API endpoint
+
   // Transform companies data for SelectInput
   const companyOptions = companies
     ? companies.map((company) => ({
         value: company.id, // Assuming 'id' is the unique identifier
         label: company.companyName, // Use 'companyName' as the label
+      }))
+    : [];
+
+  // Transform companies data for SelectInput
+  const clientOptions = clients
+    ? clients.map((client) => ({
+        value: client.id, // Assuming 'id' is the unique identifier
+        label: client.name, // Use 'companyName' as the label
       }))
     : [];
 
@@ -74,9 +86,9 @@ export default function JobForm({ updateData = {} }) {
       // console.log("Update Request:", data);
     } else {
       // make post request (create)
-      // console.log("2", data);
+      console.log("2", data);
       makePostRequest(setLoading, "api/jobs", data, "Jobs", reset);
-      router.back();
+      // router.back();
     }
   }
 
@@ -124,6 +136,15 @@ export default function JobForm({ updateData = {} }) {
           errors={errors}
           className="w-full"
           options={domains}
+        />
+
+        <SelectInput
+          label="Client SPOC"
+          name="clientId"
+          register={register}
+          errors={errors}
+          className="w-full"
+          options={clientOptions || []}
         />
 
         <TextInput
