@@ -1,15 +1,12 @@
 import db from "@/lib/db";
-import { generateCandidateCode } from "@/lib/generateCandidateCode";
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
 import base64url from "base64url";
-import { Resend } from "resend";
-import { EmailTemplateTwo } from "@/components/email-template-two";
 import { generateRandomPassword } from "@/lib/generateRandomPassword";
+import { generateClientCode } from "@/lib/generateClientCode";
 
 export async function POST(request) {
-  const resend = new Resend(process.env.RESEND_API_KEY);
   try {
     //extract the credentials
     const {
@@ -22,17 +19,16 @@ export async function POST(request) {
       domain,
       designation,
       currentCompany,
-      previousCompanyName,
-      currentJobLocation,
-      totalWorkingExperience,
       currentCtc,
-      degree,
-      collegeName,
-      graduationYear,
-      skills,
-      resume, // URL or file path to the resume
+      functionalArea,
+      dateOfJoining,
+      currentJobLocation,
     } = await request.json();
     //Check if the user Already exists in the db
+    console.log("heck1");
+
+    const modifiedDateOfJoining = new Date(dateOfJoining);
+
     const existingUser = await db.user.findUnique({
       where: {
         email,
@@ -65,35 +61,40 @@ export async function POST(request) {
         contactNumber,
         password: defaultPassword,
         hashedPassword,
-        role: "CANDIDATE",
+        role: "CLIENT",
         verificationToken: token,
       },
     });
 
-    // Send an email with the token on the link as a search param
-    const userId = newUser.id;
-    const linkText = "Verify Account";
-    const redirectUrl = `login?token=${token}&id=${userId}`;
-    const sendMail = await resend.emails.send({
-      from: "LifeEasyWay <info@lifeeasyway.com>",
-      to: email,
-      subject: "Account Verification from Auth System",
-      react: EmailTemplateTwo({ name, redirectUrl, linkText, defaultPassword }),
+    const sequenceNumber = (await db.clientProfile.count()) + 1;
+    console.log("chck2", sequenceNumber);
+
+    const companyData = await db.company.findUnique({
+      where: {
+        id: currentCompany,
+      },
     });
 
-    const sequenceNumber = (await db.candidateProfile.count()) + 1;
-    const candidateData = {
+    // console.log("check3", companyData);
+
+    const clientData = {
       id: newUser.id, // Use the new user's ID
-      name: newUser.name,
-      currentCtc,
+      dateOfJoining,
+      functionalArea,
       sector,
       domain,
+      currentCtc,
       currentJobLocation,
+      currentCompanyName: companyData.companyName,
+      designation,
     };
 
-    const candidateCode = generateCandidateCode(candidateData, sequenceNumber);
+    console.log("cehck5", clientData);
 
-    const newCandidateProfile = await db.candidateProfile.create({
+    const clientCode = generateClientCode(clientData, sequenceNumber);
+    console.log(clientCode);
+
+    const newClientProfile = await db.clientProfile.create({
       data: {
         gender,
         emergencyContactNumber,
@@ -101,32 +102,29 @@ export async function POST(request) {
         domain,
         currentCtc,
         designation,
-        currentCompany,
+        company: {
+          connect: { id: currentCompany }, // Use connect to link with the Company
+        },
         currentJobLocation,
-        totalWorkingExperience,
-        degree,
-        collegeName,
-        graduationYear,
-        previousCompanyName,
-        resume, // URL or file path to the resume
-        skills,
-        candidateCode, // Storing the generated candidate code
+        clientCode, // Storing the generated client code
+        dateOfJoining: modifiedDateOfJoining,
+        functionalArea,
         user: {
           connect: { id: newUser.id }, // Linking candidate profile to the existing user
         },
       },
     });
-    // console.log(newCandidateProfile);
+    console.log(newClientProfile);
 
     return NextResponse.json(
       {
-        data: newCandidateProfile,
+        data: newClientProfile,
         message: "Profile Created Successfully",
       },
       { status: 201 }
     );
   } catch (error) {
-    // console.log(error);
+    console.log(error);
     return NextResponse.json(
       {
         error,
@@ -140,34 +138,38 @@ export async function POST(request) {
 export async function GET(req) {
   try {
     // Fetch all candidates from the candidate profile
-    const candidates = await db.candidateProfile.findMany({
+    const clients = await db.clientProfile.findMany({
       include: {
         user: true, // Assuming you have a relation to the user model
+        company: true,
       },
     });
 
     // Map the data to include only the necessary fields
-    const formattedCandidates = candidates.map((candidate) => ({
-      id: candidate.id,
-      candidateCode: candidate.candidateCode,
-      name: candidate.user.name, // Assuming user has a name field
-      email: candidate.user.email, // Assuming user has an email field
-      contactNumber: candidate.contactNumber,
-      currentCtc: candidate.currentCtc,
-      currentJobLocation: candidate.currentJobLocation,
-      currentCompany: candidate.currentCompany,
-      resume: candidate.resume,
+    const formattedClients = clients.map((client) => ({
+      id: client.id,
+      clientCode: client.clientCode,
+      name: client.user.name, // Assuming user has a name field
+      email: client.user.email, // Assuming user has an email field
+      contactNumber: client.user.contactNumber,
+      currentCtc: client.currentCtc,
+      sector: client.sector,
+      domain: client.domain,
+      designation: client.designation,
+      functionalArea: client.functionalArea,
+      currentJobLocation: client.currentJobLocation,
+      currentCompany: client.company.companyName,
       // Include any other fields you need
     }));
 
-    return new Response(JSON.stringify(formattedCandidates), {
+    return new Response(JSON.stringify(formattedClients), {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
-    // console.error("Error fetching candidates:", error);
+    // console.error("Error fetching clients:", error);
     return new Response(
-      JSON.stringify({ message: "Failed to fetch candidates", error }),
+      JSON.stringify({ message: "Failed to fetch clients", error }),
       { status: 500 }
     );
   }

@@ -92,17 +92,25 @@ model CandidateProfile {
 }
 
 model ClientProfile {
-  id                     String @id @default(auto()) @map("_id") @db.ObjectId
+  id                     String   @id @default(auto()) @map("_id") @db.ObjectId
   emergencyContactNumber String
   gender                 Gender
   sector                 String
   domain                 String
-  company                String
   designation            String
   currentJobLocation     String
+  functionalArea         String
+  currentCtc             String
+  dateOfJoining          DateTime
+  clientCode             String
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @unique @db.ObjectId
+
+  company   Company? @relation(fields: [companyId], references: [id]) // Link to the Company model
+  companyId String?  @db.ObjectId
+
+  jobs Job[] // Relation to jobs associated with this client
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -114,7 +122,8 @@ model Company {
   companyDescription String? // Optional description about the company
   companyLogo        String? // Optional description about the company
 
-  jobs Job[] // Relation to jobs offered by the company
+  jobs    Job[] // Relation to jobs offered by the company
+  clients ClientProfile[] // Relation to clients associated with this company
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -138,6 +147,9 @@ model Job {
 
   jobCompany Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
   companyId  String  @db.ObjectId
+
+  clientSpoc   ClientProfile? @relation(fields: [clientSpocId], references: [id], onDelete: Cascade)
+  clientSpocId String?        @db.ObjectId // Field to link the Client Profile as SPOC for this job
 
   isActive Boolean @default(true)
 

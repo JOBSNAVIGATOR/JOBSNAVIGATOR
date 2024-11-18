@@ -9,9 +9,7 @@ import Link from "next/link";
 import DownloadCSV from "@/components/backOffice/DownloadCsv";
 
 export default function Page() {
-  // const jobs = await getData("jobs");
-
-  const { data, error } = useSWR("/api/candidates", fetcher, {
+  const { data, error } = useSWR("/api/clients", fetcher, {
     refreshInterval: 5000, // refetch data every 5 seconds
   }); // replace with your API endpoint
 
@@ -19,16 +17,16 @@ export default function Page() {
   if (!data) return <div>Loading...</div>;
   // console.log(data);
 
-  const cleanData = data.map((row) => {
-    const cleanedRow = {};
-    for (let key in row) {
-      // Exclude the 'resume' field
-      if (key !== "resume" && row[key] !== undefined && row[key] !== null) {
-        cleanedRow[key] = row[key];
-      }
-    }
-    return cleanedRow;
-  });
+  // const cleanData = data.map((row) => {
+  //   const cleanedRow = {};
+  //   for (let key in row) {
+  //     // Exclude the 'resume' field
+  //     if (key !== "resume" && row[key] !== undefined && row[key] !== null) {
+  //       cleanedRow[key] = row[key];
+  //     }
+  //   }
+  //   return cleanedRow;
+  // });
 
   return (
     <div>
@@ -48,7 +46,7 @@ export default function Page() {
             Add Client
           </button>
         </Link>
-        <DownloadCSV data={cleanData} fileName="clients" />
+        {/* <DownloadCSV data={cleanData} fileName="clients" /> */}
       </div>
 
       {/* table */}

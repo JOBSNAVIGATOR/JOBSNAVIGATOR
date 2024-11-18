@@ -5,10 +5,30 @@ import { makePostRequest, makePutRequest } from "@/lib/apiRequest";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { domainsData, genderData, sectorsData } from "@/data";
+import {
+  domainsData,
+  functionalAreaOptionsData,
+  genderData,
+  sectorsData,
+} from "@/data";
 import SelectInputThree from "@/components/FormInputs/SelectInputThree";
+import SelectInput from "@/components/FormInputs/SelectInput";
+import useSWR from "swr";
+import { fetcher } from "@/lib/fetcher";
 
 export default function ClientFormTwo({ updateData = {} }) {
+  const { data: companies, error } = useSWR("/api/companies", fetcher, {
+    refreshInterval: 5000, // refetch data every 5 seconds
+  }); // replace with your API endpoint
+
+  // Transform companies data for SelectInput
+  const companyOptions = companies
+    ? companies.map((company) => ({
+        value: company.id, // Assuming 'id' is the unique identifier
+        label: company.companyName, // Use 'companyName' as the label
+      }))
+    : [];
+
   const id = updateData?.candidateProfile?.id ?? "";
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -27,20 +47,14 @@ export default function ClientFormTwo({ updateData = {} }) {
   const genderOptions = genderData;
   const sectorOptions = sectorsData;
   const domainOptions = domainsData;
+  const functionalAreaOptions = functionalAreaOptionsData;
 
   async function onSubmit(data) {
     console.log(data);
 
     // make post request (create)
-    makePostRequest(
-      setLoading,
-      "api/candidates",
-      data,
-      "Candidate Profile",
-      reset
-    );
-    // setPdfUrl("");
-    router.push("/");
+    makePostRequest(setLoading, "api/clients", data, "Client Profile");
+    // router.push("/");
   }
 
   return (
@@ -108,16 +122,32 @@ export default function ClientFormTwo({ updateData = {} }) {
           className="w-full"
           options={domainOptions}
         />
-        <TextInput
-          label="Current Company"
+        <SelectInput
+          label="Company"
           name="currentCompany"
+          register={register}
+          errors={errors}
+          className="w-full"
+          options={companyOptions || []}
+        />
+        <SelectInput
+          label="Functional Area"
+          name="functionalArea"
+          register={register}
+          errors={errors}
+          className="w-full"
+          options={functionalAreaOptions || []}
+        />
+        <TextInput
+          label="Designation"
+          name="designation"
           register={register}
           errors={errors}
           className="w-full"
         />
         <TextInput
-          label="Designation"
-          name="designation"
+          label="Current CTC (LPA)"
+          name="currentCtc"
           register={register}
           errors={errors}
           className="w-full"
@@ -129,6 +159,16 @@ export default function ClientFormTwo({ updateData = {} }) {
           errors={errors}
           className="w-full"
         />
+        <TextInput
+          label="Date of Joining"
+          name="dateOfJoining"
+          type="date"
+          register={register}
+          errors={errors}
+          className="w-full"
+        />
+        <br />
+        <br />
         <br />
         <br />
         <br />

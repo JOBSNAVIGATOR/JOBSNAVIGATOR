@@ -436,3 +436,7 @@ export const genderData = [
   { value: "FEMALE", label: "Female" },
   { value: "OTHER", label: "Other" },
 ];
+export const functionalAreaOptionsData = [
+  { value: "HR-LDR", label: "HR Leader" },
+  { value: "BUS-LDR", label: "Bussiness Leader" },
+];
