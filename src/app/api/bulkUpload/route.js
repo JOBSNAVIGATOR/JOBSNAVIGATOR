@@ -15,6 +15,7 @@ export async function POST(request) {
   try {
     const formData = await request.formData();
     const file = formData.get("file"); // Uploaded CSV file
+    const initialSequenceNumber = (await db.candidateProfile.count()) + 1;
 
     if (!file) {
       return NextResponse.json(
@@ -79,7 +80,7 @@ export async function POST(request) {
       const token = base64url.encode(rawToken);
 
       // Generate a candidate code (assuming this function exists)
-      const sequenceNumber = usersToCreate.length + 1;
+      const sequenceNumber = initialSequenceNumber + index;
       const candidateData = {
         name,
         currentCtc,
