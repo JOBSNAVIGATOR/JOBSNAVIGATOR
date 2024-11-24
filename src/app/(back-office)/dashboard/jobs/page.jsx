@@ -22,7 +22,7 @@ export default function Page() {
         <AnimatedBoxes />
       </div>
     );
-  console.log("jobs", jobs);
+  // console.log("jobs", jobs);
 
   // Customize job data
   const customizedJobData = jobs.map((job) => {
@@ -81,7 +81,7 @@ export default function Page() {
     };
   });
 
-  console.log("customized ", customizedJobData);
+  // console.log("customized ", customizedJobData);
 
   return (
     <div>

@@ -25,7 +25,7 @@ export async function POST(request) {
       currentJobLocation,
     } = await request.json();
     //Check if the user Already exists in the db
-    console.log("heck1");
+    // console.log("heck1");
 
     const modifiedDateOfJoining = new Date(dateOfJoining);
 
@@ -67,7 +67,7 @@ export async function POST(request) {
     });
 
     const sequenceNumber = (await db.clientProfile.count()) + 1;
-    console.log("chck2", sequenceNumber);
+    // console.log("chck2", sequenceNumber);
 
     const companyData = await db.company.findUnique({
       where: {
@@ -89,10 +89,10 @@ export async function POST(request) {
       designation,
     };
 
-    console.log("cehck5", clientData);
+    // console.log("cehck5", clientData);
 
     const clientCode = generateClientCode(clientData, sequenceNumber);
-    console.log(clientCode);
+    // console.log(clientCode);
 
     const newClientProfile = await db.clientProfile.create({
       data: {
@@ -114,7 +114,7 @@ export async function POST(request) {
         },
       },
     });
-    console.log(newClientProfile);
+    // console.log(newClientProfile);
 
     return NextResponse.json(
       {
@@ -124,7 +124,7 @@ export async function POST(request) {
       { status: 201 }
     );
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return NextResponse.json(
       {
         error,

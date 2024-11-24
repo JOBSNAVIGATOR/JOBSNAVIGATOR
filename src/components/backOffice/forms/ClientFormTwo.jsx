@@ -50,7 +50,7 @@ export default function ClientFormTwo({ updateData = {} }) {
   const functionalAreaOptions = functionalAreaOptionsData;
 
   async function onSubmit(data) {
-    console.log(data);
+    // console.log(data);
 
     // make post request (create)
     makePostRequest(setLoading, "api/clients", data, "Client Profile");
