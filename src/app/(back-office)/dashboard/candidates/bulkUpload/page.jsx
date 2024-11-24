@@ -9,11 +9,19 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import SubmitButton from "@/components/FormInputs/SubmitButton";
 import { BottomGradient } from "@/components/ui/BottomGradient";
+import useSWR from "swr";
+import { fetcher } from "@/lib/fetcher";
 
 export default function Page() {
+  const { data, error } = useSWR("/api/bulkUpload", fetcher, {
+    refreshInterval: 5000, // refetch data every 5 seconds
+  }); // replace with your API endpoint
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [uploadedData, setUploadedData] = useState([]); // State to store uploaded data
+
+  if (error) return <div>Error loading candidates.</div>;
+  if (!data) return <div>Loading...</div>;
 
   const handleFileUpload = async (event) => {
     setLoading(true);
@@ -30,7 +38,7 @@ export default function Page() {
     });
 
     const data = await res.json();
-    // console.log(data);
+    console.log(data);
     if (data.success) {
       // Assuming the response contains the uploaded data in `data.candidates`
       setLoading(false);
@@ -42,7 +50,6 @@ export default function Page() {
       console.error("Error uploading file", data.message);
     }
   };
-  const data = {};
 
   return (
     <div className="mt-4 py-4">
@@ -53,7 +60,6 @@ export default function Page() {
           <X className="w-16 font-extrabold" />
         </button>
       </div>
-      {/* <FormHeader title="Bulk Upload" /> */}
 
       {/* Upper second section to upload data */}
       <form onSubmit={handleFileUpload} className="flex justify-between  ">
@@ -97,7 +103,7 @@ export default function Page() {
       {/* lower section to see the uploaded data */}
       {/* table */}
       <div className="py-8">
-        {/* <DataTable data={uploadedData} columns={columns} /> */}
+        <DataTable data={data} columns={columns} />
       </div>
     </div>
   );

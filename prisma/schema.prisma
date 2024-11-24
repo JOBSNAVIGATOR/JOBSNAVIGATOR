@@ -81,6 +81,7 @@ model CandidateProfile {
   resume                 String // URL or file path to the resume
   candidateCode          String
   skills                 String[]
+  bulkUpload             Boolean? @default(false)
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @unique @db.ObjectId
