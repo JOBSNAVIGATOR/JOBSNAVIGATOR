@@ -57,7 +57,11 @@ export default function Page() {
     }
   };
 
-  return (
+  return loading ? (
+    <div className="flex justify-center items-center h-screen">
+      <AnimatedBoxes />
+    </div>
+  ) : (
     <div className="mt-4 py-4">
       {/* Header */}
       <div>
