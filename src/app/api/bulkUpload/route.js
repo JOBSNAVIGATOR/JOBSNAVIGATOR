@@ -7,18 +7,14 @@ import { v4 as uuidv4 } from "uuid";
 import base64url from "base64url";
 import { Resend } from "resend";
 import fs from "fs"; // To read file stream
+import { generateRandomPassword } from "@/lib/generateRandomPassword";
 
 const db = new PrismaClient();
 const resend = new Resend(process.env.RESEND_API_KEY);
-
 export async function POST(request) {
   try {
-    // Get the uploaded CSV file from the request
     const formData = await request.formData();
-    console.log(formData);
-
-    const file = formData.get("file"); // The CSV file
-    console.log(file);
+    const file = formData.get("file"); // Uploaded CSV file
 
     if (!file) {
       return NextResponse.json(
@@ -27,50 +23,29 @@ export async function POST(request) {
       );
     }
 
-    const usersToCreate = [];
-    const candidateProfilesToCreate = [];
-
-    // Create a file stream from the CSV file
-    const fileStream = file.stream();
-    const chunks = [];
-
-    console.log("fileStream", fileStream);
-
-    // // Collect the file data in chunks
-    // fileStream.on("data", (chunk) => {
-    //   chunks.push(chunk);
-    // });
-
-    // console.log("chunks", chunks);
-
-    // // Wait for the file stream to finish
-    // await new Promise((resolve, reject) => {
-    //   fileStream.on("end", resolve);
-    //   fileStream.on("error", reject);
-    // });
-
-    // Convert the file to a buffer using the file stream
+    // Convert the file buffer into a CSV string
     const buffer = await file.arrayBuffer();
-
-    // Convert the file chunks to a string
-    // const csvData = Buffer.concat(chunks).toString();
     const csvData = Buffer.from(buffer).toString(); // Convert ArrayBuffer to string
 
-    // Parse the CSV data with PapaParse
+    // Parse the CSV data using PapaParse
     const { data, errors } = Papa.parse(csvData, {
-      header: true, // Treat the first row as headers
+      header: true, // Use first row as headers
       skipEmptyLines: true, // Skip empty lines
     });
 
     if (errors.length) {
-      console.error("CSV parsing errors:", errors);
       return NextResponse.json(
         { message: "Error parsing the CSV file", errors },
         { status: 400 }
       );
     }
 
-    // Process each row of CSV data
+    const usersToCreate = [];
+    const candidateProfilesToCreate = [];
+
+    // Map email to user ID for linking profiles
+    const emailToUserIdMap = new Map();
+
     data.forEach((row, index) => {
       const {
         name,
@@ -90,13 +65,16 @@ export async function POST(request) {
         collegeName,
         graduationYear,
         skills,
-        resume, // Assuming the resume is in URL format
+        resume,
       } = row;
 
-      const defaultPassword = generateRandomPassword();
-      const hashedPassword = bcrypt.hashSync(defaultPassword, 10); // Sync method for bulk processing
+      if (!name || !email || !contactNumber) {
+        throw new Error(`Missing required fields in row ${index + 1}`);
+      }
 
-      // Generate a verification token
+      const defaultPassword = generateRandomPassword();
+      const hashedPassword = bcrypt.hashSync(defaultPassword, 10); // Sync hashing for batch
+
       const rawToken = uuidv4();
       const token = base64url.encode(rawToken);
 
@@ -114,7 +92,7 @@ export async function POST(request) {
         sequenceNumber
       );
 
-      // Create user and candidate profile data
+      // Add user creation data
       usersToCreate.push({
         name,
         email,
@@ -125,6 +103,11 @@ export async function POST(request) {
         verificationToken: token,
       });
 
+      const skillsArray = skills
+        ? skills.split(",").map((skill) => skill.trim())
+        : [];
+
+      // Create candidate profile data
       candidateProfilesToCreate.push({
         gender,
         emergencyContactNumber,
@@ -140,13 +123,13 @@ export async function POST(request) {
         graduationYear,
         previousCompanyName,
         resume,
-        skills,
+        skills: skillsArray,
         candidateCode,
-        userEmail: email, // Temporary field for linking users later
+        email, // Temporarily store email for later mapping
       });
     });
 
-    // Insert the users and candidate profiles into the database
+    // Batch insert users into the database
     const createdUsers = await db.$transaction(
       usersToCreate.map((user) =>
         db.user.create({
@@ -155,27 +138,33 @@ export async function POST(request) {
       )
     );
 
-    // Link candidate profiles to the created users
-    const userByEmail = createdUsers.reduce(
-      (map, user) => ((map[user.email] = user.id), map),
-      {}
-    );
+    // Map emails to the created user IDs
+    createdUsers.forEach((user) => {
+      emailToUserIdMap.set(user.email, user.id);
+    });
 
+    // Batch insert candidate profiles into the database
     const createdProfiles = await db.$transaction(
-      candidateProfilesToCreate.map((profile) =>
-        db.candidateProfile.create({
+      candidateProfilesToCreate.map((profile) => {
+        const userId = emailToUserIdMap.get(profile.email); // Get corresponding userId
+        if (!userId) {
+          throw new Error(`No user found for email: ${profile.email}`);
+        }
+        const { email, ...profileData } = profile; // Remove email before passing to Prisma
+        return db.candidateProfile.create({
           data: {
-            ...profile,
+            ...profileData,
             user: {
-              connect: { id: userByEmail[profile.userEmail] },
+              connect: { id: userId }, // Link with the corresponding user
             },
           },
-        })
-      )
+        });
+      })
     );
 
     return NextResponse.json(
       {
+        success: true, // Add this field
         message: "Bulk upload successful",
         createdUsers,
         createdProfiles,
@@ -183,7 +172,7 @@ export async function POST(request) {
       { status: 201 }
     );
   } catch (error) {
-    // console.error("Error in bulk upload:", error);
+    console.error("Error in bulk upload:", error);
     return NextResponse.json(
       {
         message: "Server error during bulk upload",
