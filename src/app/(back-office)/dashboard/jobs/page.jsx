@@ -8,6 +8,7 @@ import { fetcher } from "@/lib/fetcher";
 import Link from "next/link";
 import DownloadCSV from "@/components/backOffice/DownloadCsv";
 import PageHeader from "@/components/backOffice/PageHeader";
+import AnimatedBoxes from "@/components/ui/AnimatedBoxes";
 
 export default function Page() {
   const { data: jobs, error } = useSWR("/api/jobs", fetcher, {
@@ -15,7 +16,12 @@ export default function Page() {
   }); // replace with your API endpoint
 
   if (error) return <div>Error loading jobs.</div>;
-  if (!jobs) return <div>Loading...</div>;
+  if (!jobs)
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <AnimatedBoxes />
+      </div>
+    );
   console.log("jobs", jobs);
 
   // Customize job data

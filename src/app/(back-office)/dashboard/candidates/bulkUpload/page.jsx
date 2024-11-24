@@ -11,6 +11,7 @@ import SubmitButton from "@/components/FormInputs/SubmitButton";
 import { BottomGradient } from "@/components/ui/BottomGradient";
 import useSWR from "swr";
 import { fetcher } from "@/lib/fetcher";
+import AnimatedBoxes from "@/components/ui/AnimatedBoxes";
 
 export default function Page() {
   const { data, error } = useSWR("/api/bulkUpload", fetcher, {
@@ -21,7 +22,12 @@ export default function Page() {
   const [uploadedData, setUploadedData] = useState([]); // State to store uploaded data
 
   if (error) return <div>Error loading candidates.</div>;
-  if (!data) return <div>Loading...</div>;
+  if (!data)
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <AnimatedBoxes />
+      </div>
+    );
 
   const handleFileUpload = async (event) => {
     setLoading(true);
@@ -38,7 +44,7 @@ export default function Page() {
     });
 
     const data = await res.json();
-    console.log(data);
+    // console.log(data);
     if (data.success) {
       // Assuming the response contains the uploaded data in `data.candidates`
       setLoading(false);

@@ -47,6 +47,7 @@ import { fetcher } from "@/lib/fetcher";
 import Link from "next/link";
 import DownloadCSV from "@/components/backOffice/DownloadCsv";
 import PageHeader from "@/components/backOffice/PageHeader";
+import AnimatedBoxes from "@/components/ui/AnimatedBoxes";
 
 export default function Page() {
   // const jobs = await getData("jobs");
@@ -56,7 +57,12 @@ export default function Page() {
   }); // replace with your API endpoint
 
   if (error) return <div>Error loading companies.</div>;
-  if (!data) return <div>Loading...</div>;
+  if (!data)
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <AnimatedBoxes />
+      </div>
+    );
 
   return (
     <div>

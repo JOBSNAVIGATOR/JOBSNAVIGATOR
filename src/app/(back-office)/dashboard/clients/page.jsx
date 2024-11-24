@@ -7,6 +7,7 @@ import useSWR from "swr";
 import { fetcher } from "@/lib/fetcher";
 import Link from "next/link";
 import DownloadCSV from "@/components/backOffice/DownloadCsv";
+import AnimatedBoxes from "@/components/ui/AnimatedBoxes";
 
 export default function Page() {
   const { data, error } = useSWR("/api/clients", fetcher, {
@@ -14,7 +15,12 @@ export default function Page() {
   }); // replace with your API endpoint
 
   if (error) return <div>Error loading clients.</div>;
-  if (!data) return <div>Loading...</div>;
+  if (!data)
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <AnimatedBoxes />
+      </div>
+    );
   // console.log(data);
 
   // const cleanData = data.map((row) => {
