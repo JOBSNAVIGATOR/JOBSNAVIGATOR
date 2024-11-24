@@ -64,9 +64,18 @@ export default function Page() {
   ) : (
     <div className="mt-4 py-4">
       {/* Header */}
-      <div>
-        <Heading title="Bulk Upload" />
-        <button className="fixed right-4 top-32 " onClick={() => router.back()}>
+
+      <Heading title="Bulk Upload" />
+
+      <div className="flex justify-between mb-4">
+        <a
+          href="/candidateFormat.csv" // Path to your static file in the public folder
+          download="candidateFormat.csv"
+          className=" text-gray-900 bg-gradient-to-r from-red-200 via-red-300 to-yellow-200 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400 rounded-lg text-md px-5 py-2.5 text-center me-2 font-bold "
+        >
+          Download Sample Format
+        </a>
+        <button className=" " onClick={() => router.back()}>
           <X className="w-16 font-extrabold" />
         </button>
       </div>
