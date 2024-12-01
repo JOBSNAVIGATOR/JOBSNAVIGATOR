@@ -34,102 +34,132 @@ export async function POST(request) {
       skipEmptyLines: true, // Skip empty lines
     });
 
+    // if (errors.length) {
+    //   return NextResponse.json(
+    //     { message: "Error parsing the CSV file", errors },
+    //     { status: 400 }
+    //   );
+    // }
     if (errors.length) {
       return NextResponse.json(
-        { message: "Error parsing the CSV file", errors },
+        {
+          message: "Error parsing the CSV file",
+          details: errors.map((err) => ({
+            row: err.row,
+            error: err.message,
+          })),
+        },
         { status: 400 }
       );
     }
 
     const usersToCreate = [];
     const candidateProfilesToCreate = [];
+    const failedRows = [];
 
     // Map email to user ID for linking profiles
     const emailToUserIdMap = new Map();
 
     data.forEach((row, index) => {
-      const {
-        name,
-        email,
-        contactNumber,
-        emergencyContactNumber,
-        gender,
-        sector,
-        domain,
-        designation,
-        currentCompany,
-        previousCompanyName,
-        currentJobLocation,
-        totalWorkingExperience,
-        currentCtc,
-        degree,
-        collegeName,
-        graduationYear,
-        skills,
-        resume,
-      } = row;
+      try {
+        const {
+          name,
+          email,
+          contactNumber,
+          emergencyContactNumber,
+          gender,
+          sector,
+          domain,
+          designation,
+          currentCompany,
+          previousCompanyName,
+          currentJobLocation,
+          totalWorkingExperience,
+          currentCtc,
+          degree,
+          collegeName,
+          graduationYear,
+          skills,
+          resume,
+        } = row;
 
-      if (!name || !email || !contactNumber) {
-        throw new Error(`Missing required fields in row ${index + 1}`);
+        if (!name || !email || !contactNumber) {
+          throw new Error(`Missing required fields in row ${index + 1}`);
+        }
+
+        const defaultPassword = generateRandomPassword();
+        const hashedPassword = bcrypt.hashSync(defaultPassword, 10); // Sync hashing for batch
+
+        const rawToken = uuidv4();
+        const token = base64url.encode(rawToken);
+
+        // Generate a candidate code (assuming this function exists)
+        const sequenceNumber = initialSequenceNumber + index;
+        const candidateData = {
+          name,
+          currentCtc,
+          sector,
+          domain,
+          currentJobLocation,
+        };
+        const candidateCode = generateCandidateCode(
+          candidateData,
+          sequenceNumber
+        );
+
+        // Add user creation data
+        usersToCreate.push({
+          name,
+          email,
+          contactNumber,
+          password: defaultPassword,
+          hashedPassword,
+          role: "CANDIDATE",
+          verificationToken: token,
+        });
+
+        const skillsArray = skills
+          ? skills.split(",").map((skill) => skill.trim())
+          : [];
+
+        // Create candidate profile data
+        candidateProfilesToCreate.push({
+          gender: gender || null,
+          emergencyContactNumber: emergencyContactNumber || null,
+          sector,
+          domain,
+          currentCtc,
+          designation: designation || null,
+          currentCompany: currentCompany || null,
+          currentJobLocation: currentJobLocation || null,
+          totalWorkingExperience: totalWorkingExperience || null,
+          degree: degree || null,
+          collegeName: collegeName || null,
+          graduationYear: graduationYear || null,
+          previousCompanyName: previousCompanyName || null,
+          resume: resume || null,
+          skills: skillsArray,
+          candidateCode: candidateCode || null,
+          bulkUpload: true,
+          email, // Temporarily store email for later mapping
+        });
+      } catch (err) {
+        failedRows.push({
+          row: index + 1,
+          error: err.message,
+        });
       }
-
-      const defaultPassword = generateRandomPassword();
-      const hashedPassword = bcrypt.hashSync(defaultPassword, 10); // Sync hashing for batch
-
-      const rawToken = uuidv4();
-      const token = base64url.encode(rawToken);
-
-      // Generate a candidate code (assuming this function exists)
-      const sequenceNumber = initialSequenceNumber + index;
-      const candidateData = {
-        name,
-        currentCtc,
-        sector,
-        domain,
-        currentJobLocation,
-      };
-      const candidateCode = generateCandidateCode(
-        candidateData,
-        sequenceNumber
-      );
-
-      // Add user creation data
-      usersToCreate.push({
-        name,
-        email,
-        contactNumber,
-        password: defaultPassword,
-        hashedPassword,
-        role: "CANDIDATE",
-        verificationToken: token,
-      });
-
-      const skillsArray = skills
-        ? skills.split(",").map((skill) => skill.trim())
-        : [];
-
-      // Create candidate profile data
-      candidateProfilesToCreate.push({
-        gender,
-        emergencyContactNumber,
-        sector,
-        domain,
-        currentCtc,
-        designation,
-        currentCompany,
-        currentJobLocation,
-        totalWorkingExperience,
-        degree,
-        collegeName,
-        graduationYear,
-        previousCompanyName,
-        resume,
-        skills: skillsArray,
-        candidateCode,
-        bulkUpload: true,
-        email, // Temporarily store email for later mapping
-      });
     });
+
+    if (failedRows.length > 0) {
+      return NextResponse.json(
+        {
+          message: "Some rows failed during validation",
+          failedRows,
+        },
+        { status: 400 }
+      );
+    }
 
     // Batch insert users into the database
     const createdUsers = await db.$transaction(
@@ -177,8 +207,8 @@ export async function POST(request) {
     console.error("Error in bulk upload:", error);
     return NextResponse.json(
       {
-        message: "Server error during bulk upload",
-        error,
+        message: `Server error during bulk upload ${error.message}`,
+        error: error.message,
       },
       { status: 500 }
     );

@@ -65,21 +65,21 @@ model ConsultantProfile {
 
 model CandidateProfile {
   id                     String   @id @default(auto()) @map("_id") @db.ObjectId
-  gender                 Gender
-  emergencyContactNumber String
+  gender                 Gender?
+  emergencyContactNumber String?
   sector                 String
   domain                 String
   currentCtc             String
-  designation            String
-  currentCompany         String
-  currentJobLocation     String
+  designation            String?
+  currentCompany         String?
+  currentJobLocation     String?
   totalWorkingExperience String
-  degree                 String
-  collegeName            String
-  graduationYear         String
-  previousCompanyName    String
-  resume                 String // URL or file path to the resume
-  candidateCode          String
+  degree                 String?
+  collegeName            String?
+  graduationYear         String?
+  previousCompanyName    String?
+  resume                 String? // URL or file path to the resume
+  candidateCode          String?
   skills                 String[]
   bulkUpload             Boolean? @default(false)
 

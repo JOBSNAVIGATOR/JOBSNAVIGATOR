@@ -21,7 +21,17 @@ export default function Page() {
   const [loading, setLoading] = useState(false);
   const [uploadedData, setUploadedData] = useState([]); // State to store uploaded data
 
-  if (error) return <div>Error loading candidates.</div>;
+  // if (error) return <div>Error loading candidates.</div>;
+
+  if (error)
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <p className="text-red-500 font-bold">
+          {error.message ||
+            "An unexpected error occurred while loading candidates."}
+        </p>
+      </div>
+    );
   if (!data)
     return (
       <div className="flex justify-center items-center h-screen">
@@ -29,13 +39,29 @@ export default function Page() {
       </div>
     );
 
+  if (data.length === 0) {
+    return (
+      <div className="mt-4 py-4">
+        <Heading title="Bulk Upload" />
+        <p className="text-center text-gray-500">
+          No candidates uploaded yet. Please upload a file.
+        </p>
+      </div>
+    );
+  }
+
   const handleFileUpload = async (event) => {
-    setLoading(true);
     event.preventDefault();
-    const formData = new FormData();
     const fileInput = event.target.elements.file;
     const file = fileInput.files[0];
 
+    if (!file || file.type !== "text/csv") {
+      toast.error("Please upload a valid .csv file.");
+      return;
+    }
+
+    setLoading(true);
+    const formData = new FormData();
     formData.append("file", file);
 
     const res = await fetch("/api/bulkUpload", {
@@ -52,7 +78,11 @@ export default function Page() {
       setUploadedData(data.candidates); // Update the state with uploaded candidate data
     } else {
       setLoading(false);
-      toast.error("Some Error has Occurred");
+      toast.error(
+        `Error: ${
+          data.message || "An unknown error occurred during file upload."
+        }`
+      );
       console.error("Error uploading file", data.message);
     }
   };
