@@ -58,7 +58,11 @@ export default function Page() {
 
       {/* table */}
       <div className="py-8">
-        <DataTable data={data} columns={columns} />
+        <DataTable
+          data={data}
+          columns={columns}
+          filterKeys={["name", "email", "currentJobLocation", "currentCompany"]}
+        />
       </div>
     </div>
   );
