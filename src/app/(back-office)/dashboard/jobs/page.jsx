@@ -29,6 +29,7 @@ export default function Page() {
     const {
       id,
       jobId,
+      jobCode,
       jobTitle,
       jobSector,
       jobDomain,
@@ -57,6 +58,7 @@ export default function Page() {
     return {
       id,
       jobId,
+      jobCode,
       jobTitle,
       jobSector,
       jobDomain,

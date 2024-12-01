@@ -88,7 +88,7 @@ export default function JobForm({ updateData = {} }) {
       // make post request (create)
       console.log("2", data);
       makePostRequest(setLoading, "api/jobs", data, "Jobs", reset);
-      // router.back();
+      router.back();
     }
   }
 

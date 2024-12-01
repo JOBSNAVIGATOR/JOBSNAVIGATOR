@@ -95,6 +95,7 @@ import {
   Book,
   Briefcase,
   LogOut,
+  Mail,
   Newspaper,
   PieChart,
   User2,
@@ -126,15 +127,20 @@ export default function Sidebar({ showSideBar, setShowSideBar }) {
     { title: "Candidates", href: "/dashboard/candidates", icon: User2 },
     { title: "Client", href: "/dashboard/clients", icon: User2 },
     { title: "Consultants", href: "/dashboard/consultants", icon: UserCog2 },
+    // {
+    //   title: "Email Templates",
+    //   href: "/dashboard/mailTemplates",
+    //   icon: Mail,
+    // },
     { title: "Companies", href: "/dashboard/clientCompanies", icon: UserCheck },
   ];
 
   // Conditionally remove the "Consultants" item if the user is a CONSULTANT
-  if (userRole === "CONSULTANT") {
-    sideNavMenuItems = sideNavMenuItems.filter(
-      (item) => item.title !== "Consultants"
-    );
-  }
+  // if (userRole === "CONSULTANT") {
+  //   sideNavMenuItems = sideNavMenuItems.filter(
+  //     (item) => item.title !== "Consultants"
+  //   );
+  // }
 
   async function handleLogout() {
     // Handle the logout logic here

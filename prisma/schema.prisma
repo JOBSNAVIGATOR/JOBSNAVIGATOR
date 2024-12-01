@@ -138,6 +138,7 @@ model Job {
   jobDomain             String
   jobDescription        String
   jobSalary             Float // Salary in LPA
+  jobCode               String?
   skillsRequired        String[] // Array of skills
   jobLocation           String
   jobVacancies          Int

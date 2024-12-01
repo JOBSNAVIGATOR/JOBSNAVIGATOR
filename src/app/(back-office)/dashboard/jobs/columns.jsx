@@ -31,6 +31,10 @@ export const columns = [
     enableHiding: false,
   },
   {
+    accessorKey: "jobCode",
+    header: ({ column }) => <SortableColumn column={column} title="Code" />,
+  },
+  {
     accessorKey: "companyName",
     header: ({ column }) => <SortableColumn column={column} title="Company" />,
   },

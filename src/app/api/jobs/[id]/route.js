@@ -1,4 +1,5 @@
 import db from "@/lib/db";
+import { generateNewJobCode } from "@/lib/generateNewJobCode";
 import { NextResponse } from "next/server";
 
 export async function GET(request, { params: { id } }) {
@@ -44,6 +45,7 @@ export async function PUT(request) {
   try {
     const {
       id,
+      jobCode,
       jobTitle,
       jobCompany,
       jobDescription,
@@ -83,6 +85,29 @@ export async function PUT(request) {
     });
     // console.log(userProfile);
 
+    // Skip the sector, as we will replace it // Skip the domain initials, as we will replace it // Skip the level, as we will replace it // Skip the location initials, as we will replace it
+    const [
+      jobSectorPart,
+      jobDomainPart,
+      jobLevelPart,
+      jobLocationPart,
+      vacanciesPart,
+      datePart,
+      sequencePart,
+    ] = jobCode.split("-");
+
+    const jobData = {
+      jobSector,
+      jobDomain,
+      jobSalary,
+      jobLocation,
+      vacanciesInt,
+    };
+    const updatedCodePart = generateNewJobCode(jobData);
+
+    // // Rebuild the jobCode using updated sector, domain, level, location,vacancies and fixed part
+    const updatedJobCode = `${updatedCodePart}-${datePart}-${sequencePart}`;
+
     const updatedJob = await db.job.update({
       where: {
         id,
@@ -98,6 +123,7 @@ export async function PUT(request) {
         jobLocation,
         jobSalary: parseFloat(jobSalary),
         jobVacancies: vacanciesInt,
+        jobCode: updatedJobCode,
         jobVacanciesRemaining: vacanciesRemainingInt,
         postedBy: {
           connect: { id: userProfile.consultantProfile.id }, // Use connect to link with the Company

@@ -1,4 +1,5 @@
 import db from "@/lib/db";
+import { generateJobCode } from "@/lib/generateJobCode";
 import { NextResponse } from "next/server";
 
 export async function POST(request) {
@@ -46,6 +47,28 @@ export async function POST(request) {
     const vacanciesInt = parseInt(jobVacancies, 10);
     const vacanciesRemainingInt = parseInt(jobVacanciesRemaining, 10);
 
+    const sequenceNumber = (await db.job.count()) + 1;
+    // console.log("chck2", sequenceNumber);
+
+    const companyData = await db.company.findUnique({
+      where: {
+        id: jobCompany,
+      },
+    });
+
+    const jobData = {
+      jobSector,
+      jobDomain,
+      jobSalary,
+      jobLocation,
+      vacanciesInt,
+    };
+
+    console.log("cehck5", jobData);
+
+    const jobCodeCreated = generateJobCode(jobData, sequenceNumber);
+    console.log(jobCodeCreated);
+
     // Fetch the User Profile using the User ID
     const userProfile = await db.user.findUnique({
       where: { id: postedBy },
@@ -67,6 +90,7 @@ export async function POST(request) {
         jobDomain,
         jobLocation,
         jobSalary: parseFloat(jobSalary),
+        jobCode: jobCodeCreated,
         jobVacancies: vacanciesInt,
         jobVacanciesRemaining: vacanciesRemainingInt,
         postedBy: {
