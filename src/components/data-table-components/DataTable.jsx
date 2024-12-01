@@ -24,6 +24,7 @@ import {
 import { useState } from "react";
 import DataTablePagination from "./DataTablePagination";
 import DataTableToolbar from "./DataTableToolbar";
+import DownloadCSV from "../backOffice/DownloadCsv";
 
 // export default function DataTable({ columns, data, filterKeys = ["title"] }) {
 export default function DataTable({ columns, data, filterKeys = [] }) {
@@ -53,9 +54,33 @@ export default function DataTable({ columns, data, filterKeys = [] }) {
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
+  const selectedData = table.getSelectedRowModel().rows.map((row, index) => {
+    const { id, original } = row; // Destructure the row object to get 'id' and 'original'
+    const {
+      candidateCode,
+      name,
+      email,
+      currentCompany,
+      currentJobLocation,
+      currentCtc,
+    } = original; // Destructure the 'original' object to extract the desired fields
+    return {
+      srNo: index + 1, // Add serial number starting from 1
+      candidateCode,
+      name,
+      email,
+      currentCompany,
+      currentJobLocation,
+      currentCtc,
+    };
+  });
+  console.log(selectedData);
 
   return (
     <div className="space-y-4">
+      <div className="flex justify-end">
+        <DownloadCSV data={selectedData} fileName="candidates" />
+      </div>
       {/* Contain filter and view */}
       <DataTableToolbar table={table} filterKeys={filterKeys} />
       {/* contain Actual Table */}

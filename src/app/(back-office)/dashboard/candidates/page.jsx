@@ -6,7 +6,6 @@ import Heading from "@/components/backOffice/Heading";
 import useSWR from "swr";
 import { fetcher } from "@/lib/fetcher";
 import Link from "next/link";
-import DownloadCSV from "@/components/backOffice/DownloadCsv";
 import AnimatedBoxes from "@/components/ui/AnimatedBoxes";
 
 export default function Page() {
@@ -24,17 +23,6 @@ export default function Page() {
       </div>
     );
   // console.log(data);
-
-  // Clean the data to remove noise
-  // const cleanData = data.map((row) => {
-  //   const cleanedRow = {};
-  //   for (let key in row) {
-  //     if (row[key] !== undefined && row[key] !== null) {
-  //       cleanedRow[key] = row[key];
-  //     }
-  //   }
-  //   return cleanedRow;
-  // });
 
   const cleanData = data.map((row) => {
     const cleanedRow = {};
@@ -65,7 +53,7 @@ export default function Page() {
             Add Candidate
           </button>
         </Link>
-        <DownloadCSV data={cleanData} fileName="candidates" />
+        {/* <DownloadCSV data={cleanData} fileName="candidates" /> */}
       </div>
 
       {/* table */}
