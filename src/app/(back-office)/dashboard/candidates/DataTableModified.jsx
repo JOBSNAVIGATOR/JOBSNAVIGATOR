@@ -22,12 +22,13 @@ import {
 } from "@/components/ui/table";
 
 import { useState } from "react";
-import DataTablePagination from "./DataTablePagination";
-import DataTableToolbar from "./DataTableToolbar";
-import DownloadCSV from "../backOffice/DownloadCsv";
+import DownloadCSV from "@/components/backOffice/DownloadCsv";
+import DataTableToolbar from "@/components/data-table-components/DataTableToolbar";
+import DataTablePagination from "@/components/data-table-components/DataTablePagination";
+import SendMailButton from "@/components/ui/SendMailButton";
 
 // export default function DataTable({ columns, data, filterKeys = ["title"] }) {
-export default function DataTable({ columns, data, filterKeys = [] }) {
+export default function DataTableModified({ columns, data, filterKeys = [] }) {
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState({});
   const [columnFilters, setColumnFilters] = useState([]);
@@ -54,9 +55,41 @@ export default function DataTable({ columns, data, filterKeys = [] }) {
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
+  const selectedDataCsv = table.getSelectedRowModel().rows.map((row, index) => {
+    const { id, original } = row; // Destructure the row object to get 'id' and 'original'
+    const {
+      candidateCode,
+      name,
+      email,
+      currentCompany,
+      currentJobLocation,
+      currentCtc,
+    } = original; // Destructure the 'original' object to extract the desired fields
+    return {
+      srNo: index + 1, // Add serial number starting from 1
+      candidateCode,
+      name,
+      email,
+      currentCompany,
+      currentJobLocation,
+      currentCtc,
+    };
+  });
+  const selectedDataMail = table
+    .getSelectedRowModel()
+    .rows.map((row, index) => {
+      const { id, original } = row; // Destructure the row object to get 'id' and 'original'
+      // const candidates = original; // Destructure the 'original' object to extract the desired fields
+      return original;
+    });
+  console.log(selectedDataMail);
 
   return (
     <div className="space-y-4">
+      <div className="flex justify-end gap-4">
+        <DownloadCSV data={selectedDataCsv} fileName="candidates" />
+        <SendMailButton data={selectedDataMail} />
+      </div>
       {/* Contain filter and view */}
       <DataTableToolbar table={table} filterKeys={filterKeys} />
       {/* contain Actual Table */}
