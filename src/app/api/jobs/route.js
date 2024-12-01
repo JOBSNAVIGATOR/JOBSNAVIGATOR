@@ -64,10 +64,10 @@ export async function POST(request) {
       vacanciesInt,
     };
 
-    console.log("cehck5", jobData);
+    // console.log("cehck5", jobData);
 
     const jobCodeCreated = generateJobCode(jobData, sequenceNumber);
-    console.log(jobCodeCreated);
+    // console.log(jobCodeCreated);
 
     // Fetch the User Profile using the User ID
     const userProfile = await db.user.findUnique({

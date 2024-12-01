@@ -19,7 +19,7 @@ export function generateNewJobCode(jobData, sequenceNumber = "") {
 
   // Combine all parts to generate the client code
   const jobCode = `${sector}-${domain}-${level}-${locationInitials}-${vacancy}`;
-  console.log("job code", jobCode);
+  // console.log("job code", jobCode);
 
   return jobCode;
 }

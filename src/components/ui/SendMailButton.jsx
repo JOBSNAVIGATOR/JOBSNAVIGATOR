@@ -3,14 +3,14 @@ import React, { useState } from "react";
 import { BottomGradient } from "./BottomGradient";
 
 export default function SendMailButton({ data }) {
-  console.log("test11", data);
+  // console.log("test11", data);
 
   const [loading, setLoading] = useState(false);
   const handleSendEmails = async () => {
     try {
       // const response = await axios.post("/api/emails", { candidates });
       // alert(response.data.message);
-      console.log(data);
+      // console.log(data);
 
       makePostRequest(
         setLoading,

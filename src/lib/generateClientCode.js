@@ -38,7 +38,7 @@ export function generateClientCode(clientData, sequenceNumber = "") {
 
   // Combine all parts to generate the client code
   const clientCode = `${prefix} ${sequence} ${joiningDateStr} ${functionalArea} ${domain} ${level} ${locationInitials} ${sector} ${companyName} ${designation}`;
-  console.log("client code", clientCode);
+  // console.log("client code", clientCode);
 
   return clientCode;
 }

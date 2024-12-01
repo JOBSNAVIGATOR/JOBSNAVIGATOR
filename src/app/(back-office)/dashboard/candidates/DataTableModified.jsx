@@ -82,7 +82,7 @@ export default function DataTableModified({ columns, data, filterKeys = [] }) {
       // const candidates = original; // Destructure the 'original' object to extract the desired fields
       return original;
     });
-  console.log(selectedDataMail);
+  // console.log(selectedDataMail);
 
   return (
     <div className="space-y-4">
