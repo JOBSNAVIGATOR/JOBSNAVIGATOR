@@ -37,7 +37,7 @@ export default async function page({ params: { id } }) {
 
   return (
     <div className="flex flex-col">
-      <FormHeader title="Edit Consultant" />
+      <FormHeader title="Edit Candidate" />
       <div className="max-w-4xl p-4 mx-auto"></div>
       {/* Pass specificDetails and updateData (if it exists) to Candidate */}
       <CandidateForm user={specificDetails} updateData={updateData} />
