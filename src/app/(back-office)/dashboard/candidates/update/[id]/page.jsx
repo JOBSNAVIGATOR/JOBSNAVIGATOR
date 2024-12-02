@@ -1,9 +1,6 @@
 import FormHeader from "@/components/backOffice/FormHeader";
-import ConsultantForm from "@/components/backOffice/forms/ConsultantForm";
-import Heading from "@/components/backOffice/Heading";
 import CandidateForm from "@/components/frontOffice/CandidateForm";
 import db from "@/lib/db";
-import { getData } from "@/lib/getData";
 import React from "react";
 
 export default async function page({ params: { id } }) {
