@@ -317,9 +317,9 @@ export async function POST(request) {
                 create: {
                   gender: gender || null,
                   emergencyContactNumber: emergencyContactNumber || null,
-                  sector,
-                  domain,
-                  currentCtc,
+                  sector: sector || null,
+                  domain: domain || null,
+                  currentCtc: currentCtc || null,
                   designation: designation || null,
                   currentCompany: currentCompany || null,
                   currentJobLocation: currentJobLocation || null,
