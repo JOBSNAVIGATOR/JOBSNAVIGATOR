@@ -67,13 +67,13 @@ model CandidateProfile {
   id                     String   @id @default(auto()) @map("_id") @db.ObjectId
   gender                 Gender?
   emergencyContactNumber String?
-  sector                 String
-  domain                 String
-  currentCtc             String
+  sector                 String?
+  domain                 String?
+  currentCtc             String?
   designation            String?
   currentCompany         String?
   currentJobLocation     String?
-  totalWorkingExperience String
+  totalWorkingExperience String?
   degree                 String?
   collegeName            String?
   graduationYear         String?
