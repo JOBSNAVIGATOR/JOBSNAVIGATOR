@@ -2,8 +2,9 @@ import React, { useRef, useState, useEffect } from "react";
 import Quill from "quill";
 import "quill/dist/quill.snow.css";
 import { BottomGradient } from "../ui/BottomGradient";
+import SendMailButton from "../ui/SendMailButton";
 
-const EmailEditor = ({ templates, onSend }) => {
+const EmailEditor = ({ templates, data = {} }) => {
   const quillRef = useRef(null);
   const editorContainerRef = useRef(null); // To track the editor DOM
   const [selectedTemplate, setSelectedTemplate] = useState("");
@@ -17,7 +18,7 @@ const EmailEditor = ({ templates, onSend }) => {
       theme: "snow",
       modules: {
         toolbar: [
-          [{ header: [1, 2, false] }],
+          [{ header: [1, 2, 3, 4, false] }],
           ["bold", "italic", "underline", "strike"],
           [{ list: "ordered" }, { list: "bullet" }],
           ["link", "image"],
@@ -41,10 +42,10 @@ const EmailEditor = ({ templates, onSend }) => {
     setSelectedTemplate(template || { content: "" });
   };
 
-  const handleSend = () => {
-    const emailContent = quillRef.current.root.innerHTML; // Get HTML content
-    onSend({ subject, content: emailContent });
-  };
+  // const handleSend = () => {
+  //   const emailContent = quillRef.current.root.innerHTML; // Get HTML content
+  //   onSend({ subject, content: emailContent });
+  // };
 
   return (
     <div className="">
@@ -82,14 +83,15 @@ const EmailEditor = ({ templates, onSend }) => {
           Update Template
           <BottomGradient />
         </button>
-        <button
+        {/* <button
           type="submit"
           // onClick={handleSendEmails}
           className="bg-gradient-to-br relative group/btn from-black dark:from-lime-200 dark:to-lime-900 to-neutral-600 block dark:bg-zinc-800 w-80 font-bold text-white dark:text-slate-900 rounded-xl h-10 shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
         >
           Send Mail
           <BottomGradient />
-        </button>
+        </button> */}
+        <SendMailButton />
       </div>
 
       {/* Subject */}
@@ -120,7 +122,7 @@ const EmailEditor = ({ templates, onSend }) => {
                     disabled:cursor-not-allowed disabled:opacity-50
                     dark:shadow-[0px_0px_1px_1px_var(--neutral-700)]
                     group-hover/input:shadow-none transition duration-400"
-        style={{ height: "300px" }}
+        style={{ height: "400px", marginTop: "20px" }}
       ></div>
     </div>
   );

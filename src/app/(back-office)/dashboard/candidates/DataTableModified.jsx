@@ -26,6 +26,10 @@ import DownloadCSV from "@/components/backOffice/DownloadCsv";
 import DataTableToolbar from "@/components/data-table-components/DataTableToolbar";
 import DataTablePagination from "@/components/data-table-components/DataTablePagination";
 import SendMailButton from "@/components/ui/SendMailButton";
+import Link from "next/link";
+import { BottomGradient } from "@/components/ui/BottomGradient";
+import { useCandidates } from "@/context/CandidatesContext";
+import { useRouter } from "next/navigation";
 
 // export default function DataTable({ columns, data, filterKeys = ["title"] }) {
 export default function DataTableModified({ columns, data, filterKeys = [] }) {
@@ -33,6 +37,8 @@ export default function DataTableModified({ columns, data, filterKeys = [] }) {
   const [columnVisibility, setColumnVisibility] = useState({});
   const [columnFilters, setColumnFilters] = useState([]);
   const [sorting, setSorting] = useState([]);
+  const { selectedCandidates, setSelectedCandidates } = useCandidates();
+  const router = useRouter();
 
   const table = useReactTable({
     data,
@@ -83,12 +89,22 @@ export default function DataTableModified({ columns, data, filterKeys = [] }) {
       return original;
     });
   // console.log(selectedDataMail);
+  const handleSendMail = () => {
+    setSelectedCandidates(selectedDataMail);
+    router.push("/dashboard/mails");
+  };
 
   return (
     <div className="space-y-4">
       <div className="flex justify-end gap-4">
         <DownloadCSV data={selectedDataCsv} fileName="candidates" />
-        <SendMailButton data={selectedDataMail} />
+        <button
+          onClick={handleSendMail}
+          className="bg-gradient-to-br relative group/btn from-black dark:from-lime-200 dark:to-lime-900 to-neutral-600 block dark:bg-zinc-800 w-80 font-bold text-white dark:text-slate-900 rounded-xl h-10 shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
+        >
+          Send Mail
+          <BottomGradient />
+        </button>
       </div>
       {/* Contain filter and view */}
       <DataTableToolbar table={table} filterKeys={filterKeys} />
