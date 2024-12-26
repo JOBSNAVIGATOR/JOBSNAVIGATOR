@@ -167,3 +167,12 @@ model JobApplicant {
   jobId            String           @db.ObjectId
   status           String // Status of the application (e.g., "Applied", "Interviewed", "Selected", etc.)
 }
+
+model EmailTemplate {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String   @unique // Template name
+  subject   String //Template Subject
+  content   String // HTML content of the template
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

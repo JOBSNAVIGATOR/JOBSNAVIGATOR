@@ -8,10 +8,6 @@ export default function SendMailButton({ data }) {
   const [loading, setLoading] = useState(false);
   const handleSendEmails = async () => {
     try {
-      // const response = await axios.post("/api/emails", { candidates });
-      // alert(response.data.message);
-      // console.log(data);
-
       makePostRequest(
         setLoading,
         "api/newJobMail",
@@ -23,24 +19,6 @@ export default function SendMailButton({ data }) {
       console.error(error);
     }
   };
-
-  //   const handleSendEmails = async () => {
-  //     setLoading(true);
-  //     try {
-  //       const response = await makePostRequest(
-  //         setLoading,
-  //         "/api/newJobMail",
-  //         data,
-  //         "Bulk Upload"
-  //       );
-  //       alert(response.message || "Emails sent successfully!");
-  //     } catch (error) {
-  //       console.error("Error:", error);
-  //       alert("Error sending emails. Please try again.");
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
   return (
     <div className="sm:col-span-1">
       {loading ? (

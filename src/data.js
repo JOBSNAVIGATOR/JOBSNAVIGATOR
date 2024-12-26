@@ -440,3 +440,15 @@ export const functionalAreaOptionsData = [
   { value: "HR-LDR", label: "HR Leader" },
   { value: "BUS-LDR", label: "Bussiness Leader" },
 ];
+export const templates = [
+  {
+    id: "1",
+    name: "Welcome Email",
+    content: "<p>Welcome to our service!</p>",
+  },
+  {
+    id: "2",
+    name: "Password Reset",
+    content: "<p>Click <a href='#'>here</a> to reset your password.</p>",
+  },
+];
