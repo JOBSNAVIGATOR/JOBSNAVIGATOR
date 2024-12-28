@@ -73,11 +73,25 @@ export async function POST(req) {
 export async function PUT(req) {
   try {
     const body = await req.json(); // Parse request body
-    const { name, subject, content } = body;
+    const { id, name, subject, content } = body;
+    const template = await db.emailTemplate.findUnique({
+      where: {
+        id,
+      },
+    });
+    if (!template) {
+      return NextResponse.json(
+        {
+          data: null,
+          message: "No Template Found, Please Create One",
+        },
+        { status: 404 }
+      );
+    }
 
     // Update an existing email template
     const updatedTemplate = await db.emailTemplate.update({
-      where: { name },
+      where: { id },
       data: { subject, content },
     });
 
