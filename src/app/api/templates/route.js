@@ -5,7 +5,7 @@ export async function GET(req) {
     // Fetch all candidates from the candidate profile
     const templates = await db.emailTemplate.findMany();
     return NextResponse.json(
-      { success: true, data: templates },
+      { success: true, templatesData: templates },
       { status: 200 }
     );
   } catch (error) {
