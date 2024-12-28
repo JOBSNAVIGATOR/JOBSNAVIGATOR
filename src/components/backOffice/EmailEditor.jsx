@@ -12,13 +12,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { makePostRequest } from "@/lib/apiRequest";
+import { makePostRequest, makePutRequest } from "@/lib/apiRequest";
 
 const EmailEditor = ({ templates, data = {} }) => {
   const quillRef = useRef(null);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [templateName, setTemplateName] = useState("");
+  const [updateTemplateName, setUpdateTemplateName] = useState("");
   const editorContainerRef = useRef(null); // To track the editor DOM
   const [selectedTemplate, setSelectedTemplate] = useState("");
   const [subject, setSubject] = useState("");
@@ -52,7 +53,15 @@ const EmailEditor = ({ templates, data = {} }) => {
     const template = templates.find(
       (template) => template.id === e.target.value
     );
-    setSelectedTemplate(template || { content: "" });
+    // setSelectedTemplate(template || { content: "" });
+    if (template) {
+      setSelectedTemplate(template);
+      setSubject(template.subject); // Auto-fill the subject field
+      setUpdateTemplateName(template.name);
+    } else {
+      setSelectedTemplate({ content: "" });
+      setSubject(""); // Clear the subject field if no template is selected
+    }
   };
 
   async function handleSaveTemplate() {
@@ -62,16 +71,31 @@ const EmailEditor = ({ templates, data = {} }) => {
       alert("Please provide subject Content template Name.");
       return;
     }
-    console.log("hey2", subject, content, templateName);
 
     const data = {
       name: templateName, // Assuming `name` is the template name
       subject,
       content,
     };
-    console.log("data3", data);
     makePostRequest(setLoading, "api/templates", data, "Email Template");
     setOpen(false);
+  }
+
+  async function handleUpdateTemplate() {
+    const content = quillRef.current.root.innerHTML; // Get editor content
+
+    if (!subject || !content) {
+      alert("Please provide subject Content template Name.");
+      return;
+    }
+
+    const data = {
+      name: updateTemplateName, // Assuming `name` is the template name
+      subject,
+      content,
+    };
+    console.log(data);
+    makePutRequest(setLoading, "api/templates", data, "Email Template");
   }
 
   return (
@@ -85,12 +109,6 @@ const EmailEditor = ({ templates, data = {} }) => {
               onChange={handleTemplateChange}
               className="bg-gradient-to-br relative group/btn from-black dark:from-lime-200 dark:to-lime-900 to-neutral-600 block dark:bg-zinc-800 w-80 font-bold text-black dark:text-white  rounded-xl h-10 shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
             >
-              {/* <option value="">-- Select --</option>
-              {templates.map((template) => (
-                <option key={template.id} value={template.id}>
-                  {template.name}
-                </option>
-              ))} */}
               <option value="">-- Select --</option>
               {templates.length ? (
                 templates.map((template) => (
@@ -181,14 +199,14 @@ const EmailEditor = ({ templates, data = {} }) => {
         {/* Update Template */}
         <button
           type="submit"
-          // onClick={handleSendEmails}
+          onClick={handleUpdateTemplate}
           className="bg-gradient-to-br relative group/btn from-black dark:from-lime-200 dark:to-lime-900 to-neutral-600 block dark:bg-zinc-800 w-80 font-bold text-white dark:text-slate-900 rounded-xl h-10 shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
         >
           Update Template
           <BottomGradient />
         </button>
         {/* Send Mail */}
-        <SendMailButton />
+        <SendMailButton data={data} />
       </div>
 
       {/* Subject */}
@@ -213,12 +231,7 @@ const EmailEditor = ({ templates, data = {} }) => {
       <div
         id="editor"
         ref={editorContainerRef}
-        className="flex w-full border-none bg-gray-100 dark:bg-zinc-600 text-black dark:text-white shadow-input rounded-xl px-3 py-2 text-sm file:border-0 file:bg-transparent 
-                    file:text-sm file:font-medium dark:placeholder:text-neutral-300 dark:placeholder-text-neutral-600 
-                    focus-visible:outline-none focus-visible:ring-[2px] focus-visible:ring-neutral-400 dark:focus-visible:ring-neutral-600
-                    disabled:cursor-not-allowed disabled:opacity-50
-                    dark:shadow-[0px_0px_1px_1px_var(--neutral-700)]
-                    group-hover/input:shadow-none transition duration-400"
+        className="flex w-full border-none bg-gray-100 dark:bg-zinc-600 text-black dark:text-white shadow-input rounded-xl px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium dark:placeholder:text-neutral-300 dark:placeholder-text-neutral-600  focus-visible:outline-none focus-visible:ring-[2px] focus-visible:ring-neutral-400 dark:focus-visible:ring-neutral-600 disabled:cursor-not-allowed disabled:opacity-50 dark:shadow-[0px_0px_1px_1px_var(--neutral-700)] group-hover/input:shadow-none transition duration-400"
         style={{ height: "400px", marginTop: "20px" }}
       ></div>
     </div>

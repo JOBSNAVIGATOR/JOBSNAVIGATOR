@@ -26,6 +26,23 @@ export async function POST(req) {
     const body = await req.json(); // Parse request body
     const { name, subject, content } = body;
 
+    const existingTemplate = await db.emailTemplate.findFirst({
+      where: {
+        name,
+        subject,
+        content,
+      },
+    });
+    if (existingTemplate) {
+      return NextResponse.json(
+        {
+          data: null,
+          message: `Template with these details already exists in the Database`,
+        },
+        { status: 409 }
+      );
+    }
+
     // Create a new email template
     const newTemplate = await db.emailTemplate.create({
       data: { name, subject, content },
@@ -44,7 +61,8 @@ export async function POST(req) {
     return NextResponse.json(
       {
         success: false,
-        message: "Failed to create template",
+        message:
+          "Failed to create template, Due to Unique Template Name Constraint",
         error: error.message,
       },
       { status: 500 }
@@ -55,12 +73,12 @@ export async function POST(req) {
 export async function PUT(req) {
   try {
     const body = await req.json(); // Parse request body
-    const { id, name, subject, content } = body;
+    const { name, subject, content } = body;
 
     // Update an existing email template
     const updatedTemplate = await db.emailTemplate.update({
-      where: { id },
-      data: { name, subject, content },
+      where: { name },
+      data: { subject, content },
     });
 
     return NextResponse.json(

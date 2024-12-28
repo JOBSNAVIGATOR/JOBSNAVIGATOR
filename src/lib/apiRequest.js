@@ -23,10 +23,11 @@ export async function makePostRequest(
       reset();
     } else {
       setLoading(false);
+      const errorData = await response.json(); // Extract response body
       if (response.status === 409) {
-        toast.error("Some Error has Occurred");
+        toast.error(errorData.message || `Duplicate ${resourceName} Found`);
       } else {
-        toast.error("Something Went wrong");
+        toast.error(errorData.message || "Something Went Wrong");
       }
     }
   } catch (error) {
