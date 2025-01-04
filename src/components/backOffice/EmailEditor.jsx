@@ -1,7 +1,5 @@
 "use client";
 import React, { useRef, useState, useEffect } from "react";
-import Quill from "quill";
-import "quill/dist/quill.snow.css";
 import { BottomGradient } from "../ui/BottomGradient";
 import SendMailButton from "../ui/SendMailButton";
 import {
@@ -18,8 +16,13 @@ import Swal from "sweetalert2";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
+import { EditorContent, useEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import Link from "@tiptap/extension-link";
+import Image from "@tiptap/extension-image";
+
 const EmailEditor = ({ templates, data = {} }) => {
-  const quillRef = useRef(null);
+  // const quillRef = useRef(null);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [templateName, setTemplateName] = useState("");
@@ -30,30 +33,23 @@ const EmailEditor = ({ templates, data = {} }) => {
   const [subject, setSubject] = useState("");
   const router = useRouter();
 
-  // Initialize Quill.js only once
-  useEffect(() => {
-    if (quillRef.current) return; // Prevent multiple initializations
-
-    quillRef.current = new Quill(editorContainerRef.current, {
-      theme: "snow",
-      modules: {
-        toolbar: [
-          [{ header: [1, 2, 3, 4, false] }],
-          ["bold", "italic", "underline", "strike"],
-          [{ list: "ordered" }, { list: "bullet" }],
-          ["link", "image"],
-          ["clean"],
-        ],
+  // Initialize Tiptap editor
+  const editor = useEditor({
+    extensions: [StarterKit, Link, Image.configure({ inline: true })],
+    editorProps: {
+      attributes: {
+        class:
+          "prose prose-sm sm:prose-base lg:prose-lg xl:prose-2xl m-5 focus:outline-none h-[400px]",
       },
-    });
-  }, []);
+    },
+    content: "",
+  });
 
-  // Update editor content when a new template is selected
   useEffect(() => {
-    if (selectedTemplate && quillRef.current) {
-      quillRef.current.root.innerHTML = selectedTemplate.content;
+    if (selectedTemplate && editor) {
+      editor.commands.setContent(selectedTemplate.content || "");
     }
-  }, [selectedTemplate]);
+  }, [selectedTemplate, editor]);
 
   const handleTemplateChange = (e) => {
     const template = templates.find(
@@ -72,26 +68,26 @@ const EmailEditor = ({ templates, data = {} }) => {
   };
 
   async function handleSaveTemplate() {
-    const content = quillRef.current.root.innerHTML; // Get editor content
+    // const content = quillRef.current.root.innerHTML; // Get editor content
 
-    if (!subject || !content || !templateName) {
-      alert("Please provide subject Content template Name.");
+    if (!subject || !editor?.getHTML() || !templateName) {
+      alert("Please provide subject ,Content, template Name.");
       return;
     }
 
     const data = {
       name: templateName, // Assuming `name` is the template name
       subject,
-      content,
+      content: editor.getHTML(),
     };
     makePostRequest(setLoading, "api/templates", data, "Email Template");
     setOpen(false);
   }
 
   async function handleUpdateTemplate() {
-    const content = quillRef.current.root.innerHTML; // Get editor content
+    // const content = quillRef.current.root.innerHTML; // Get editor content
 
-    if (!subject || !content) {
+    if (!subject || !editor?.getHTML()) {
       alert("Please provide subject Content template Name.");
       return;
     }
@@ -100,7 +96,7 @@ const EmailEditor = ({ templates, data = {} }) => {
       id: updateTemplateId,
       name: updateTemplateName, // Assuming `name` is the template name
       subject,
-      content,
+      content: editor.getHTML(),
     };
     console.log(data);
 
@@ -187,6 +183,7 @@ const EmailEditor = ({ templates, data = {} }) => {
             </select>
           </label>
         </div>
+        {/* save delete update send buttons */}
         <div className="grid grid-cols-2 gap-4">
           {/* Save Template */}
           <Dialog open={open} onOpenChange={setOpen}>
@@ -333,12 +330,10 @@ const EmailEditor = ({ templates, data = {} }) => {
       </div>
 
       {/* Editor */}
-      <div
-        id="editor"
-        ref={editorContainerRef}
-        className="flex w-full border-none bg-gray-100 dark:bg-zinc-600 text-black dark:text-white shadow-input rounded-xl px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium dark:placeholder:text-neutral-300 dark:placeholder-text-neutral-600  focus-visible:outline-none focus-visible:ring-[2px] focus-visible:ring-neutral-400 dark:focus-visible:ring-neutral-600 disabled:cursor-not-allowed disabled:opacity-50 dark:shadow-[0px_0px_1px_1px_var(--neutral-700)] group-hover/input:shadow-none transition duration-400"
-        style={{ height: "400px", marginTop: "20px" }}
-      ></div>
+      <EditorContent
+        editor={editor}
+        className="flex p-16 w-full h-full border-none bg-gray-100 dark:bg-zinc-600 text-black dark:text-white shadow-input rounded-xl px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-transparent"
+      />
     </div>
   );
 };
