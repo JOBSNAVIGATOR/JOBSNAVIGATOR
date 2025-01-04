@@ -14,7 +14,7 @@ export default function Layout({ children }) {
       <div className="min-h-screen p-4 sm:ml-64 mt-20 bg-slate-300 dark:bg-transparent">
         {children}
       </div>
-      <div className="p-4 sm:ml-64 mt-16 ">
+      <div className="p-4 sm:ml-64 mt-0 ">
         <DeveloperFooter />
       </div>
     </div>

@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { BottomGradient } from "../ui/BottomGradient";
 import SendMailButton from "../ui/SendMailButton";
 import {
@@ -20,6 +20,7 @@ import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
 import Image from "@tiptap/extension-image";
+import MenuBar from "./MenuBar";
 
 const EmailEditor = ({ templates, data = {} }) => {
   // const quillRef = useRef(null);
@@ -28,7 +29,6 @@ const EmailEditor = ({ templates, data = {} }) => {
   const [templateName, setTemplateName] = useState("");
   const [updateTemplateName, setUpdateTemplateName] = useState("");
   const [updateTemplateId, setUpdateTemplateId] = useState("");
-  const editorContainerRef = useRef(null); // To track the editor DOM
   const [selectedTemplate, setSelectedTemplate] = useState("");
   const [subject, setSubject] = useState("");
   const router = useRouter();
@@ -328,11 +328,12 @@ const EmailEditor = ({ templates, data = {} }) => {
           />
         </label>
       </div>
-
+      {/* Menubar */}
+      <MenuBar editor={editor} />
       {/* Editor */}
       <EditorContent
         editor={editor}
-        className="flex p-16 w-full h-full border-none bg-gray-100 dark:bg-zinc-600 text-black dark:text-white shadow-input rounded-xl px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-transparent"
+        className="flex p-16 mt-8 w-full h-full border-none bg-gray-100 dark:bg-zinc-600 text-black dark:text-white shadow-input rounded-xl px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-transparent"
       />
     </div>
   );
