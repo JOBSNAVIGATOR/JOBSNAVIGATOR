@@ -88,6 +88,16 @@ model CandidateProfile {
 
   jobs JobApplicant[] // Array of jobs the candidate has applied for with status
 
+  // New communication status fields
+  mailSent         Boolean   @default(false) // To track if the email was sent
+  mailSentDate     DateTime? // To store the date when the email was sent
+  mailSubject      String? // To store the subject of the email sent
+  mailTemplateName String? // To store the name of the email template used
+  mailSender       String? // To store the name of the email Sender
+
+  // Relation to the CandidateTag join model
+  candidateTags CandidateTag[] // Many-to-many relation through the join model
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -112,6 +122,12 @@ model ClientProfile {
   companyId String?  @db.ObjectId
 
   jobs Job[] // Relation to jobs associated with this client
+
+  // New communication status fields for the client
+  mailSent         Boolean   @default(false) // To track if the email was sent
+  mailSentDate     DateTime? // To store the date when the email was sent
+  mailSubject      String? // To store the subject of the email sent
+  mailTemplateName String? // To store the name of the email template used
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -173,6 +189,32 @@ model EmailTemplate {
   name      String   @unique // Template name
   subject   String //Template Subject
   content   String // HTML content of the template
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Tag {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  name        String  @unique // Name of the tag (e.g., "Urgent", "Experienced", etc.)
+  description String? // Optional description of the tag
+  createdBy   String? // Optionally store the creator's ID
+
+  // Relation to the CandidateTag join model
+  candidateTags CandidateTag[] // Many-to-many relation through the join model
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CandidateTag {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  candidateId String @db.ObjectId
+  tagId       String @db.ObjectId
+
+  // Set up the relations
+  candidate CandidateProfile @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  tag       Tag              @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

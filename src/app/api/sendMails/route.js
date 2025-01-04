@@ -1,3 +1,4 @@
+import db from "@/lib/db";
 import createTransporter from "@/lib/email"; // Import the transporter function
 
 // Helper function to replace specific placeholders
@@ -41,6 +42,27 @@ export async function POST(request) {
   try {
     // Wait for all email promises to resolve
     await Promise.all(emailPromises);
+
+    // Update the mail status for each candidate in the database
+    const updatePromises = candidates.map((candidate) => {
+      const personalizedSubject = replacePlaceholders(subject, candidate);
+      // Get the current UTC time
+      const utcDate = new Date();
+      return db.candidateProfile.update({
+        where: { id: candidate.id }, // Assuming candidate has an 'id'
+        data: {
+          mailSent: true,
+          mailSentDate: new Date(utcDate.getTime() + 5.5 * 60 * 60 * 1000), // Set the current date and time when email was sent
+          mailSubject: personalizedSubject,
+          mailTemplateName: templateName,
+          mailSender: userName, // Name of the person sending the email
+        },
+      });
+    });
+
+    // Wait for all candidate updates to complete
+    await Promise.all(updatePromises);
+
     return new Response(
       JSON.stringify({ message: "Bulk emails sent successfully!" }),
       { status: 200 }
