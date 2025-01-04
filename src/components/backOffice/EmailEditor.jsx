@@ -26,6 +26,7 @@ const EmailEditor = ({ templates, data = {} }) => {
   // const quillRef = useRef(null);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
   const [templateName, setTemplateName] = useState("");
   const [updateTemplateName, setUpdateTemplateName] = useState("");
   const [updateTemplateId, setUpdateTemplateId] = useState("");
@@ -123,7 +124,7 @@ const EmailEditor = ({ templates, data = {} }) => {
 
   async function handleTemplateDelete() {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-    setLoading(true);
+    setDeleteLoading(true);
 
     try {
       const result = await Swal.fire({
@@ -155,9 +156,10 @@ const EmailEditor = ({ templates, data = {} }) => {
     } catch (error) {
       toast.error(`An error occurred: ${error.message}`);
     } finally {
-      setLoading(false);
+      setDeleteLoading(false);
     }
   }
+  // console.log("test1", editor?.getHTML());
 
   return (
     <div className="">
@@ -261,7 +263,7 @@ const EmailEditor = ({ templates, data = {} }) => {
           </Dialog>
           {/* Delete Template */}
           <div className="">
-            {loading ? (
+            {deleteLoading ? (
               <button
                 disabled
                 type="button"
@@ -307,7 +309,12 @@ const EmailEditor = ({ templates, data = {} }) => {
             <BottomGradient />
           </button>
           {/* Send Mail */}
-          <SendMailButton data={data} />
+          <SendMailButton
+            data={data}
+            templateName={updateTemplateName}
+            subject={subject}
+            content={editor?.getHTML() || ""}
+          />
         </div>
       </div>
 
@@ -333,7 +340,7 @@ const EmailEditor = ({ templates, data = {} }) => {
       {/* Editor */}
       <EditorContent
         editor={editor}
-        className="flex p-16 mt-8 w-full h-full border-none bg-gray-100 dark:bg-zinc-600 text-black dark:text-white shadow-input rounded-xl px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-transparent"
+        className="flex p-16 mt-8 w-full h-full border-none bg-gray-100 dark:bg-zinc-600 text-black dark:text-white shadow-input rounded-xl px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-transparent overflow-y-auto"
       />
     </div>
   );

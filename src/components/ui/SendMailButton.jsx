@@ -1,5 +1,4 @@
 "use client";
-import { makePostRequest } from "@/lib/apiRequest";
 import React, { useEffect, useState } from "react";
 import { BottomGradient } from "./BottomGradient";
 import {
@@ -10,13 +9,28 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import AnimatedBoxes from "./AnimatedBoxes";
+import { useSession } from "next-auth/react";
+import toast from "react-hot-toast";
 
-export default function SendMailButton({ data }) {
+export default function SendMailButton({
+  data,
+  templateName,
+  subject,
+  content,
+}) {
   // console.log("test11", data);
 
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [selectedReceivers, setSelectedReceivers] = useState([]);
+
+  const { data: session, status } = useSession();
+  if (status === "loading") {
+    // <Loading />;
+    <AnimatedBoxes />;
+  }
+  const userName = session?.user?.name;
 
   // Initialize all receivers as selected by default
   useEffect(() => {
@@ -35,12 +49,49 @@ export default function SendMailButton({ data }) {
 
   const handleSendEmails = async () => {
     try {
-      makePostRequest(
-        setLoading,
-        "api/newJobMail",
-        { candidates: data },
-        "Bulk Mail"
+      // Prepare the updatedData by filtering the selected receivers
+      const updatedData = data.filter((item) =>
+        selectedReceivers.includes(item.id)
       );
+      // console.log("data", data);
+      // console.log("receivers", selectedReceivers);
+      // console.log("updatedData", updatedData);
+      // Create the payload
+      const payload = {
+        templateName,
+        subject,
+        content,
+        userName,
+        candidates: updatedData, // Send only the selected receivers
+      };
+      // console.log("payload", payload);
+      try {
+        setLoading(true);
+        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+        const response = await fetch(`${baseUrl}/api/sendMails`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
+        if (response.ok) {
+          setLoading(false);
+          toast.success(`Bulk Mail Sent Successfully`);
+          reset();
+        } else {
+          setLoading(false);
+          const errorData = await response.json(); // Extract response body
+          if (response.status === 409) {
+            toast.error(errorData.message || `Duplicate Error`);
+          } else {
+            toast.error(errorData.message || "Something Went Wrong");
+          }
+        }
+      } catch (error) {
+        setLoading(false);
+        // console.log(error);
+      }
     } catch (error) {
       alert("Error sending bulk emails");
       console.error(error);
@@ -133,7 +184,12 @@ export default function SendMailButton({ data }) {
                 <button
                   type="submit"
                   onClick={handleSendEmails}
-                  className="bg-gradient-to-br relative group/btn from-blue-700 dark:from-blue-600 dark:to-blue-200 to-blue-900 block dark:bg-zinc-800 w-80 font-bold text-white dark:text-slate-900 rounded-xl h-10 shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
+                  className={`bg-gradient-to-br relative group/btn ${
+                    data.length === 0
+                      ? "opacity-500 cursor-not-allowed from-blue-700 dark:from-blue-600 dark:to-blue-200 to-blue-900"
+                      : "from-blue-700 dark:from-blue-600 dark:to-blue-200 to-blue-900"
+                  } block dark:bg-zinc-800 w-80 font-bold text-white dark:text-slate-900 rounded-xl h-10 shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]`}
+                  disabled={data.length === 0}
                 >
                   Send Mail
                   <BottomGradient />
