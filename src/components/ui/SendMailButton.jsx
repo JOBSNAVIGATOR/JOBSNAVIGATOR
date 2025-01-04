@@ -77,6 +77,7 @@ export default function SendMailButton({
         });
         if (response.ok) {
           setLoading(false);
+          setOpen(false);
           toast.success(`Bulk Mail Sent Successfully`);
           reset();
         } else {

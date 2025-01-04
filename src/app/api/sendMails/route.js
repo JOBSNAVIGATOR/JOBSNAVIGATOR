@@ -1,5 +1,12 @@
 import createTransporter from "@/lib/email"; // Import the transporter function
 
+// Helper function to replace specific placeholders
+function replacePlaceholders(template, candidate) {
+  return template
+    .replace(/{{name}}/g, candidate.name || "")
+    .replace(/{{code}}/g, candidate.candidateCode || "");
+}
+
 export async function POST(request) {
   const { templateName, subject, content, userName, candidates } =
     await request.json(); // Get the list of candidates
@@ -17,11 +24,15 @@ export async function POST(request) {
 
   // // Prepare email promises for each candidate
   const emailPromises = candidates.map((candidate) => {
+    // Replace placeholders in subject and content
+    const personalizedSubject = replacePlaceholders(subject, candidate);
+    const personalizedContent = replacePlaceholders(content, candidate);
+
     const mailOptions = {
       from: process.env.EMAIL_USER, // Sender address
       to: candidate.email, // Recipient address
-      subject: `${subject}`, // Subject line
-      html: `${content}`, // HTML body
+      subject: personalizedSubject, // Subject line
+      html: personalizedContent, // HTML body
     };
 
     return transporter.sendMail(mailOptions);
