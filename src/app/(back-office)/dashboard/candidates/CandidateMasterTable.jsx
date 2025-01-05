@@ -8,12 +8,15 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { Box, Button, lighten, ListItemIcon, MenuItem } from "@mui/material";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
-import { AccountCircle, Send } from "@mui/icons-material";
+import { AccountCircle, Delete, Send } from "@mui/icons-material";
 import ActionColumn from "@/components/DataTableColumns/ActionColumn";
 import DownloadCSV from "@/components/backOffice/DownloadCsv";
 import { BottomGradient } from "@/components/ui/BottomGradient";
 import { useCandidates } from "@/context/CandidatesContext";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import Swal from "sweetalert2";
+import toast from "react-hot-toast";
 
 const Example = ({ data }) => {
   const columns = useMemo(
@@ -264,18 +267,33 @@ const Example = ({ data }) => {
         ],
       },
       // Status
-      //   {
-      //     id: "Status",
-      //     header: "Status",
-      //     columns: [
-      //       {
-      //         accessorKey: "Interview_Status",
-      //         header: "Interview_Status",
-      //         filterVariant: "autocomplete",
-      //         size: 300,
+      // {
+      //   id: "Status",
+      //   header: "Status",
+      //   columns: [
+      //     {
+      //       accessorKey: "Interview_Status",
+      //       header: "Interview_Status",
+      //       filterVariant: "autocomplete",
+      //       size: 300,
+      //     },
+      //     {
+      //       // accessorKey: "Actions",
+      //       header: "Actions",
+      //       cell: ({ row }) => {
+      //         const candidate = row.original;
+      //         return (
+      //           <ActionColumn
+      //             row={row}
+      //             title="Candidate"
+      //             editEndpoint={`candidates/update/${candidate.id}`}
+      //             endpoint={`candidates/${candidate.id}`}
+      //           />
+      //         );
       //       },
-      //     ],
-      //   },
+      //     },
+      //   ],
+      // },
     ],
     []
   );
@@ -288,6 +306,7 @@ const Example = ({ data }) => {
   const [filteredRowCount, setFilteredRowCount] = useState(0); // Track filtered rows
   const { selectedCandidates, setSelectedCandidates } = useCandidates();
   const router = useRouter();
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   useEffect(() => {
     if (typeof window !== "undefined") {
       //  console.log("Updated Data:", data); // Check data passed to the component
@@ -377,85 +396,69 @@ const Example = ({ data }) => {
       showColumnFilters: true,
       showGlobalFilter: true,
       density: "compact",
+      hoveredRow: true,
     },
 
-    // renderRowActionMenuItems: ({ closeMenu }) => [
-    //   <MenuItem
-    //     key={0}
-    //     onClick={() => {
-    //       // View profile logic...
-    //       closeMenu();
-    //     }}
-    //     sx={{ m: 0 }}
-    //   >
-    //     <ListItemIcon>
-    //       <AccountCircle />
-    //     </ListItemIcon>
-    //     Edit Candidate
-    //   </MenuItem>,
-    //   <MenuItem
-    //     key={1}
-    //     onClick={() => {
-    //       // Send email logic...
-    //       closeMenu();
-    //     }}
-    //     sx={{ m: 0 }}
-    //   >
-    //     <ListItemIcon>
-    //       <Send />
-    //     </ListItemIcon>
-    //     Delete Candidate
-    //   </MenuItem>,
-    // ],
-    // renderTopToolbar: ({ table }) => {
-    //   const handleActivate = () => {
-    //     table.getSelectedRowModel().flatRows.map((row) => {
-    //       alert("activating " + row.getValue("name"));
-    //     });
-    //   };
-
-    //   const handleContact = () => {
-    //     table.getSelectedRowModel().flatRows.map((row) => {
-    //       alert("contact " + row.getValue("name"));
-    //     });
-    //   };
-
-    //   return (
-    //     <Box
-    //       sx={(theme) => ({
-    //         backgroundColor: lighten(theme.palette.background.default, 0.05),
-    //         display: "flex",
-    //         gap: "0.5rem",
-    //         p: "8px",
-    //         justifyContent: "space-between",
-    //       })}
-    //     >
-    //       <Box
-    //         sx={{ display: "flex", gap: "0.5rem", alignItems: "center" }}
-    //       ></Box>
-    //       <Box>
-    //         <Box sx={{ display: "flex", gap: "0.5rem" }}>
-    //           <Button
-    //             color="success"
-    //             disabled={!table.getIsSomeRowsSelected()}
-    //             onClick={handleActivate}
-    //             variant="contained"
-    //           >
-    //             Bulk Download
-    //           </Button>
-    //           <Button
-    //             color="info"
-    //             disabled={!table.getIsSomeRowsSelected()}
-    //             onClick={handleContact}
-    //             variant="contained"
-    //           >
-    //             Send Mail
-    //           </Button>
-    //         </Box>
-    //       </Box>
-    //     </Box>
-    //   );
-    // },
+    renderRowActionMenuItems: ({ closeMenu, row }) => [
+      // Edit Candidate
+      <MenuItem
+        key={0}
+        onClick={() => {
+          // Access candidate.id here
+          // const candidate = row.original; // Get candidate.id from row.original
+          closeMenu();
+        }}
+        sx={{ m: 0 }}
+      >
+        <Link
+          href={`${baseUrl}/dashboard/candidates/update/${row.original.id}`}
+        >
+          <ListItemIcon>
+            <AccountCircle />
+          </ListItemIcon>
+          Edit Candidate
+        </Link>
+      </MenuItem>,
+      // Delete Candidate
+      <MenuItem
+        key={1}
+        onClick={() => {
+          Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!",
+          }).then(async (result) => {
+            if (result.isConfirmed) {
+              // console.log("Yes have been clicked", endpoint);
+              const res = await fetch(
+                `${baseUrl}/api/candidates/${row.original.id}`,
+                {
+                  method: "DELETE",
+                }
+              );
+              // console.log(res);
+              if (res.ok) {
+                router.refresh();
+                toast.success(`Candidate Deleted Successfully`);
+              }
+            } else {
+              // console.log("No has been clicked");
+            }
+          });
+          closeMenu();
+        }}
+        sx={{ m: 0 }}
+      >
+        <ListItemIcon>
+          <Delete />
+        </ListItemIcon>
+        Delete Candidate
+      </MenuItem>,
+    ],
   });
 
   // Update filtered row count whenever filters or global filter change
@@ -569,6 +572,7 @@ const Example = ({ data }) => {
 
   return (
     <>
+      {/*  Bulk download and Mail Send Button */}
       <Box
         sx={{
           display: "flex",
