@@ -7,8 +7,13 @@ import {
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { Box, Button, lighten, ListItemIcon, MenuItem } from "@mui/material";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { AccountCircle, Send } from "@mui/icons-material";
 import ActionColumn from "@/components/DataTableColumns/ActionColumn";
+import DownloadCSV from "@/components/backOffice/DownloadCsv";
+import { BottomGradient } from "@/components/ui/BottomGradient";
+import { useCandidates } from "@/context/CandidatesContext";
+import { useRouter } from "next/navigation";
 
 const Example = ({ data }) => {
   const columns = useMemo(
@@ -23,7 +28,7 @@ const Example = ({ data }) => {
             // enableClickToCopy: true,
             // filterVariant: "autocomplete",
             header: "Basic Id",
-            size: 200,
+            size: 400,
           },
         ],
       },
@@ -119,7 +124,7 @@ const Example = ({ data }) => {
             size: 200,
           },
           {
-            accessorKey: "curretCtc", //accessorKey used to define `data` column. `id` gets set to accessorKey automatically
+            accessorKey: "currentCtc", //accessorKey used to define `data` column. `id` gets set to accessorKey automatically
             header: "Current CTC (LPA)",
             // enableClickToCopy: true,
             // filterVariant: "autocomplete",
@@ -208,15 +213,35 @@ const Example = ({ data }) => {
             },
           },
           {
-            accessorFn: (row) => new Date(row.mailSentDate), //convert to Date for sorting and filtering
-            // accessorKey: 'Date_Of_Birth', //accessorKey used to define `data` column. `id` gets set to accessorKey automatically
+            accessorFn: (row) =>
+              row.mailSentDate ? new Date(row.mailSentDate) : null, // Convert to Date or null
             filterVariant: "date",
             header: "Mail Sent Date",
             sortingFn: "datetime",
-            Cell: ({ cell }) => cell.getValue()?.toLocaleDateString(), //render Date as a string
+            Cell: ({ cell }) => {
+              const value = cell.getValue();
+              if (value) {
+                // Format the date as DD-MM-YYYY
+                const day = String(value.getDate()).padStart(2, "0");
+                const month = String(value.getMonth() + 1).padStart(2, "0"); // getMonth() is 0-based
+                const year = value.getFullYear();
+
+                // Format the time as HH:MM AM/PM
+                let hours = value.getHours();
+                const minutes = String(value.getMinutes()).padStart(2, "0");
+                const ampm = hours >= 12 ? "PM" : "AM";
+                hours = hours % 12; // Convert to 12-hour format
+                hours = hours ? hours : 12; // Handle midnight case
+                const formattedTime = `${hours}:${minutes} ${ampm}`;
+
+                // Combine date and time
+                const formattedDate = `${day}-${month}-${year} ${formattedTime}`;
+                return formattedDate;
+              } else {
+                return "N/A"; // Handle null gracefully
+              }
+            },
             size: 240,
-            // enableClickToCopy: true,
-            // filterVariant: 'autocomplete',
           },
           {
             accessorKey: "mailSubject",
@@ -257,11 +282,12 @@ const Example = ({ data }) => {
 
   //optionally access the underlying virtualizer instance
   const rowVirtualizerInstanceRef = useRef(null);
-
   const [tableData, setTableData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [sorting, setSorting] = useState([]);
   const [filteredRowCount, setFilteredRowCount] = useState(0); // Track filtered rows
+  const { selectedCandidates, setSelectedCandidates } = useCandidates();
+  const router = useRouter();
   useEffect(() => {
     if (typeof window !== "undefined") {
       //  console.log("Updated Data:", data); // Check data passed to the component
@@ -293,35 +319,14 @@ const Example = ({ data }) => {
     enableRowActions: true,
     enableFacetedValues: true,
     enablePagination: true,
+    enableStickyHeader: true,
+    enableStickyFooter: true,
     paginationDisplayMode: "pages",
-    muiPaginationProps: {
-      color: "secondary",
-      rowsPerPageOptions: [10, 20, 50, 100, 500, 1000],
-      shape: "rounded",
-      variant: "outlined",
-    },
-    positionToolbarAlertBanner: "bottom",
-    // muiSearchTextFieldProps: {
-    //   size: "small",
-    //   variant: "outlined",
-    // },
-    // state: { isLoading },
-    state: { isLoading, sorting },
-    onSortingChange: setSorting,
-    // onStateChange: () => {
-    //   // Update the filtered row count whenever the table state changes
-    //   const filteredRows = table.getFilteredRowModel().rows;
-    //   setFilteredRowCount(filteredRows.length);
-    // },
-    initialState: {
-      isFullScreen: false,
-      showColumnFilters: true,
-      showGlobalFilter: true,
-      density: "compact",
-    },
     enableRowNumbers: true,
     enableRowVirtualization: true,
-
+    onSortingChange: setSorting,
+    rowVirtualizerInstanceRef, //optional
+    rowVirtualizerOptions: { overscan: 5 }, //optionally customize the row virtualizer
     muiTableContainerProps: {
       sx: { maxHeight: "1000px", border: "2px solid rgba(81, 81, 81, .5)" },
     },
@@ -336,7 +341,6 @@ const Example = ({ data }) => {
         },
       },
     },
-
     muiTablePaperProps: {
       elevation: 0, //change the mui box shadow
       //customize paper styles
@@ -359,87 +363,99 @@ const Example = ({ data }) => {
         borderRight: "2px solid #e0e0e0", //add a border between columns
       },
     },
-
-    onSortingChange: setSorting,
-    rowVirtualizerInstanceRef, //optional
-    rowVirtualizerOptions: { overscan: 5 }, //optionally customize the row virtualizer
-    renderRowActionMenuItems: ({ closeMenu }) => [
-      <MenuItem
-        key={0}
-        onClick={() => {
-          // View profile logic...
-          closeMenu();
-        }}
-        sx={{ m: 0 }}
-      >
-        <ListItemIcon>
-          <AccountCircle />
-        </ListItemIcon>
-        Edit Candidate
-      </MenuItem>,
-      <MenuItem
-        key={1}
-        onClick={() => {
-          // Send email logic...
-          closeMenu();
-        }}
-        sx={{ m: 0 }}
-      >
-        <ListItemIcon>
-          <Send />
-        </ListItemIcon>
-        Delete Candidate
-      </MenuItem>,
-    ],
-    renderTopToolbar: ({ table }) => {
-      const handleActivate = () => {
-        table.getSelectedRowModel().flatRows.map((row) => {
-          alert("activating " + row.getValue("name"));
-        });
-      };
-
-      const handleContact = () => {
-        table.getSelectedRowModel().flatRows.map((row) => {
-          alert("contact " + row.getValue("name"));
-        });
-      };
-
-      return (
-        <Box
-          sx={(theme) => ({
-            backgroundColor: lighten(theme.palette.background.default, 0.05),
-            display: "flex",
-            gap: "0.5rem",
-            p: "8px",
-            justifyContent: "space-between",
-          })}
-        >
-          <Box
-            sx={{ display: "flex", gap: "0.5rem", alignItems: "center" }}
-          ></Box>
-          <Box>
-            <Box sx={{ display: "flex", gap: "0.5rem" }}>
-              <Button
-                color="success"
-                disabled={!table.getIsSomeRowsSelected()}
-                onClick={handleActivate}
-                variant="contained"
-              >
-                Bulk Download
-              </Button>
-              <Button
-                color="info"
-                disabled={!table.getIsSomeRowsSelected()}
-                onClick={handleContact}
-                variant="contained"
-              >
-                Send Mail
-              </Button>
-            </Box>
-          </Box>
-        </Box>
-      );
+    muiPaginationProps: {
+      color: "secondary",
+      rowsPerPageOptions: [10, 20, 50, 100, 500, 1000],
+      shape: "rounded",
+      variant: "outlined",
     },
+    positionToolbarAlertBanner: "bottom",
+    state: { isLoading, sorting },
+    onSortingChange: setSorting,
+    initialState: {
+      isFullScreen: false,
+      showColumnFilters: true,
+      showGlobalFilter: true,
+      density: "compact",
+    },
+
+    // renderRowActionMenuItems: ({ closeMenu }) => [
+    //   <MenuItem
+    //     key={0}
+    //     onClick={() => {
+    //       // View profile logic...
+    //       closeMenu();
+    //     }}
+    //     sx={{ m: 0 }}
+    //   >
+    //     <ListItemIcon>
+    //       <AccountCircle />
+    //     </ListItemIcon>
+    //     Edit Candidate
+    //   </MenuItem>,
+    //   <MenuItem
+    //     key={1}
+    //     onClick={() => {
+    //       // Send email logic...
+    //       closeMenu();
+    //     }}
+    //     sx={{ m: 0 }}
+    //   >
+    //     <ListItemIcon>
+    //       <Send />
+    //     </ListItemIcon>
+    //     Delete Candidate
+    //   </MenuItem>,
+    // ],
+    // renderTopToolbar: ({ table }) => {
+    //   const handleActivate = () => {
+    //     table.getSelectedRowModel().flatRows.map((row) => {
+    //       alert("activating " + row.getValue("name"));
+    //     });
+    //   };
+
+    //   const handleContact = () => {
+    //     table.getSelectedRowModel().flatRows.map((row) => {
+    //       alert("contact " + row.getValue("name"));
+    //     });
+    //   };
+
+    //   return (
+    //     <Box
+    //       sx={(theme) => ({
+    //         backgroundColor: lighten(theme.palette.background.default, 0.05),
+    //         display: "flex",
+    //         gap: "0.5rem",
+    //         p: "8px",
+    //         justifyContent: "space-between",
+    //       })}
+    //     >
+    //       <Box
+    //         sx={{ display: "flex", gap: "0.5rem", alignItems: "center" }}
+    //       ></Box>
+    //       <Box>
+    //         <Box sx={{ display: "flex", gap: "0.5rem" }}>
+    //           <Button
+    //             color="success"
+    //             disabled={!table.getIsSomeRowsSelected()}
+    //             onClick={handleActivate}
+    //             variant="contained"
+    //           >
+    //             Bulk Download
+    //           </Button>
+    //           <Button
+    //             color="info"
+    //             disabled={!table.getIsSomeRowsSelected()}
+    //             onClick={handleContact}
+    //             variant="contained"
+    //           >
+    //             Send Mail
+    //           </Button>
+    //         </Box>
+    //       </Box>
+    //     </Box>
+    //   );
+    // },
   });
 
   // Update filtered row count whenever filters or global filter change
@@ -448,13 +464,151 @@ const Example = ({ data }) => {
     setFilteredRowCount(filteredRows.length);
   }, [table.getState().columnFilters, table.getState().globalFilter]);
 
+  const selectedDataCsv = table.getSelectedRowModel().rows.map((row, index) => {
+    const { id, original } = row; // Destructure the row object to get 'id' and 'original'
+    const {
+      candidateCode,
+      name,
+      gender,
+      email,
+      contactNumber,
+      emergencyContactNumber,
+      sector,
+      domain,
+      designation,
+      currentCtc,
+      currentCompany,
+      currentJobLocation,
+      totalWorkingExperience,
+      previousCompanyName,
+      degree,
+      collegeName,
+      graduationYear,
+      skills,
+    } = original; // Destructure the 'original' object to extract the desired fields
+    return {
+      srNo: index + 1, // Add serial number starting from 1
+      candidateCode,
+      name,
+      gender,
+      email,
+      contactNumber,
+      emergencyContactNumber,
+      sector,
+      domain,
+      designation,
+      currentCtc,
+      currentCompany,
+      currentJobLocation,
+      totalWorkingExperience,
+      previousCompanyName,
+      degree,
+      collegeName,
+      graduationYear,
+      skills,
+    };
+  });
+
+  const allDataCsv = table.getRowModel().rows.map((row, index) => {
+    const { id, original } = row; // Destructure the row object to get 'id' and 'original'
+    const {
+      candidateCode,
+      name,
+      gender,
+      email,
+      contactNumber,
+      emergencyContactNumber,
+      sector,
+      domain,
+      designation,
+      currentCtc,
+      currentCompany,
+      currentJobLocation,
+      totalWorkingExperience,
+      previousCompanyName,
+      degree,
+      collegeName,
+      graduationYear,
+      skills,
+    } = original; // Destructure the 'original' object to extract the desired fields
+    return {
+      srNo: index + 1, // Add serial number starting from 1
+      candidateCode,
+      name,
+      gender,
+      email,
+      contactNumber,
+      emergencyContactNumber,
+      sector,
+      domain,
+      designation,
+      currentCtc,
+      currentCompany,
+      currentJobLocation,
+      totalWorkingExperience,
+      previousCompanyName,
+      degree,
+      collegeName,
+      graduationYear,
+      skills,
+    };
+  });
+
+  const selectedDataMail = table
+    .getSelectedRowModel()
+    .rows.map((row, index) => {
+      const { id, original } = row; // Destructure the row object to get 'id' and 'original'
+      // const candidates = original; // Destructure the 'original' object to extract the desired fields
+      return original;
+    });
+  // console.log(selectedDataMail);
+  const handleSendMail = () => {
+    setSelectedCandidates(selectedDataMail);
+    router.push("/dashboard/mails");
+  };
+
   return (
     <>
-      {/* <div>
-        <strong>Filtered Row Count: {filteredRowCount}</strong>
-      </div>
-      <MaterialReactTable table={table} /> */}
-
+      <Box
+        sx={{
+          display: "flex",
+          gap: "16px",
+          padding: "8px",
+          flexWrap: "wrap",
+        }}
+      >
+        <DownloadCSV
+          title="Export Page Rows"
+          fileName="pageCandidates"
+          data={allDataCsv}
+        />
+        {table.getIsSomeRowsSelected() || table.getIsAllRowsSelected() ? (
+          <DownloadCSV
+            title="Export Selected Rows"
+            fileName="selectedCandidates"
+            data={selectedDataCsv}
+          />
+        ) : (
+          <button className="bg-gradient-to-br relative group/btn from-black dark:from-lime-200 dark:to-lime-900 to-neutral-600 block dark:bg-zinc-800 w-80 font-bold text-white dark:text-slate-900 rounded-xl h-10 shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset] opacity-50 cursor-not-allowed">
+            Export Selected Rows
+            <BottomGradient />
+          </button>
+        )}
+        {table.getIsSomeRowsSelected() || table.getIsAllRowsSelected() ? (
+          <button
+            onClick={handleSendMail}
+            className="bg-gradient-to-br relative group/btn from-black dark:from-lime-200 dark:to-lime-900 to-neutral-600 block dark:bg-zinc-800 w-80 font-bold text-white dark:text-slate-900 rounded-xl h-10 shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
+          >
+            Send Mail
+            <BottomGradient />
+          </button>
+        ) : (
+          <button className="bg-gradient-to-br relative group/btn from-black dark:from-lime-200 dark:to-lime-900 to-neutral-600 block dark:bg-zinc-800 w-80 font-bold text-white dark:text-slate-900 rounded-xl h-10 shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset] opacity-50 cursor-not-allowed">
+            Send Mail
+            <BottomGradient />
+          </button>
+        )}
+      </Box>
       <MaterialReactTable table={table} />
     </>
   );

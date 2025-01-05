@@ -47,12 +47,11 @@ export async function POST(request) {
     const updatePromises = candidates.map((candidate) => {
       const personalizedSubject = replacePlaceholders(subject, candidate);
       // Get the current UTC time
-      const utcDate = new Date();
       return db.candidateProfile.update({
         where: { id: candidate.id }, // Assuming candidate has an 'id'
         data: {
           mailSent: "Yes",
-          mailSentDate: new Date(utcDate.getTime() + 5.5 * 60 * 60 * 1000), // Set the current date and time when email was sent
+          mailSentDate: new Date(), // Set the current date and time when email was sent
           mailSubject: personalizedSubject,
           mailTemplateName: templateName,
           mailSender: userName, // Name of the person sending the email

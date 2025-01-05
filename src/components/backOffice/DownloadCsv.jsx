@@ -80,8 +80,9 @@
 "use client";
 import React from "react";
 import * as XLSX from "xlsx";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
 
-const DownloadCSV = ({ data, fileName }) => {
+const DownloadCSV = ({ title, data, fileName }) => {
   const handleDownload = () => {
     // console.log("Data for CSV download:", data);
     // Make sure data is in an array of objects format
@@ -121,12 +122,15 @@ const DownloadCSV = ({ data, fileName }) => {
   };
 
   return (
-    <button
-      onClick={handleDownload}
-      className="bg-gradient-to-br relative group/btn from-black dark:from-lime-200 dark:to-lime-900 to-neutral-600 block dark:bg-zinc-800 w-80 font-bold text-white dark:text-slate-900 rounded-xl h-10 shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
-    >
-      Download CSV
-    </button>
+    <>
+      <button
+        onClick={handleDownload}
+        className="bg-gradient-to-br relative group/btn from-black dark:from-lime-200 dark:to-lime-900 to-neutral-600  dark:bg-zinc-800 w-80 font-bold text-white dark:text-slate-900 rounded-xl h-10 shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset] flex items-center justify-center gap-2"
+      >
+        <FileDownloadIcon />
+        {title}
+      </button>
+    </>
   );
 };
 
