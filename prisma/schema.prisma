@@ -89,7 +89,7 @@ model CandidateProfile {
   jobs JobApplicant[] // Array of jobs the candidate has applied for with status
 
   // New communication status fields
-  mailSent         Boolean   @default(false) // To track if the email was sent
+  mailSent         String?   @default("No") // To track if the email was sent
   mailSentDate     DateTime? // To store the date when the email was sent
   mailSubject      String? // To store the subject of the email sent
   mailTemplateName String? // To store the name of the email template used

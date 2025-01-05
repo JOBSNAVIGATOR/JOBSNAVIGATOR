@@ -152,11 +152,27 @@ export async function GET(req) {
       candidateCode: candidate.candidateCode,
       name: candidate.user.name, // Assuming user has a name field
       email: candidate.user.email, // Assuming user has an email field
-      contactNumber: candidate.contactNumber,
+      gender: candidate.gender,
+      contactNumber: candidate.user.contactNumber,
+      emergencyContactNumber: candidate.emergencyContactNumber,
+      sector: candidate.sector,
+      domain: candidate.domain,
       currentCtc: candidate.currentCtc,
-      currentJobLocation: candidate.currentJobLocation,
+      designation: candidate.designation,
       currentCompany: candidate.currentCompany,
+      currentJobLocation: candidate.currentJobLocation,
+      totalWorkingExperience: candidate.totalWorkingExperience,
+      degree: candidate.degree,
+      collegeName: candidate.collegeName,
+      graduationYear: candidate.graduationYear,
+      previousCompanyName: candidate.previousCompanyName,
+      skills: candidate.skills,
       resume: candidate.resume,
+      mailSent: candidate.mailSent,
+      mailSentDate: candidate.mailSentDate,
+      mailSubject: candidate.mailSubject,
+      mailTemplateName: candidate.mailTemplateName,
+      mailSender: candidate.mailSender,
       // Include any other fields you need
     }));
 

@@ -51,7 +51,7 @@ export async function POST(request) {
       return db.candidateProfile.update({
         where: { id: candidate.id }, // Assuming candidate has an 'id'
         data: {
-          mailSent: true,
+          mailSent: "Yes",
           mailSentDate: new Date(utcDate.getTime() + 5.5 * 60 * 60 * 1000), // Set the current date and time when email was sent
           mailSubject: personalizedSubject,
           mailTemplateName: templateName,

@@ -9,6 +9,7 @@ import Link from "next/link";
 import AnimatedBoxes from "@/components/ui/AnimatedBoxes";
 import DataTableModified from "./DataTableModified";
 import NewJobMailTemplate from "@/components/MailTemplates/NewJobMailTemplate";
+import CandidateMasterTable from "./CandidateMasterTable";
 
 export default function Page() {
   // const jobs = await getData("jobs");
@@ -60,11 +61,12 @@ export default function Page() {
 
       {/* table */}
       <div className="py-8">
-        <DataTableModified
+        {/* <DataTableModified
           data={data}
           columns={columns}
           filterKeys={["name", "email", "currentJobLocation", "currentCompany"]}
-        />
+        /> */}
+        <CandidateMasterTable data={data} />
       </div>
     </div>
   );
