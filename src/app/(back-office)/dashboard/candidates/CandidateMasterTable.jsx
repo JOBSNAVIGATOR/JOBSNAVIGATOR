@@ -23,14 +23,14 @@ const Example = ({ data }) => {
     () => [
       // Application Details
       {
-        id: "candidateCode", //id used to define `group` column
+        id: "applicationDetails", //id used to define `group` column
         header: "Candidate Code",
         columns: [
           {
             accessorKey: "candidateCode", //accessorKey used to define `data` column. `id` gets set to accessorKey automatically
             // enableClickToCopy: true,
             // filterVariant: "autocomplete",
-            header: "Basic Id",
+            header: "Candidate Code",
             size: 400,
           },
         ],
@@ -397,6 +397,10 @@ const Example = ({ data }) => {
       showGlobalFilter: true,
       density: "compact",
       hoveredRow: true,
+      columnPinning: {
+        left: ["mrt-row-select"],
+        right: ["mrt-row-actions"],
+      },
     },
 
     renderRowActionMenuItems: ({ closeMenu, row }) => [
