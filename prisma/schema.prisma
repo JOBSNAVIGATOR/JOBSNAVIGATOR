@@ -216,6 +216,9 @@ model CandidateTag {
   candidate CandidateProfile @relation(fields: [candidateId], references: [id], onDelete: Cascade)
   tag       Tag              @relation(fields: [tagId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  assignedBy String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([candidateId, tagId]) // Ensure unique combination of candidate and tag
 }
