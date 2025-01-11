@@ -5,8 +5,6 @@ import useSWR from "swr";
 import { fetcher } from "@/lib/fetcher";
 import Link from "next/link";
 import AnimatedBoxes from "@/components/ui/AnimatedBoxes";
-import DataTableModified from "./DataTableModified";
-import { columns } from "./columns";
 import TagMasterTable from "./TagMasterTable";
 
 export default function Page() {

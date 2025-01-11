@@ -38,17 +38,18 @@ export default function TagForm({ updateData = {} }) {
   async function onSubmit(data) {
     try {
       if (id) {
-        console.log("updateddddd", data);
+        data.updatedBy = session?.user?.name;
+        // console.log("updateddddd", data);
         // make put request (update)
-        // makePutRequest(setLoading, `api/tags/${id}`, data, "Tag", reset);
-        // router.back();
+        makePutRequest(setLoading, `api/tags/${id}`, data, "Tag", reset);
+        router.back();
         // console.log("Update Request:", data);
       } else {
         data.createdBy = session?.user?.name;
-        console.log("POst Data", data);
+        // console.log("POst Data", data);
         // make post request (create)
         makePostRequest(setLoading, "api/tags", data, "Tag", reset);
-        // router.back();
+        router.back();
       }
     } catch (error) {
       // console.error("Error converting image to base64:", error);

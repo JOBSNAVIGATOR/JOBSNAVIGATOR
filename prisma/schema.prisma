@@ -198,6 +198,7 @@ model Tag {
   name        String  @unique // Name of the tag (e.g., "Urgent", "Experienced", etc.)
   description String? // Optional description of the tag
   createdBy   String? // Optionally store the creator's ID
+  updatedBy   String? // Optionally store the creator's ID
 
   // Relation to the CandidateTag join model
   candidateTags CandidateTag[] // Many-to-many relation through the join model

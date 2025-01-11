@@ -37,6 +37,13 @@ const Example = ({ data }) => {
             size: 200,
           },
           {
+            accessorKey: "updatedBy",
+            // enableClickToCopy: true,
+            filterVariant: "autocomplete",
+            header: "Updated By",
+            size: 200,
+          },
+          {
             accessorKey: "createdBy",
             // enableClickToCopy: true,
             filterVariant: "autocomplete",
@@ -199,7 +206,7 @@ const Example = ({ data }) => {
               // console.log(res);
               if (res.ok) {
                 router.refresh();
-                toast.success(`Candidate Deleted Successfully`);
+                toast.success(`Tag Deleted Successfully`);
               }
             } else {
               // console.log("No has been clicked");
