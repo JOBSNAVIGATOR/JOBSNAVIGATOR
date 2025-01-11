@@ -8,12 +8,22 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { domainsData, sectorsData } from "@/data";
 import { Settings2 } from "lucide-react";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
+import Select from "react-select";
+const sectorOptions = sectorsData;
 
+const domainOptions = domainsData;
+
+const locationOptions = [
+  { value: "Delhi", label: "Delhi" },
+  { value: "Mumbai", label: "Mumbai" },
+  { value: "Bangalore", label: "Bangalore" },
+];
 export default function ConsultantAssignment({ consultant }) {
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, reset, control } = useForm();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -52,37 +62,46 @@ export default function ConsultantAssignment({ consultant }) {
             </h3>
 
             <form onSubmit={handleSubmit(onSubmit)}>
-              <label className="block mb-2">Select Sector</label>
-              <select
-                {...register("sector")}
-                className="block w-full mb-4 p-2 border"
-              >
-                <option value="Banking">Banking</option>
-                <option value="IT">IT</option>
-              </select>
-
-              <label className="block mb-2">Select Domain</label>
-              <select
-                {...register("domain")}
-                className="block w-full mb-4 p-2 border"
-              >
-                <option value="Finance">Finance</option>
-                <option value="Development">Development</option>
-              </select>
-
-              <label className="block mb-2">Job Location</label>
-              <input
-                {...register("jobLocation")}
-                className="block w-full mb-4 p-2 border"
-                placeholder="Location"
+              <label className="block mb-2">Select Sectors</label>
+              <Controller
+                name="sectors"
+                control={control}
+                render={({ field }) => (
+                  <Select
+                    {...field}
+                    options={sectorOptions}
+                    isMulti
+                    className="mb-4"
+                  />
+                )}
               />
 
-              <label className="block mb-2">Current CTC (in LPA)</label>
-              <input
-                {...register("currentCtc")}
-                type="number"
-                className="block w-full mb-4 p-2 border"
-                placeholder="CTC"
+              <label className="block mb-2">Select Domains</label>
+              <Controller
+                name="domains"
+                control={control}
+                render={({ field }) => (
+                  <Select
+                    {...field}
+                    options={domainOptions}
+                    isMulti
+                    className="mb-4"
+                  />
+                )}
+              />
+
+              <label className="block mb-2">Select Locations</label>
+              <Controller
+                name="locations"
+                control={control}
+                render={({ field }) => (
+                  <Select
+                    {...field}
+                    options={locationOptions}
+                    isMulti
+                    className="mb-4"
+                  />
+                )}
               />
 
               <button
