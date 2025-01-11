@@ -98,6 +98,7 @@ import {
   Mail,
   Newspaper,
   PieChart,
+  Tag,
   User2,
   UserCheck,
   UserCog2,
@@ -128,6 +129,7 @@ export default function Sidebar({ showSideBar, setShowSideBar }) {
     { title: "Client", href: "/dashboard/clients", icon: User2 },
     { title: "Consultants", href: "/dashboard/consultants", icon: UserCog2 },
     { title: "Email Templates", href: "/dashboard/mails", icon: Mail },
+    { title: "Tags", href: "/dashboard/tags", icon: Tag },
     { title: "Companies", href: "/dashboard/clientCompanies", icon: UserCheck },
   ];
 
