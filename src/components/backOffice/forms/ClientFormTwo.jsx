@@ -54,7 +54,7 @@ export default function ClientFormTwo({ updateData = {} }) {
 
     // make post request (create)
     makePostRequest(setLoading, "api/clients", data, "Client Profile");
-    // router.push("/");
+    router.back();
   }
 
   return (
