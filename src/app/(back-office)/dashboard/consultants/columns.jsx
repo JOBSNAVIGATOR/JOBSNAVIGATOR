@@ -6,6 +6,7 @@ import SortableColumn from "@/components/DataTableColumns/SortableColumn";
 import ActionColumn from "@/components/DataTableColumns/ActionColumn";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import ConsultantAssignment from "@/components/backOffice/forms/ConsultantAssignment";
 
 export const columns = [
   {
@@ -52,6 +53,17 @@ export const columns = [
       <SortableColumn column={column} title="Potential Points" />
     ),
   },
+  {
+    id: "view",
+    header: ({ column }) => (
+      <SortableColumn column={column} title="Manage Consultant" />
+    ),
+    cell: ({ row }) => {
+      const consultant = row.original;
+      return <ConsultantAssignment consultant={consultant} />;
+    },
+  },
+
   {
     id: "actions",
     cell: ({ row }) => {
