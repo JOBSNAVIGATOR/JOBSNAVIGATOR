@@ -133,7 +133,7 @@ export default function CandidateFormTwo({ updateData = {} }) {
       reset
     );
     // setPdfUrl("");
-    router.push("/");
+    router.back();
   }
 
   return (

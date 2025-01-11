@@ -17,8 +17,6 @@ import useSWR from "swr";
 import { fetcher } from "@/lib/fetcher";
 
 export default function AssignTagButton({ candidates }) {
-  console.log("test11", candidates);
-
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [selectedTag, setSelectedTag] = useState(null);
@@ -53,8 +51,6 @@ export default function AssignTagButton({ candidates }) {
         tagId: selectedTag,
         candidateIds: candidates.map((candidate) => candidate.id),
       };
-      console.log("payload", payload);
-
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/api/assignTag`,
         {
