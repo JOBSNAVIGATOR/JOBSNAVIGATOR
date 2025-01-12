@@ -65,6 +65,6 @@ export async function makePutRequest(
     }
   } catch (error) {
     setLoading(false);
-    console.log(error);
+    // console.log(error);
   }
 }

@@ -20,7 +20,7 @@ export default function Page() {
         <AnimatedBoxes />
       </div>
     );
-  console.log(data);
+  // console.log(data);
 
   return (
     <EmailEditor templates={data?.templatesData} data={selectedCandidates} />

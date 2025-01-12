@@ -25,7 +25,7 @@ import { useState } from "react";
 import DownloadCSV from "@/components/backOffice/DownloadCsv";
 import DataTableToolbar from "@/components/data-table-components/DataTableToolbar";
 import DataTablePagination from "@/components/data-table-components/DataTablePagination";
-import SendMailButton from "@/components/ui/SendMailButton";
+import SendMailButton from "@/components/backOffice/SendMailButton";
 import Link from "next/link";
 import { BottomGradient } from "@/components/ui/BottomGradient";
 import { useCandidates } from "@/context/CandidatesContext";

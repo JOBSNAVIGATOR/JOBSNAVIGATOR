@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { BottomGradient } from "./BottomGradient";
+import { BottomGradient } from "../ui/BottomGradient";
 import {
   Dialog,
   DialogContent,
@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import AnimatedBoxes from "./AnimatedBoxes";
+import AnimatedBoxes from "../ui/AnimatedBoxes";
 import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
 

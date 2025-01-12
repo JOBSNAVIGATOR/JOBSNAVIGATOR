@@ -1,7 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { BottomGradient } from "../ui/BottomGradient";
-import SendMailButton from "../ui/SendMailButton";
 import {
   Dialog,
   DialogContent,
@@ -21,6 +20,7 @@ import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
 import Image from "@tiptap/extension-image";
 import MenuBar from "./MenuBar";
+import SendMailButton from "./SendMailButton";
 
 const EmailEditor = ({ templates, data = {} }) => {
   // const quillRef = useRef(null);
