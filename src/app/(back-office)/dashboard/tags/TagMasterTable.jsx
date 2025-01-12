@@ -37,14 +37,14 @@ const Example = ({ data }) => {
             size: 200,
           },
           {
-            accessorKey: "updatedBy",
+            accessorKey: "updatedByName",
             // enableClickToCopy: true,
             filterVariant: "autocomplete",
             header: "Updated By",
             size: 200,
           },
           {
-            accessorKey: "createdBy",
+            accessorKey: "createdByName",
             // enableClickToCopy: true,
             filterVariant: "autocomplete",
             header: "Created By",

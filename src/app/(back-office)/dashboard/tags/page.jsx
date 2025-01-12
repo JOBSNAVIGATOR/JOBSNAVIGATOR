@@ -6,11 +6,27 @@ import { fetcher } from "@/lib/fetcher";
 import Link from "next/link";
 import AnimatedBoxes from "@/components/ui/AnimatedBoxes";
 import TagMasterTable from "./TagMasterTable";
+import { useSession } from "next-auth/react";
 
 export default function Page() {
+  const { data: session, status } = useSession();
+  const userId = session?.user?.id;
+  const userRole = session?.user?.role;
+  // const endpoint =
+  //   userRole === "ADMIN"
+  //     ? "/api/tags"
+  //     : userRole === "CONSULTANT"
+  //     ? `/api/tags?createdBy=${userId}`
+  //     : null;
+  // const { data, error } = useSWR(endpoint, fetcher, {
   const { data, error } = useSWR("/api/tags", fetcher, {
     refreshInterval: 5000, // refetch data every 5 seconds
   }); // replace with your API endpoint
+  if (status === "loading") {
+    <div className="flex justify-center items-center h-screen">
+      <AnimatedBoxes />
+    </div>;
+  }
 
   if (error) return <div>Error loading tags.</div>;
   if (!data)
@@ -19,7 +35,8 @@ export default function Page() {
         <AnimatedBoxes />
       </div>
     );
-  // console.log(data);
+
+  console.log("hello", userId, userRole);
 
   return (
     <div>

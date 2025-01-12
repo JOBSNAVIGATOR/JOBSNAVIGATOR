@@ -199,7 +199,7 @@ model EmailTemplate {
 
 model Tag {
   id            String  @id @default(auto()) @map("_id") @db.ObjectId
-  name          String  @unique // Name of the tag (e.g., "Urgent", "Experienced", etc.)
+  name          String // Name of the tag (e.g., "Urgent", "Experienced", etc.)
   description   String? // Optional description of the tag
   createdById   String? @db.ObjectId // Store the creator's user ID
   createdByName String? // Optionally store the creator's ID
@@ -215,6 +215,9 @@ model Tag {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  // Composite unique constraint to ensure each user can only create one tag with the same name
+  @@unique([name, createdById]) // This ensures that a user can only create one tag with a specific name
 }
 
 model CandidateTag {
