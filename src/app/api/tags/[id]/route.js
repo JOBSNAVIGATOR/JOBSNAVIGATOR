@@ -45,7 +45,8 @@ export async function DELETE(request, { params }) {
 
 export async function PUT(request) {
   try {
-    const { id, name, description, updatedBy } = await request.json();
+    const { id, name, description, updatedByName, updatedById } =
+      await request.json();
 
     const tag = await db.tag.findUnique({
       where: {
@@ -69,7 +70,7 @@ export async function PUT(request) {
       data: {
         name,
         description,
-        updatedBy,
+        updatedByName,
       },
     });
 

@@ -38,15 +38,18 @@ export default function TagForm({ updateData = {} }) {
   async function onSubmit(data) {
     try {
       if (id) {
-        data.updatedBy = session?.user?.name;
+        data.updatedByName = session?.user?.name;
+        data.updatedById = session?.user?.name;
         // console.log("updateddddd", data);
         // make put request (update)
         makePutRequest(setLoading, `api/tags/${id}`, data, "Tag", reset);
         router.back();
         // console.log("Update Request:", data);
       } else {
-        data.createdBy = session?.user?.name;
-        // console.log("POst Data", data);
+        data.createdByName = session?.user?.name;
+        data.createdById = session?.user?.id;
+
+        console.log("POst Data", data);
         // make post request (create)
         makePostRequest(setLoading, "api/tags", data, "Tag", reset);
         router.back();

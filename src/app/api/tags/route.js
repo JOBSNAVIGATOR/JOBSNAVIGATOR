@@ -4,7 +4,8 @@ import { NextResponse } from "next/server";
 export async function POST(request) {
   try {
     //extract the credentials
-    const { name, description, createdBy } = await request.json();
+    const { name, description, createdByName, createdById } =
+      await request.json();
     //Check if the user Already exists in the db
     const existingTag = await db.tag.findUnique({
       where: {
@@ -25,7 +26,8 @@ export async function POST(request) {
       data: {
         name,
         description,
-        createdBy,
+        createdById,
+        createdByName,
       },
     });
 

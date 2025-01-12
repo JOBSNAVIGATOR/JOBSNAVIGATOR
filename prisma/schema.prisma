@@ -41,6 +41,10 @@ model User {
   clientProfile     ClientProfile?
   candidateProfile  CandidateProfile?
 
+  // Relation fields for created and updated tags
+  createdTags Tag[] @relation("TagCreatedBy")
+  updatedTags Tag[] @relation("TagUpdatedBy")
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -194,11 +198,17 @@ model EmailTemplate {
 }
 
 model Tag {
-  id          String  @id @default(auto()) @map("_id") @db.ObjectId
-  name        String  @unique // Name of the tag (e.g., "Urgent", "Experienced", etc.)
-  description String? // Optional description of the tag
-  createdBy   String? // Optionally store the creator's ID
-  updatedBy   String? // Optionally store the creator's ID
+  id            String  @id @default(auto()) @map("_id") @db.ObjectId
+  name          String  @unique // Name of the tag (e.g., "Urgent", "Experienced", etc.)
+  description   String? // Optional description of the tag
+  createdById   String? @db.ObjectId // Store the creator's user ID
+  createdByName String? // Optionally store the creator's ID
+  updatedById   String? @db.ObjectId // Store the updater's user ID
+  updatedByName String? // Optionally store the creator's ID
+
+  // Relations to User for creation and updates
+  createdByUser User? @relation("TagCreatedBy", fields: [createdById], references: [id])
+  updatedByUser User? @relation("TagUpdatedBy", fields: [updatedById], references: [id])
 
   // Relation to the CandidateTag join model
   candidateTags CandidateTag[] // Many-to-many relation through the join model
