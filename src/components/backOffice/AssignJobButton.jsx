@@ -12,63 +12,68 @@ import {
 import AnimatedBoxes from "../ui/AnimatedBoxes";
 import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
-import { Briefcase, Tag } from "lucide-react";
+import { Briefcase } from "lucide-react";
 import useSWR from "swr";
 import { fetcher } from "@/lib/fetcher";
 
 export default function AssignJobButton({ candidates }) {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
-  const [selectedTag, setSelectedTag] = useState(null);
+  const [selectedJob, setSelectedJob] = useState(null);
 
   const { data: session, status } = useSession();
-  const { data: tags, error } = useSWR("/api/tags", fetcher, {
+  const { data: jobs, error } = useSWR("/api/jobs", fetcher, {
     refreshInterval: 5000, // refetch data every 5 seconds
   }); // replace with your API endpoint
   useEffect(() => {
-    if (candidates?.length && tags?.length) {
-      setSelectedTag(tags[0]?.id); // Set initial selection if needed
+    if (candidates?.length && jobs?.length) {
+      setSelectedJob(jobs[0]); // Set initial selection if needed
     }
-  }, [candidates, tags]);
-  if (status === "loading") return <AnimatedBoxes />;
-  if (error) return <div>Error loading tags.</div>;
-  if (!tags)
+  }, [candidates, jobs]);
+  //   if (status === "loading") return <AnimatedBoxes />;
+  if (error) return <div>Error loading jobs.</div>;
+  if (!jobs || status === "loading")
     return (
       <div className="flex justify-center items-center h-screen">
         <AnimatedBoxes />
       </div>
     );
+  const handleJobChange = (e) => {
+    const jobId = e.target.value;
+    const job = jobs.find((job) => job.id === jobId); // Find the selected job object by its id
+    setSelectedJob(job);
+  };
 
-  const handleAssignTag = async () => {
-    if (!selectedTag) {
-      toast.error("Please select a tag to assign.");
+  const handleAssignJob = async () => {
+    if (!selectedJob) {
+      toast.error("Please select a job to assign.");
       return;
     }
     try {
       setLoading(true);
       const payload = {
         assignedBy: session?.user?.name,
-        tagId: selectedTag,
+        jobId: selectedJob.id,
         candidateIds: candidates.map((candidate) => candidate.id),
       };
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/assignTag`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        }
-      );
+      //   const response = await fetch(
+      //     `${process.env.NEXT_PUBLIC_BASE_URL}/api/assignTag`,
+      //     {
+      //       method: "POST",
+      //       headers: { "Content-Type": "application/json" },
+      //       body: JSON.stringify(payload),
+      //     }
+      //   );
 
-      if (response.ok) {
-        toast.success("Tag assigned successfully!");
-        setOpen(false);
-      } else {
-        const errorData = await response.json();
-        toast.error(errorData.message || "Failed to assign tag.");
-      }
+      //   if (response.ok) {
+      //     toast.success("Job assigned successfully!");
+      //     setOpen(false);
+      //   } else {
+      //     const errorData = await response.json();
+      //     toast.error(errorData.message || "Failed to assign job.");
+      //   }
     } catch (error) {
-      console.error("Error assigning tag:", error);
+      console.error("Error assigning job:", error);
       toast.error("An unexpected error occurred.");
     } finally {
       setLoading(false);
@@ -87,27 +92,44 @@ export default function AssignJobButton({ candidates }) {
         <DialogContent className="sm:max-w-[425px] bg-slate-200  dark:bg-zinc-800 rounded-xl">
           <DialogHeader className="flex flex-col items-center justify-between gap-2">
             <DialogTitle className="flex items-center justify-center gap-2 text-2xl">
-              <Tag />
+              <Briefcase />
               Select the Job :{" "}
             </DialogTitle>
             <br />
           </DialogHeader>
           <DialogDescription>
             <div className="flex flex-col gap-8">
+              {/* Job selection dropdown */}
               <select
                 className="w-full px-4 py-2 border rounded-md dark:bg-zinc-700 dark:text-white"
-                value={selectedTag}
-                onChange={(e) => setSelectedTag(e.target.value)}
+                value={selectedJob ? selectedJob.id : ""}
+                onChange={handleJobChange}
               >
                 <option value="" disabled>
                   Select a Job
                 </option>
-                {tags.map((tag) => (
-                  <option key={tag.id} value={tag.id}>
-                    {tag.name}
+                {jobs.map((job) => (
+                  <option key={job.id} value={job.id}>
+                    {job.jobTitle}
                   </option>
                 ))}
               </select>
+              {/* Display selected job details */}
+              {selectedJob && (
+                <>
+                  <div className="grid grid-cols-3 gap-4">
+                    <div className="font-bold">Job Code</div>
+                    <div className="font-bold">Job Sector</div>
+                    <div className="font-bold">Job Domain</div>
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-4">
+                    <div>{selectedJob.jobCode}</div>
+                    <div>{selectedJob.jobSector}</div>
+                    <div>{selectedJob.jobDomain}</div>
+                  </div>
+                </>
+              )}
 
               {loading ? (
                 <button
@@ -137,7 +159,7 @@ export default function AssignJobButton({ candidates }) {
               ) : (
                 <button
                   type="submit"
-                  onClick={handleAssignTag}
+                  onClick={handleAssignJob}
                   className={`bg-gradient-to-br relative group/btn ${
                     candidates.length === 0
                       ? "opacity-500 cursor-not-allowed from-blue-700 dark:from-blue-600 dark:to-blue-200 to-blue-900"

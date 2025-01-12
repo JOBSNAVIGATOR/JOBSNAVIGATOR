@@ -1,5 +1,7 @@
+import { authOptions } from "@/lib/authOptions";
 import db from "@/lib/db";
 import { generateJobCode } from "@/lib/generateJobCode";
+import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 
 export async function POST(request) {
@@ -109,7 +111,7 @@ export async function POST(request) {
       { status: 201 }
     );
   } catch (error) {
-    // console.error(error); // Improved error logging
+    console.error(error); // Improved error logging
     return NextResponse.json(
       {
         error,
@@ -122,30 +124,72 @@ export async function POST(request) {
 
 export async function GET(req) {
   try {
-    // Get the URL from the request
-    const url = new URL(req.url);
-    // Get the query parameter 'candidate' from the URL
-    const isCandidate = url.searchParams.get("candidate") === "true";
-    // console.log("isCandidate:", isCandidate);
+    // Fetch session data
+    const session = await getServerSession(authOptions);
 
-    // Fetch all jobs from the candidate profile
-    const jobs = await db.job.findMany({
-      where: isCandidate ? { isActive: true } : {}, // Apply isActive: true filter only if it is candidate
-      include: {
-        jobApplicants: true, // Include candidateProfile if it's related to user
-        jobCompany: true,
-        clientSpoc: { include: { user: true } }, // Include user within clientSpoc if necessary
-      },
-    });
+    // If no session or if the user is a candidate, show all jobs
+    let jobs;
+    if (!session || session.role === "CANDIDATE") {
+      jobs = await db.job.findMany({
+        where: { isActive: true }, // Active jobs for everyone (whether logged in or a candidate)
+        include: {
+          jobApplicants: true,
+          jobCompany: true,
+          clientSpoc: { include: { user: true } },
+        },
+      });
+    } else {
+      const { user } = session;
+      const { role, id: userId } = user;
 
-    return new Response(JSON.stringify(jobs), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
+      // Fetch user data and consultantProfile (if available)
+      const userData = await db.user.findUnique({
+        where: { id: userId },
+        include: { consultantProfile: true },
+      });
+
+      // Handle case if no user data is found
+      if (!userData) {
+        return NextResponse.json(
+          { message: "User data not found" },
+          { status: 404 }
+        );
+      }
+
+      const consultantId = userData?.consultantProfile?.id;
+
+      // Query jobs based on role
+      if (role === "ADMIN") {
+        jobs = await db.job.findMany({
+          include: {
+            jobApplicants: true,
+            jobCompany: true,
+            clientSpoc: { include: { user: true } },
+          },
+        });
+      } else if (role === "CONSULTANT") {
+        jobs = await db.job.findMany({
+          where: { consultantId }, // Filter jobs based on consultant ID
+          include: {
+            jobApplicants: true,
+            jobCompany: true,
+            clientSpoc: { include: { user: true } },
+          },
+        });
+      } else {
+        return NextResponse.json(
+          { message: "Role not allowed to fetch jobs" },
+          { status: 403 }
+        );
+      }
+    }
+
+    // Return the fetched jobs
+    return NextResponse.json(jobs, { status: 200 });
   } catch (error) {
-    // console.error("Error fetching jobs:", error);
-    return new Response(
-      JSON.stringify({ message: "Failed to fetch jobs", error }),
+    console.error("Error fetching jobs:", error);
+    return NextResponse.json(
+      { message: "Failed to fetch jobs", error: error.message },
       { status: 500 }
     );
   }
