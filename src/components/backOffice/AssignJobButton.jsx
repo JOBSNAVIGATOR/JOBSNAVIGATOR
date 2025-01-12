@@ -52,26 +52,28 @@ export default function AssignJobButton({ candidates }) {
     try {
       setLoading(true);
       const payload = {
-        assignedBy: session?.user?.name,
+        assignedByName: session?.user?.name,
+        assignedById: session?.user?.id,
         jobId: selectedJob.id,
         candidateIds: candidates.map((candidate) => candidate.id),
       };
-      //   const response = await fetch(
-      //     `${process.env.NEXT_PUBLIC_BASE_URL}/api/assignTag`,
-      //     {
-      //       method: "POST",
-      //       headers: { "Content-Type": "application/json" },
-      //       body: JSON.stringify(payload),
-      //     }
-      //   );
 
-      //   if (response.ok) {
-      //     toast.success("Job assigned successfully!");
-      //     setOpen(false);
-      //   } else {
-      //     const errorData = await response.json();
-      //     toast.error(errorData.message || "Failed to assign job.");
-      //   }
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/assignJob`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        }
+      );
+
+      if (response.ok) {
+        toast.success("Job assigned successfully!");
+        setOpen(false);
+      } else {
+        const errorData = await response.json();
+        toast.error(errorData.message || "Failed to assign job.");
+      }
     } catch (error) {
       console.error("Error assigning job:", error);
       toast.error("An unexpected error occurred.");
