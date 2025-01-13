@@ -64,6 +64,10 @@ model ConsultantProfile {
   jobsPosted         Job[] // Relation to jobs posted by the consultant
   assignedCandidates JobApplicant[] // Relation to candidates assigned by the consultant
 
+  // New Relations for assigned sectors and domains
+  assignedSectors ConsultantAssignedSectors[]
+  assignedDomains ConsultantAssignedDomains[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -72,8 +76,8 @@ model CandidateProfile {
   id                     String   @id @default(auto()) @map("_id") @db.ObjectId
   gender                 Gender?
   emergencyContactNumber String?
-  sector                 String?
-  domain                 String?
+  // sector                 String?
+  // domain                 String?
   currentCtc             String?
   designation            String?
   currentCompany         String?
@@ -92,6 +96,12 @@ model CandidateProfile {
   userId String @unique @db.ObjectId
 
   jobs JobApplicant[] // Array of jobs the candidate has applied for with status
+
+  sector   Sector? @relation("CandidateSector", fields: [sectorId], references: [id], onDelete: SetNull)
+  sectorId String? @db.ObjectId
+
+  domain   Domain? @relation("CandidateDomain", fields: [domainId], references: [id], onDelete: SetNull)
+  domainId String? @db.ObjectId
 
   // New communication status fields
   mailSent         String?   @default("No") // To track if the email was sent
@@ -244,4 +254,51 @@ model CandidateTag {
   updatedAt  DateTime @updatedAt
 
   @@unique([candidateId, tagId]) // Ensure unique combination of candidate and tag
+}
+
+model Sector {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  sectorName String   @unique
+  domains    Domain[] // Relation to domains under this sector
+
+  consultantAssignments ConsultantAssignedSectors[]
+  candidateProfiles     CandidateProfile[]          @relation("CandidateSector")
+  createdAt             DateTime                    @default(now())
+  updatedAt             DateTime                    @updatedAt
+}
+
+model Domain {
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  name     String  @unique
+  sector   Sector? @relation(fields: [sectorId], references: [id], onDelete: Cascade)
+  sectorId String? @db.ObjectId
+
+  consultantAssignments ConsultantAssignedDomains[]
+  // New relation to CandidateProfile
+  candidateProfiles     CandidateProfile[]          @relation("CandidateDomain")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ConsultantAssignedSectors {
+  id           String            @id @default(auto()) @map("_id") @db.ObjectId
+  consultantId String            @db.ObjectId
+  consultant   ConsultantProfile @relation(fields: [consultantId], references: [id], onDelete: Cascade)
+
+  sectorId String @db.ObjectId
+  sector   Sector @relation(fields: [sectorId], references: [id], onDelete: Cascade)
+
+  @@unique([consultantId, sectorId]) // Composite key for uniqueness
+}
+
+model ConsultantAssignedDomains {
+  id           String            @id @default(auto()) @map("_id") @db.ObjectId
+  consultantId String            @db.ObjectId
+  consultant   ConsultantProfile @relation(fields: [consultantId], references: [id], onDelete: Cascade)
+
+  domainId String @db.ObjectId
+  domain   Domain @relation(fields: [domainId], references: [id], onDelete: Cascade)
+
+  @@unique([consultantId, domainId]) // Composite key for uniqueness
 }

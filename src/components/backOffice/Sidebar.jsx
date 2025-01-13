@@ -91,6 +91,7 @@
 // }
 
 "use client";
+import { Category } from "@mui/icons-material";
 import {
   Book,
   Briefcase,
@@ -131,6 +132,11 @@ export default function Sidebar({ showSideBar, setShowSideBar }) {
     { title: "Email Templates", href: "/dashboard/mails", icon: Mail },
     { title: "Tags", href: "/dashboard/tags", icon: Tag },
     { title: "Companies", href: "/dashboard/clientCompanies", icon: UserCheck },
+    {
+      title: "Sectors",
+      href: "/dashboard/sectors",
+      icon: Category,
+    },
   ];
 
   // Conditionally remove the "Consultants" item if the user is a CONSULTANT
