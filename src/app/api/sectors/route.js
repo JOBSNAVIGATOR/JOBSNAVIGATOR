@@ -132,3 +132,16 @@ export async function POST(request) {
     }
   }
 }
+
+export async function GET(req) {
+  try {
+    const sectors = await db.sector.findMany({ include: { domains: true } }); // Fetch all sectors
+    return NextResponse.json(sectors, { status: 200 });
+  } catch (error) {
+    // console.error("Error fetching sectors:", error);
+    return new Response(
+      JSON.stringify({ message: "Failed to fetch sectors", error }),
+      { status: 500 }
+    );
+  }
+}

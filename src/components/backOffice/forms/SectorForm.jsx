@@ -41,7 +41,7 @@ export default function SectorForm({ updateData = {} }) {
         console.log("POst Data", data);
         // make post request (create)
         makePostRequest(setLoading, "api/sectors", data, "Sector", reset);
-        // router.back();
+        router.back();
       }
     } catch (error) {
       // console.error("Error converting image to base64:", error);

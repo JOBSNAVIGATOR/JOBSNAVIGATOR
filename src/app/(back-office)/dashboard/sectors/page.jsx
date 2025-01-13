@@ -5,20 +5,29 @@ import useSWR from "swr";
 import { fetcher } from "@/lib/fetcher";
 import Link from "next/link";
 import AnimatedBoxes from "@/components/ui/AnimatedBoxes";
-import { useSession } from "next-auth/react";
+import DataTable from "@/components/data-table-components/DataTable";
+import { columns } from "./columns";
 
 export default function Page() {
-  // const { data, error } = useSWR("/api/sectors", fetcher, {
-  //   refreshInterval: 5000, // refetch data every 5 seconds
-  // }); // replace with your API endpoint
+  const { data, error } = useSWR("/api/sectors", fetcher, {
+    refreshInterval: 5000, // refetch data every 5 seconds
+  }); // replace with your API endpoint
 
-  // if (error) return <div>Error loading sectors.</div>;
-  // if (!data)
-  //   return (
-  //     <div className="flex justify-center items-center h-screen">
-  //       <AnimatedBoxes />
-  //     </div>
-  //   );
+  if (error) return <div>Error loading sectors.</div>;
+  if (!data)
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <AnimatedBoxes />
+      </div>
+    );
+  // console.log("ssectors", data);
+  // Transform the data to include only the id, sectorName, and an array of domain names
+  const transformedData = data.map((sector) => ({
+    id: sector.id,
+    sectorName: sector.sectorName,
+    domains: sector.domains ? sector.domains.map((domain) => domain.name) : [],
+  }));
+  // console.log("modified data", transformedData);
 
   return (
     <div>
@@ -36,7 +45,9 @@ export default function Page() {
       </div>
 
       {/* table */}
-      <div className="py-8">{/* <TagMasterTable data={data} /> */}</div>
+      <div className="py-8">
+        <DataTable data={transformedData} columns={columns} />
+      </div>
     </div>
   );
 }
