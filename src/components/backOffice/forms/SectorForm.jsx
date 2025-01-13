@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form";
 
 export default function SectorForm({ updateData = {} }) {
   const id = updateData?.id ?? "";
-  const initialDomains = updateData?.sector?.domains ?? [];
+  const initialDomains = updateData?.domains ?? [];
   const [domains, setDomains] = useState(initialDomains);
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -22,7 +22,8 @@ export default function SectorForm({ updateData = {} }) {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      ...updateData.sector,
+      ...updateData,
+      name: updateData?.sectorName,
     },
   });
 

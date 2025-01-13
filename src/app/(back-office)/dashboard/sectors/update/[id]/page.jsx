@@ -13,10 +13,18 @@ export default async function UpdateTag({ params: { id } }) {
   if (!sector) {
     return NextResponse.json({ message: "Sector not found" }, { status: 404 });
   }
+  // Transform the data as required
+  const transformedData = {
+    id: sector.id,
+    sectorName: sector.sectorName,
+    domains: sector.domains ? sector.domains.map((domain) => domain.name) : [],
+  };
+  // console.log("transformedData", transformedData);
+
   return (
     <div>
       <FormHeader title="Update Sector" />
-      <SectorForm updateData={sector} />
+      <SectorForm updateData={transformedData} />
     </div>
   );
 }
