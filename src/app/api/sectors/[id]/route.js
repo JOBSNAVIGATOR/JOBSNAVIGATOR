@@ -47,106 +47,94 @@ export async function DELETE(request, { params }) {
 
 export async function PUT(request) {
   try {
-    const { id, name, domains } = await request.json();
+    const { id, name, domains: updatedDomains } = await request.json();
 
+    // Step 1: Fetch the existing sector and its domains
     const existingSector = await db.sector.findUnique({
-      where: {
-        id,
-      },
+      where: { id },
+      include: { domains: true },
     });
+
     if (!existingSector) {
       return NextResponse.json(
-        {
-          data: null,
-          message: "No Sector Found, Please Create One",
-        },
+        { data: null, message: "No Sector Found, Please Create One" },
         { status: 404 }
       );
     }
-    const session = await getServerSession(authOptions);
 
-    if (!session) {
-      return NextResponse.json(
-        { message: "Unauthorized access" },
-        { status: 401 }
-      );
-    }
-    const { user } = session;
-    const { role } = user;
+    // Step 2: Extract existing domain names for comparison
+    const existingDomainNames = existingSector.domains.map(
+      (domain) => domain.name
+    );
 
-    if (role === "ADMIN" || role === "DEVELOPER") {
-      // Check if any of the domains already exist in other sectors
-      const domainCheck = await db.domain.findMany({
+    // Step 3: Identify domains to delete
+    const domainsToDelete = existingDomainNames.filter(
+      (domainName) => !updatedDomains.includes(domainName)
+    );
+
+    // Step 4: Delete domains that are no longer associated with this sector
+    if (domainsToDelete.length > 0) {
+      await db.domain.deleteMany({
         where: {
-          name: { in: domains }, // Check if any of the domains already exist
-        },
-        include: {
-          sector: true, // Include the sector associated with each domain
+          name: { in: domainsToDelete },
+          sectorId: id,
         },
       });
+    }
 
-      // Prepare a response for domains that are already associated with other sectors
-      const existingDomains = domainCheck.filter(
-        (domain) => domain.sector && domain.sector.sectorName !== name
+    // Step 5: Identify domains to add
+    const domainsToAdd = updatedDomains.filter(
+      (domainName) => !existingDomainNames.includes(domainName)
+    );
+
+    // Step 6: Check for conflicting domains in other sectors
+    const conflictingDomains = await db.domain.findMany({
+      where: {
+        name: { in: domainsToAdd },
+        sectorId: { not: id }, // Ensure domain is not in the current sector
+      },
+      include: { sector: true },
+    });
+
+    if (conflictingDomains.length > 0) {
+      const conflictDetails = conflictingDomains.map(
+        (domain) => `${domain.name} (Sector: ${domain.sector.sectorName})`
       );
-
-      if (existingDomains.length > 0) {
-        // Create a message with domains and the sectors they belong to
-        const existingDomainNames = existingDomains.map(
-          (domain) => `${domain.name} (Sector: ${domain.sector.sectorName})`
-        );
-        return NextResponse.json(
-          {
-            message: `The following domains already exist in other sectors: ${existingDomainNames.join(
-              ", "
-            )}`,
-            data: existingDomains.map((domain) => domain.name),
-          },
-          { status: 400 }
-        );
-      }
-
-      // Create the sector with connectOrCreate for existing domains and create for new ones
-      const newSector = await db.sector.create({
-        data: {
-          sectorName: name,
-          domains: {
-            connectOrCreate: domainCheck.map((domain) => ({
-              where: { name: domain.name },
-              create: { name: domain.name },
-            })),
-            create: domains
-              .filter(
-                (domainName) =>
-                  !domainCheck.some((domain) => domain.name === domainName)
-              )
-              .map((domainName) => ({
-                name: domainName,
-              })),
-          },
-        },
-      });
-
       return NextResponse.json(
         {
-          data: newSector,
-          message: "Sector & Domains Created Successfully",
+          message: `The following domains already exist in other sectors: ${conflictDetails.join(
+            ", "
+          )}`,
+          data: conflictingDomains.map((domain) => domain.name),
         },
-        { status: 201 }
-      );
-    } else {
-      return NextResponse.json(
-        { message: "Role not allowed to create sectors and domains" },
-        { status: 403 }
+        { status: 400 }
       );
     }
-  } catch (error) {
-    // console.log(error);
+
+    // Step 7: Add new non-conflicting domains to the sector
+    const updatedSector = await db.sector.update({
+      where: { id },
+      data: {
+        sectorName: name,
+        domains: {
+          connectOrCreate: domainsToAdd.map((domainName) => ({
+            where: { name: domainName },
+            create: { name: domainName },
+          })),
+        },
+      },
+    });
+
     return NextResponse.json(
       {
-        message: "Failed to Update Sector",
-        error,
+        data: updatedSector,
+        message: "Sector updated successfully with domain changes",
       },
+      { status: 200 }
+    );
+  } catch (error) {
+    return NextResponse.json(
+      { message: "Failed to update sector", error },
       { status: 500 }
     );
   }

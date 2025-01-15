@@ -35,7 +35,7 @@ export default function SectorForm({ updateData = {} }) {
       if (id) {
         console.log("updateddddd", data);
         // make put request (update)
-        // makePutRequest(setLoading, `api/sectors/${id}`, data, "Tag", reset);
+        makePutRequest(setLoading, `api/sectors/${id}`, data, "Sector", reset);
         // router.back();
         // console.log("Update Request:", data);
       } else {
