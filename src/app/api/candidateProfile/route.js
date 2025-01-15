@@ -6,9 +6,6 @@ export async function PUT(request) {
   try {
     const {
       id,
-      name,
-      email,
-      contactNumber,
       emergencyContactNumber,
       gender,
       sector,
