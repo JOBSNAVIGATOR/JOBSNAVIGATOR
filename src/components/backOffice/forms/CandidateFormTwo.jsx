@@ -5,7 +5,7 @@ import { makePostRequest, makePutRequest } from "@/lib/apiRequest";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { domainsData, sectorsData } from "@/data";
+import { domainsData, genderData, sectorsData } from "@/data";
 import { degrees, PDFDocument, rgb } from "pdf-lib";
 import ArrayItemsInput from "@/components/FormInputs/ArrayItemsInput";
 import SelectInputThree from "@/components/FormInputs/SelectInputThree";
@@ -60,11 +60,7 @@ export default function CandidateFormTwo({ updateData = {} }) {
     setSelectedDomain(event.target.value);
   };
 
-  const genderOptions = [
-    { value: "MALE", label: "Male" },
-    { value: "FEMALE", label: "Female" },
-    { value: "OTHER", label: "Other" },
-  ];
+  const genderOptions = genderData;
 
   // const sectorOptions = sectorsData;
   // const domainOptions = domainsData;

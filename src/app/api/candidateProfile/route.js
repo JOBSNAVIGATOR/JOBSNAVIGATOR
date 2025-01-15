@@ -1,5 +1,4 @@
 import db from "@/lib/db";
-import { generateCandidateCode } from "@/lib/generateCandidateCode";
 import { generateNewCandidateCode } from "@/lib/generateNewCandidateCode";
 import { NextResponse } from "next/server";
 
@@ -13,7 +12,9 @@ export async function PUT(request) {
       emergencyContactNumber,
       gender,
       sector,
+      sectorName,
       domain,
+      domainName,
       designation,
       currentCompany,
       previousCompanyName,
@@ -48,8 +49,8 @@ export async function PUT(request) {
     // console.log(prefix, existingDate, existingInitials, sequence);
 
     const candidateData = {
-      sector,
-      domain,
+      sectorName,
+      domainName,
       currentCtc,
       currentJobLocation,
     };
@@ -65,8 +66,8 @@ export async function PUT(request) {
       data: {
         emergencyContactNumber,
         gender,
-        sector,
-        domain,
+        // sector,
+        // domain,
         designation,
         currentCompany,
         previousCompanyName,
@@ -79,12 +80,18 @@ export async function PUT(request) {
         skills,
         resume,
         candidateCode: updatedCandidateCode, // Update only sector/domain/level/location part
+        sector: {
+          connect: { id: sector }, // Linking candidate profile to the existing user
+        },
+        domain: {
+          connect: { id: domain }, // Linking candidate profile to the existing user
+        },
       },
     });
 
     return NextResponse.json(updatedCandidateProfile);
   } catch (error) {
-    // console.log(error);
+    console.error("Error updating candidate profile: ", error);
     return NextResponse.json(
       {
         message: "Failed to Update User",

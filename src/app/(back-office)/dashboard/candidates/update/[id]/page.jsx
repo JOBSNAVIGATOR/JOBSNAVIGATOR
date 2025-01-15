@@ -9,6 +9,8 @@ export default async function page({ params: { id } }) {
     where: { id: id },
     include: {
       user: true, // Include the related user data
+      sector: true,
+      domain: true,
     },
   });
 

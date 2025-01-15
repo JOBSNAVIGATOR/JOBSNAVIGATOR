@@ -15,7 +15,15 @@ export default async function page({ params: { id } }) {
 
   // Check if candidateProfile exists
   const updateData = user?.candidateProfile
-    ? { candidateProfile: user.candidateProfile }
+    ? {
+        candidateProfile: {
+          ...user.candidateProfile,
+          include: {
+            sector: true,
+            domain: true,
+          },
+        },
+      }
     : {};
 
   return (

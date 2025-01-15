@@ -11,7 +11,9 @@ export async function POST(request) {
       gender,
       emergencyContactNumber,
       sector,
+      sectorName,
       domain,
+      domainName,
       currentCtc,
       designation,
       currentCompany,
@@ -44,8 +46,8 @@ export async function POST(request) {
       id,
       name: existingUser.name,
       currentCtc,
-      sector,
-      domain,
+      sectorName,
+      domainName,
       currentJobLocation,
     };
 
@@ -55,8 +57,8 @@ export async function POST(request) {
       data: {
         gender,
         emergencyContactNumber,
-        sector,
-        domain,
+        // sector,
+        // domain,
         currentCtc,
         designation,
         currentCompany,
@@ -69,6 +71,12 @@ export async function POST(request) {
         resume, // URL or file path to the resume
         skills,
         candidateCode, // Storing the generated candidate code
+        sector: {
+          connect: { id: sector }, // Linking candidate profile to the existing user
+        },
+        domain: {
+          connect: { id: domain }, // Linking candidate profile to the existing user
+        },
         user: {
           connect: { id: existingUser.id }, // Linking candidate profile to the existing user
         },

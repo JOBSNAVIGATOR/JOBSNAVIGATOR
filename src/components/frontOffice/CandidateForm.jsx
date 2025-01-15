@@ -3,10 +3,10 @@ import SubmitButton from "@/components/FormInputs/SubmitButton";
 import TextInput from "@/components/FormInputs/TextInput";
 import { makePostRequest, makePutRequest } from "@/lib/apiRequest";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import ArrayItemsInput from "../FormInputs/ArrayItemsInput";
-import { domainsData, sectorsData } from "@/data";
+import { domainsData, genderData, sectorsData } from "@/data";
 import { degrees, PDFDocument, rgb } from "pdf-lib";
 import SelectInputThree from "../FormInputs/SelectInputThree";
 // import ImageInput from "../FormInputs/ImageInput";
@@ -19,6 +19,14 @@ export default function CandidateForm({ user, updateData = {} }) {
   const [loading, setLoading] = useState(false);
   const [skills, setSkills] = useState(initialSkills);
   const [resume, setResume] = useState(initialResumeUrl); // State for resume upload
+  const [sectorsData, setSectorsData] = useState([]);
+  const [selectedSector, setSelectedSector] = useState(
+    updateData?.candidateProfile?.sector?.id ?? ""
+  );
+  const [selectedDomain, setSelectedDomain] = useState(
+    updateData?.candidateProfile?.domain?.id ?? ""
+  );
+  const [domainOptions, setDomainOptions] = useState([]);
   const {
     register,
     reset,
@@ -31,36 +39,39 @@ export default function CandidateForm({ user, updateData = {} }) {
       ...updateData.candidateProfile,
     },
   });
+  // Fetch sectors and domains on component mount
+  useEffect(() => {
+    async function fetchSectors() {
+      const response = await fetch("/api/sectors");
+      const data = await response.json();
+      setSectorsData(data);
+    }
+    fetchSectors();
+  }, [updateData]);
+  console.log(sectorsData);
+  // Handle sector change and update domains
+  const handleSectorChange = (event) => {
+    const selectedSectorId = event.target.value;
+    setSelectedSector(selectedSectorId);
 
-  const genderOptions = [
-    { value: "MALE", label: "Male" },
-    { value: "FEMALE", label: "Female" },
-    { value: "OTHER", label: "Other" },
-  ];
+    // Find domains for the selected sector
+    const sector = sectorsData.find((s) => s.id === selectedSectorId);
+    setDomainOptions(sector ? sector.domains : []);
+  };
+  // Automatically update domain options when sector is set or updated
+  useEffect(() => {
+    if (selectedSector) {
+      const sector = sectorsData.find((s) => s.id === selectedSector);
+      setDomainOptions(sector ? sector.domains : []);
+    }
+  }, [selectedSector, sectorsData]);
 
-  const sectorOptions = sectorsData;
-  const domainOptions = domainsData;
+  // Handle domain change
+  const handleDomainChange = (event) => {
+    setSelectedDomain(event.target.value);
+  };
 
-  // Fetch candidate data if updating
-  // useEffect(() => {
-  //   if (id) {
-  //     const fetchData = async () => {
-  //       setLoading(true);
-  //       try {
-  //         const response = await getData(`candidateProfile/${id}`);
-  //         const candidateData = response.data; // Assuming response structure
-  //         reset(candidateData); // Populate the form with fetched data
-  //       } catch (error) {
-  //         console.error("Error fetching candidate data:", error);
-  //       } finally {
-  //         setLoading(false);
-  //       }
-  //     };
-  //     fetchData();
-  //   } else {
-  //     reset({ ...user }); // Reset to user data if no id
-  //   }
-  // }, [id, reset, user]);
+  const genderOptions = genderData;
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -83,17 +94,6 @@ export default function CandidateForm({ user, updateData = {} }) {
   const handleRemoveResume = () => {
     setResume(""); // Clear the resume state when the resume is removed
   };
-
-  // function convertUint8ArrayToBase64(uint8Array) {
-  //   let binaryString = "";
-  //   const len = uint8Array.length;
-
-  //   for (let i = 0; i < len; i++) {
-  //     binaryString += String.fromCharCode(uint8Array[i]);
-  //   }
-
-  //   return btoa(binaryString);
-  // }
 
   function convertUint8ArrayToBase64(uint8Array) {
     const chunkSize = 1024; // Adjust based on your needs
@@ -147,6 +147,15 @@ export default function CandidateForm({ user, updateData = {} }) {
   }
 
   async function onSubmit(data) {
+    // Find sector and domain names based on selected IDs
+    const sector = sectorsData.find((s) => s.id === selectedSector);
+    const domain = domainOptions.find((d) => d.id === selectedDomain);
+    // Only pass IDs for sector and domain, not the entire object
+    data.sector = selectedSector;
+    data.domain = selectedDomain;
+    data.sectorName = sector?.sectorName;
+    data.domainName = domain?.name;
+
     data.resume = resume;
     data.skills = skills;
 
@@ -163,7 +172,7 @@ export default function CandidateForm({ user, updateData = {} }) {
         data,
         "Candidate Profile"
       );
-      // setPdfUrl("");
+      setPdfUrl("");
       router.back();
     } else {
       // make post request (create)
@@ -175,7 +184,7 @@ export default function CandidateForm({ user, updateData = {} }) {
         "Candidate Profile"
         // reset
       );
-      // setPdfUrl("");
+      setPdfUrl("");
       router.push("/");
     }
   }
@@ -235,7 +244,12 @@ export default function CandidateForm({ user, updateData = {} }) {
           register={register("sector", { required: true })} // Ensure gender is registered
           errors={errors}
           className="w-full"
-          options={sectorOptions}
+          options={sectorsData.map((sector) => ({
+            value: sector.id,
+            label: sector.sectorName,
+          }))}
+          onChange={handleSectorChange}
+          value={selectedSector}
         />
         <SelectInputThree
           label="Domain"
@@ -243,7 +257,12 @@ export default function CandidateForm({ user, updateData = {} }) {
           register={register("domain", { required: true })} // Ensure gender is registered
           errors={errors}
           className="w-full"
-          options={domainOptions}
+          options={domainOptions.map((domain) => ({
+            value: domain.id,
+            label: domain.name,
+          }))}
+          onChange={handleDomainChange}
+          value={selectedDomain}
         />
         <TextInput
           label="Designation"
