@@ -33,6 +33,9 @@ export async function makePostRequest(
         case 400:
           toast.error(errorData.message || "Bad Request");
           break;
+        case 401:
+          toast.error(errorData.message || "Unauthorized Access");
+          break;
         case 403:
           toast.error("You don't have permission to perform this action.");
           break;

@@ -49,6 +49,26 @@ export async function PUT(request) {
   try {
     const { id, name, domains: updatedDomains } = await request.json();
 
+    // Step 1: Validate session and role
+    const session = await getServerSession(authOptions);
+
+    if (!session) {
+      return NextResponse.json(
+        { message: "Unauthorized access" },
+        { status: 401 }
+      );
+    }
+
+    const { user } = session;
+    const { role } = user;
+
+    if (role !== "ADMIN" && role !== "DEVELOPER") {
+      return NextResponse.json(
+        { message: "You do not have permission to update sectors and domains" },
+        { status: 403 }
+      );
+    }
+
     // Step 1: Fetch the existing sector and its domains
     const existingSector = await db.sector.findUnique({
       where: { id },

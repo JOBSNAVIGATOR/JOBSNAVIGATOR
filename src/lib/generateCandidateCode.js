@@ -19,10 +19,10 @@ export function generateCandidateCode(candidateData, sequenceNumber = "") {
   const sequence = sequenceNumber;
 
   // 5. Sector
-  const sector = candidateData.sector;
+  const sector = candidateData.sectorName;
 
   // 6. Domain initials (e.g., "Software Development" -> "SD")
-  const domainInitials = candidateData.domain
+  const domainInitials = candidateData.domainName
     .split(" ")
     .map((word) => word.charAt(0).toUpperCase())
     .join("");

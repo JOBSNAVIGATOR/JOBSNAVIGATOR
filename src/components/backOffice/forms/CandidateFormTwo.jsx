@@ -3,7 +3,7 @@ import SubmitButton from "@/components/FormInputs/SubmitButton";
 import TextInput from "@/components/FormInputs/TextInput";
 import { makePostRequest, makePutRequest } from "@/lib/apiRequest";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { domainsData, sectorsData } from "@/data";
 import { degrees, PDFDocument, rgb } from "pdf-lib";
@@ -18,6 +18,10 @@ export default function CandidateFormTwo({ updateData = {} }) {
   const [loading, setLoading] = useState(false);
   const [skills, setSkills] = useState(initialSkills);
   const [resume, setResume] = useState(initialResumeUrl); // State for resume upload
+  const [sectorsData, setSectorsData] = useState([]);
+  const [selectedSector, setSelectedSector] = useState("");
+  const [selectedDomain, setSelectedDomain] = useState("");
+  const [domainOptions, setDomainOptions] = useState([]);
   const {
     register,
     reset,
@@ -30,14 +34,40 @@ export default function CandidateFormTwo({ updateData = {} }) {
     },
   });
 
+  // Fetch sectors and domains on component mount
+  useEffect(() => {
+    async function fetchSectors() {
+      const response = await fetch("/api/sectors");
+      const data = await response.json();
+      setSectorsData(data);
+    }
+    fetchSectors();
+  }, []);
+  console.log(sectorsData);
+
+  // Handle sector change and update domains
+  const handleSectorChange = (event) => {
+    const selectedSectorId = event.target.value;
+    setSelectedSector(selectedSectorId);
+
+    // Find domains for the selected sector
+    const sector = sectorsData.find((s) => s.id === selectedSectorId);
+    setDomainOptions(sector ? sector.domains : []);
+  };
+
+  // Handle domain change
+  const handleDomainChange = (event) => {
+    setSelectedDomain(event.target.value);
+  };
+
   const genderOptions = [
     { value: "MALE", label: "Male" },
     { value: "FEMALE", label: "Female" },
     { value: "OTHER", label: "Other" },
   ];
 
-  const sectorOptions = sectorsData;
-  const domainOptions = domainsData;
+  // const sectorOptions = sectorsData;
+  // const domainOptions = domainsData;
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -114,6 +144,11 @@ export default function CandidateFormTwo({ updateData = {} }) {
   }
 
   async function onSubmit(data) {
+    // Find sector and domain names based on selected IDs
+    const sector = sectorsData.find((s) => s.id === selectedSector);
+    const domain = domainOptions.find((d) => d.id === selectedDomain);
+    data.sectorName = sector?.sectorName;
+    data.domainName = domain?.name;
     data.resume = resume;
     data.skills = skills;
 
@@ -122,7 +157,7 @@ export default function CandidateFormTwo({ updateData = {} }) {
       data.resume = watermarkedResume; // Update the resume with the watermarked version
     }
 
-    // console.log(data);
+    console.log(data);
 
     // make post request (create)
     makePostRequest(
@@ -132,7 +167,7 @@ export default function CandidateFormTwo({ updateData = {} }) {
       "Candidate Profile",
       reset
     );
-    // setPdfUrl("");
+    setPdfUrl("");
     router.back();
   }
 
@@ -190,7 +225,12 @@ export default function CandidateFormTwo({ updateData = {} }) {
           register={register("sector", { required: true })} // Ensure gender is registered
           errors={errors}
           className="w-full"
-          options={sectorOptions}
+          // options={sectorOptions}
+          options={sectorsData.map((sector) => ({
+            value: sector.id,
+            label: sector.sectorName,
+          }))}
+          onChange={handleSectorChange}
         />
         <SelectInputThree
           label="Domain"
@@ -199,7 +239,12 @@ export default function CandidateFormTwo({ updateData = {} }) {
           register={register("domain", { required: true })} // Ensure gender is registered
           errors={errors}
           className="w-full"
-          options={domainOptions}
+          // options={domainOptions}
+          options={domainOptions.map((domain) => ({
+            value: domain.id,
+            label: domain.name,
+          }))}
+          onChange={handleDomainChange}
         />
         <TextInput
           label="Designation"
