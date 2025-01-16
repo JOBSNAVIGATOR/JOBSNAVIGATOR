@@ -48,7 +48,7 @@ export default function CandidateForm({ user, updateData = {} }) {
     }
     fetchSectors();
   }, [updateData]);
-  console.log(sectorsData);
+  // console.log(sectorsData);
   // Handle sector change and update domains
   const handleSectorChange = (event) => {
     const selectedSectorId = event.target.value;

@@ -1,26 +1,84 @@
 "use client";
 import ArrayItemsInput from "@/components/FormInputs/ArrayItemsInput";
 import SelectInput from "@/components/FormInputs/SelectInput";
+import SelectInputThree from "@/components/FormInputs/SelectInputThree";
 import SubmitButton from "@/components/FormInputs/SubmitButton";
 import TextAreaInput from "@/components/FormInputs/TextAreaInput";
 import TextInput from "@/components/FormInputs/TextInput";
 import ToggleInput from "@/components/FormInputs/ToggleInput";
-import { domainsData, sectorsData } from "@/data";
 import { makePostRequest, makePutRequest } from "@/lib/apiRequest";
 import { fetcher } from "@/lib/fetcher";
-import { data } from "autoprefixer";
 import { useSession } from "next-auth/react";
 
 import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import useSWR from "swr";
 
 export default function JobForm({ updateData = {} }) {
   const initialSkills = updateData?.skillsRequired ?? [];
+  const [skillsRequired, setSkillsRequired] = useState(initialSkills);
   const id = updateData?.id ?? "";
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  // const [sectorName, setSectorName] = useState("");
+  // const [domainName, setDomainName] = useState("");
+  const [sectorsData, setSectorsData] = useState([]);
+  const [selectedSector, setSelectedSector] = useState(
+    updateData?.sector?.id ?? ""
+  );
+  const [selectedDomain, setSelectedDomain] = useState(
+    updateData?.domain?.id ?? ""
+  );
+  const [domainOptions, setDomainOptions] = useState([]);
+  const {
+    register,
+    reset,
+    watch,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      ...updateData,
+      isActive: true,
+    },
+  });
+  const isActive = watch("isActive");
+  // Fetch sectors and domains on component mount
+  useEffect(() => {
+    async function fetchSectors() {
+      const response = await fetch("/api/sectors");
+      const data = await response.json();
+      setSectorsData(data);
+    }
+    fetchSectors();
+  }, [updateData]);
+
+  const handleSectorChange = (event) => {
+    const selectedSectorId = event.target.value;
+    setSelectedSector(selectedSectorId);
+    // Ensure domain selection resets if sector changes
+    setSelectedDomain("");
+
+    // Find domains for the selected sector
+    const sector = sectorsData.find((s) => s.id === selectedSectorId);
+    // setSectorName(sector?.sectorName);
+    setDomainOptions(sector ? sector.domains : []);
+  };
+
+  // Automatically update domain options when sector is set or updated
+  useEffect(() => {
+    if (selectedSector && sectorsData.length > 0) {
+      const sector = sectorsData.find((s) => s.id === selectedSector);
+      setDomainOptions(sector ? sector.domains : []);
+    }
+  }, [selectedSector, sectorsData]);
+
+  // Handle domain change
+  const handleDomainChange = (event) => {
+    setSelectedDomain(event.target.value);
+    // setDomainName(event.target.name);
+  };
 
   const { data: companies, error } = useSWR("/api/companies", fetcher, {
     refreshInterval: 5000, // refetch data every 5 seconds
@@ -53,40 +111,26 @@ export default function JobForm({ updateData = {} }) {
   }
   // const user = session?.user;
 
-  const {
-    register,
-    reset,
-    watch,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    defaultValues: {
-      ...updateData,
-      isActive: true,
-    },
-  });
-  const isActive = watch("isActive");
-
-  const [skillsRequired, setSkillsRequired] = useState(initialSkills);
-
-  const sectors = sectorsData;
-  const domains = domainsData;
-
   async function onSubmit(data) {
     data.skillsRequired = skillsRequired;
     data.postedBy = session?.user?.id;
+    // Find sector and domain names based on selected IDs
+    const sector = sectorsData.find((s) => s.id === selectedSector);
+    const domain = domainOptions.find((d) => d.id === selectedDomain);
+
+    data.sector = selectedSector;
+    data.domain = selectedDomain;
+    // data.sectorName = sectorName;
+    // data.domainName = domainName;
+    data.sectorName = sector?.sectorName;
+    data.domainName = domain?.name;
     // console.log(data);
     // Handle form submission logic
     if (id) {
-      // console.log("1");
-      // console.log(data);
       // make put request (update)
       makePutRequest(setLoading, `api/jobs/${id}`, data, "Job", reset);
       router.back();
-      // console.log("Update Request:", data);
     } else {
-      // make post request (create)
-      console.log("2", data);
       makePostRequest(setLoading, "api/jobs", data, "Jobs", reset);
       router.back();
     }
@@ -107,7 +151,7 @@ export default function JobForm({ updateData = {} }) {
           className="w-full"
         />
         <SelectInput
-          label="Select Company"
+          label="Company"
           name="jobCompany"
           register={register}
           errors={errors}
@@ -120,31 +164,41 @@ export default function JobForm({ updateData = {} }) {
           register={register}
           errors={errors}
         />
-        <SelectInput
+        <SelectInputThree
           label="Sector"
-          name="jobSector"
-          register={register}
+          name="sector"
+          register={register("sector", { required: true })} // Ensure gender is registered
           errors={errors}
           className="w-full"
-          options={sectors}
+          options={sectorsData.map((sector) => ({
+            value: sector.id,
+            label: sector.sectorName,
+          }))}
+          onChange={handleSectorChange}
+          value={selectedSector}
         />
-
-        <SelectInput
+        <SelectInputThree
           label="Domain"
-          name="jobDomain"
-          register={register}
+          name="domain"
+          register={register("domain", { required: true })} // Ensure gender is registered
           errors={errors}
           className="w-full"
-          options={domains}
+          options={domainOptions.map((domain) => ({
+            value: domain.id,
+            label: domain.name,
+          }))}
+          onChange={handleDomainChange}
+          value={selectedDomain}
         />
-
-        <SelectInput
+        <SelectInputThree
           label="Client SPOC"
           name="clientId"
-          register={register}
+          register={register("clientId", { required: true })} // Ensure gender is registered
           errors={errors}
           className="w-full"
           options={clientOptions || []}
+          // onChange={handleDomainChange}
+          value={updateData?.clientSpoc?.user?.name ?? ""}
         />
 
         <TextInput

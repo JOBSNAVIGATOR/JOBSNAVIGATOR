@@ -8,6 +8,13 @@ export default async function UpdateJob({ params: { id } }) {
     where: { id: id },
     include: {
       jobCompany: true, // Include the related company data
+      sector: true,
+      domain: true,
+      clientSpoc: {
+        include: {
+          user: true, // Include user in candidateProfile
+        },
+      },
     },
   });
 

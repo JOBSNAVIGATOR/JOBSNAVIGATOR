@@ -11,8 +11,6 @@ export async function POST(request) {
       jobTitle,
       jobCompany,
       jobDescription,
-      jobSector,
-      jobDomain,
       jobLocation,
       clientId,
       jobSalary,
@@ -21,6 +19,10 @@ export async function POST(request) {
       postedBy,
       skillsRequired,
       isActive,
+      sector,
+      sectorName,
+      domain,
+      domainName,
     } = await request.json();
     //Check if the user Already exists in the db
     const existingJob = await db.job.findFirst({
@@ -28,10 +30,10 @@ export async function POST(request) {
         jobTitle,
         jobCompany: { id: jobCompany }, // Correctly reference the company
         clientSpoc: { id: clientId },
+        sector: { id: sector },
+        domain: { id: domain },
         jobLocation,
         jobSalary: parseFloat(jobSalary), // Ensure jobSalary is a Float
-        jobSector,
-        jobDomain,
         isActive,
       },
     });
@@ -52,15 +54,9 @@ export async function POST(request) {
     const sequenceNumber = (await db.job.count()) + 1;
     // console.log("chck2", sequenceNumber);
 
-    const companyData = await db.company.findUnique({
-      where: {
-        id: jobCompany,
-      },
-    });
-
     const jobData = {
-      jobSector,
-      jobDomain,
+      sectorName,
+      domainName,
       jobSalary,
       jobLocation,
       vacanciesInt,
@@ -69,7 +65,6 @@ export async function POST(request) {
     // console.log("cehck5", jobData);
 
     const jobCodeCreated = generateJobCode(jobData, sequenceNumber);
-    // console.log(jobCodeCreated);
 
     // Fetch the User Profile using the User ID
     const userProfile = await db.user.findUnique({
@@ -87,9 +82,13 @@ export async function POST(request) {
         clientSpoc: {
           connect: { id: clientId },
         },
+        sector: {
+          connect: { id: sector }, // Linking candidate profile to the existing user
+        },
+        domain: {
+          connect: { id: domain }, // Linking candidate profile to the existing user
+        },
         jobDescription,
-        jobSector,
-        jobDomain,
         jobLocation,
         jobSalary: parseFloat(jobSalary),
         jobCode: jobCodeCreated,

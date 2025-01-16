@@ -1,9 +1,9 @@
 export function generateJobCode(jobData, sequenceNumber = "") {
   // 1. Sector
-  const sector = jobData.jobSector;
+  const sector = jobData.sectorName;
 
   // 2. Domain initials (e.g., "Software Development" -> "SD")
-  const domain = jobData.jobDomain;
+  const domain = jobData.domainName;
 
   // 3. Level based on current CTC
   const ctc = parseFloat(jobData.jobSalary);

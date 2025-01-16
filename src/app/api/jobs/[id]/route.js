@@ -49,8 +49,8 @@ export async function PUT(request) {
       jobTitle,
       jobCompany,
       jobDescription,
-      jobSector,
-      jobDomain,
+      // jobSector,
+      // jobDomain,
       jobLocation,
       jobSalary,
       jobVacancies,
@@ -58,6 +58,10 @@ export async function PUT(request) {
       postedBy,
       skillsRequired,
       isActive,
+      sector,
+      sectorName,
+      domain,
+      domainName,
     } = await request.json();
 
     const job = await db.job.findUnique({
@@ -97,8 +101,8 @@ export async function PUT(request) {
     ] = jobCode.split("-");
 
     const jobData = {
-      jobSector,
-      jobDomain,
+      sectorName,
+      domainName,
       jobSalary,
       jobLocation,
       vacanciesInt,
@@ -117,9 +121,15 @@ export async function PUT(request) {
         jobCompany: {
           connect: { id: jobCompany }, // Use connect to link with the Company
         },
+        sector: {
+          connect: { id: sector }, // Linking candidate profile to the existing user
+        },
+        domain: {
+          connect: { id: domain }, // Linking candidate profile to the existing user
+        },
         jobDescription,
-        jobSector,
-        jobDomain,
+        // jobSector,
+        // jobDomain,
         jobLocation,
         jobSalary: parseFloat(jobSalary),
         jobVacancies: vacanciesInt,
@@ -135,7 +145,7 @@ export async function PUT(request) {
 
     return NextResponse.json(updatedJob);
   } catch (error) {
-    // console.log(error);
+    console.log(error);
     return NextResponse.json(
       {
         message: "Failed to Update Job",
