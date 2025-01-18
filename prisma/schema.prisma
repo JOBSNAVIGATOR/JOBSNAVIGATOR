@@ -121,8 +121,8 @@ model ClientProfile {
   id                     String   @id @default(auto()) @map("_id") @db.ObjectId
   emergencyContactNumber String
   gender                 Gender
-  sector                 String
-  domain                 String
+  // sector                 String
+  // domain                 String
   designation            String
   currentJobLocation     String
   functionalArea         String
@@ -137,6 +137,12 @@ model ClientProfile {
   companyId String?  @db.ObjectId
 
   jobs Job[] // Relation to jobs associated with this client
+
+  sector   Sector? @relation("ClientSector", fields: [sectorId], references: [id], onDelete: SetNull)
+  sectorId String? @db.ObjectId
+
+  domain   Domain? @relation("ClientDomain", fields: [domainId], references: [id], onDelete: SetNull)
+  domainId String? @db.ObjectId
 
   // New communication status fields for the client
   mailSent         Boolean   @default(false) // To track if the email was sent
@@ -268,6 +274,7 @@ model Sector {
 
   consultantAssignments ConsultantAssignedSectors[]
   candidateProfiles     CandidateProfile[]          @relation("CandidateSector")
+  clientProfiles        ClientProfile[]             @relation("ClientSector")
   jobs                  Job[]                       @relation("jobSector")
   createdAt             DateTime                    @default(now())
   updatedAt             DateTime                    @updatedAt
@@ -282,8 +289,9 @@ model Domain {
   consultantAssignments ConsultantAssignedDomains[]
   // New relation to CandidateProfile
   candidateProfiles     CandidateProfile[]          @relation("CandidateDomain")
-
-  jobs Job[] @relation("jobDomain")
+  // new relation to client profile
+  clientProfiles        ClientProfile[]             @relation("ClientDomain")
+  jobs                  Job[]                       @relation("jobDomain")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

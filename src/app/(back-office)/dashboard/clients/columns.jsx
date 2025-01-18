@@ -77,18 +77,18 @@ export const columns = [
   //     );
   //   },
   // },
-  // {
-  //   id: "actions",
-  //   cell: ({ row }) => {
-  //     const client = row.original;
-  //     return (
-  //       <ActionColumn
-  //         row={row}
-  //         title="Client"
-  //         editEndpoint={`clients/update/${client.id}`}
-  //         endpoint={`client/${client.id}`}
-  //       />
-  //     );
-  //   },
-  // },
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      const client = row.original;
+      return (
+        <ActionColumn
+          row={row}
+          title="Client"
+          editEndpoint={`clients/update/${client.id}`}
+          endpoint={`clients/${client.id}`}
+        />
+      );
+    },
+  },
 ];

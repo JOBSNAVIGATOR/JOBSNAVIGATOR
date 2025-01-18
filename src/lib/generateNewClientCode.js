@@ -1,11 +1,5 @@
-export function generateClientCode(clientData, sequenceNumber = "") {
-  // 1. Fixed part of the code
-  const prefix = "JOBSNVG EP";
-
-  // 2. Sequence number (should be incremented for each candidate)
-  const sequence = sequenceNumber;
-
-  // Date of joining in YYYYMMDD format
+export function generateNewClientCode(clientData, sequenceNumber = "") {
+  // 3. Date of joining in YYYYMMDD format
   const dateOfJoining = new Date(clientData.dateOfJoining);
   const joiningDateStr = `${dateOfJoining.getFullYear()}${String(
     dateOfJoining.getMonth() + 1
@@ -37,7 +31,7 @@ export function generateClientCode(clientData, sequenceNumber = "") {
   const designation = clientData.designation.toUpperCase();
 
   // Combine all parts to generate the client code
-  const clientCode = `${prefix} ${sequence} ${joiningDateStr} ${functionalArea} ${domain} ${level} ${locationInitials} ${sector} ${companyName} ${designation}`;
+  const clientCode = `${joiningDateStr} ${functionalArea} ${domain} ${level} ${locationInitials} ${sector} ${companyName} ${designation}`;
   // console.log("client code", clientCode);
 
   return clientCode;

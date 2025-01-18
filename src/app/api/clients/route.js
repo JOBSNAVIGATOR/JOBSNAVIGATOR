@@ -16,7 +16,9 @@ export async function POST(request) {
       emergencyContactNumber,
       gender,
       sector,
+      sectorName,
       domain,
+      domainName,
       designation,
       currentCompany,
       currentCtc,
@@ -81,8 +83,8 @@ export async function POST(request) {
       id: newUser.id, // Use the new user's ID
       dateOfJoining,
       functionalArea,
-      sector,
-      domain,
+      sectorName,
+      domainName,
       currentCtc,
       currentJobLocation,
       currentCompanyName: companyData.companyName,
@@ -98,17 +100,21 @@ export async function POST(request) {
       data: {
         gender,
         emergencyContactNumber,
-        sector,
-        domain,
         currentCtc,
         designation,
-        company: {
-          connect: { id: currentCompany }, // Use connect to link with the Company
-        },
         currentJobLocation,
         clientCode, // Storing the generated client code
         dateOfJoining: modifiedDateOfJoining,
         functionalArea,
+        company: {
+          connect: { id: currentCompany }, // Use connect to link with the Company
+        },
+        sector: {
+          connect: { id: sector }, // Use connect to link with the Company
+        },
+        domain: {
+          connect: { id: domain }, // Use connect to link with the Company
+        },
         user: {
           connect: { id: newUser.id }, // Linking candidate profile to the existing user
         },
@@ -124,7 +130,7 @@ export async function POST(request) {
       { status: 201 }
     );
   } catch (error) {
-    // console.log(error);
+    console.log(error);
     return NextResponse.json(
       {
         error,

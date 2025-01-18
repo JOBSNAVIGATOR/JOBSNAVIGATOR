@@ -21,18 +21,6 @@ export default function Page() {
         <AnimatedBoxes />
       </div>
     );
-  // console.log(data);
-
-  // const cleanData = data.map((row) => {
-  //   const cleanedRow = {};
-  //   for (let key in row) {
-  //     // Exclude the 'resume' field
-  //     if (key !== "resume" && row[key] !== undefined && row[key] !== null) {
-  //       cleanedRow[key] = row[key];
-  //     }
-  //   }
-  //   return cleanedRow;
-  // });
 
   return (
     <div>
@@ -42,17 +30,11 @@ export default function Page() {
       </div>
 
       <div className="flex justify-end gap-4">
-        {/* <Link href="/dashboard/candidates/bulkUpload">
-          <button className="bg-gradient-to-br group/btn from-black dark:from-lime-200 dark:to-lime-900 to-neutral-600 block dark:bg-zinc-800 w-80 font-bold text-white dark:text-slate-900 rounded-xl h-10 text-center items-center shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]">
-            Bulk Upload
-          </button>
-        </Link> */}
         <Link href="/dashboard/clients/new">
           <button className="bg-gradient-to-br group/btn from-black dark:from-lime-200 dark:to-lime-900 to-neutral-600 block dark:bg-zinc-800 w-80 font-bold text-white dark:text-slate-900 rounded-xl h-10 text-center items-center shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]">
             Add Client
           </button>
         </Link>
-        {/* <DownloadCSV data={cleanData} fileName="clients" /> */}
       </div>
 
       {/* table */}

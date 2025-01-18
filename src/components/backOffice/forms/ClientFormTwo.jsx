@@ -3,20 +3,40 @@ import SubmitButton from "@/components/FormInputs/SubmitButton";
 import TextInput from "@/components/FormInputs/TextInput";
 import { makePostRequest, makePutRequest } from "@/lib/apiRequest";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import {
-  domainsData,
-  functionalAreaOptionsData,
-  genderData,
-  sectorsData,
-} from "@/data";
+import { functionalAreaOptionsData, genderData } from "@/data";
 import SelectInputThree from "@/components/FormInputs/SelectInputThree";
 import SelectInput from "@/components/FormInputs/SelectInput";
 import useSWR from "swr";
 import { fetcher } from "@/lib/fetcher";
 
-export default function ClientFormTwo({ updateData = {} }) {
+export default function ClientFormTwo({ user, updateData = {} }) {
+  const id = updateData?.clientProfile?.id ?? "";
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [sectorsData, setSectorsData] = useState([]);
+  const [selectedSector, setSelectedSector] = useState(
+    updateData?.clientProfile?.sector?.id ?? ""
+  );
+  const [selectedDomain, setSelectedDomain] = useState(
+    updateData?.clientProfile?.domain?.id ?? ""
+  );
+  const [domainOptions, setDomainOptions] = useState([]);
+  const {
+    register,
+    reset,
+    watch,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      ...user,
+      ...updateData.clientProfile,
+      isActive: true,
+    },
+  });
+  const isActive = watch("isActive");
   const { data: companies, error } = useSWR("/api/companies", fetcher, {
     refreshInterval: 5000, // refetch data every 5 seconds
   }); // replace with your API endpoint
@@ -29,32 +49,69 @@ export default function ClientFormTwo({ updateData = {} }) {
       }))
     : [];
 
-  const id = updateData?.candidateProfile?.id ?? "";
-  const router = useRouter();
-  const [loading, setLoading] = useState(false);
-  const {
-    register,
-    reset,
-    watch,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    defaultValues: {
-      ...updateData.candidateProfile,
-    },
-  });
+  // Fetch sectors and domains on component mount
+  useEffect(() => {
+    async function fetchSectors() {
+      const response = await fetch("/api/sectors");
+      const data = await response.json();
+      setSectorsData(data);
+    }
+    fetchSectors();
+  }, [updateData]);
+
+  const handleSectorChange = (event) => {
+    const selectedSectorId = event.target.value;
+    setSelectedSector(selectedSectorId);
+    // Ensure domain selection resets if sector changes
+    setSelectedDomain("");
+
+    // Find domains for the selected sector
+    const sector = sectorsData.find((s) => s.id === selectedSectorId);
+    // setSectorName(sector?.sectorName);
+    setDomainOptions(sector ? sector.domains : []);
+  };
+
+  // Automatically update domain options when sector is set or updated
+  useEffect(() => {
+    if (selectedSector && sectorsData.length > 0) {
+      const sector = sectorsData.find((s) => s.id === selectedSector);
+      setDomainOptions(sector ? sector.domains : []);
+    }
+  }, [selectedSector, sectorsData]);
+
+  // Handle domain change
+  const handleDomainChange = (event) => {
+    setSelectedDomain(event.target.value);
+    // setDomainName(event.target.name);
+  };
 
   const genderOptions = genderData;
-  const sectorOptions = sectorsData;
-  const domainOptions = domainsData;
   const functionalAreaOptions = functionalAreaOptionsData;
 
   async function onSubmit(data) {
-    // console.log(data);
-
-    // make post request (create)
-    makePostRequest(setLoading, "api/clients", data, "Client Profile");
-    router.back();
+    // Find sector and domain names based on selected IDs
+    const sector = sectorsData.find((s) => s.id === selectedSector);
+    const domain = domainOptions.find((d) => d.id === selectedDomain);
+    data.sector = selectedSector;
+    data.domain = selectedDomain;
+    data.sectorName = sector?.sectorName;
+    data.domainName = domain?.name;
+    console.log(data);
+    setLoading(true);
+    if (id) {
+      // make put request (update)
+      makePutRequest(
+        setLoading,
+        `api/clients/${id}`,
+        data,
+        "Client Profile",
+        reset
+      );
+      router.back();
+    } else {
+      makePostRequest(setLoading, "api/clients", data, "Client Profile", reset);
+      router.back();
+    }
   }
 
   return (
@@ -69,6 +126,7 @@ export default function ClientFormTwo({ updateData = {} }) {
           register={register}
           errors={errors}
           className="w-full"
+          disabled // Make this field non-editable
         />
         <TextInput
           label="Email Address"
@@ -77,6 +135,7 @@ export default function ClientFormTwo({ updateData = {} }) {
           register={register}
           errors={errors}
           className="w-full"
+          disabled // Make this field non-editable
         />
         <TextInput
           label="Contact Number"
@@ -85,6 +144,7 @@ export default function ClientFormTwo({ updateData = {} }) {
           register={register}
           errors={errors}
           className="w-full"
+          disabled // Make this field non-editable
         />
         <TextInput
           label="Alternate Contact Number"
@@ -107,20 +167,28 @@ export default function ClientFormTwo({ updateData = {} }) {
         <SelectInputThree
           label="Sector"
           name="sector"
-          // register={register}
           register={register("sector", { required: true })} // Ensure gender is registered
           errors={errors}
           className="w-full"
-          options={sectorOptions}
+          options={sectorsData.map((sector) => ({
+            value: sector.id,
+            label: sector.sectorName,
+          }))}
+          onChange={handleSectorChange}
+          value={selectedSector}
         />
         <SelectInputThree
           label="Domain"
           name="domain"
-          // register={register}
           register={register("domain", { required: true })} // Ensure gender is registered
           errors={errors}
           className="w-full"
-          options={domainOptions}
+          options={domainOptions.map((domain) => ({
+            value: domain.id,
+            label: domain.name,
+          }))}
+          onChange={handleDomainChange}
+          value={selectedDomain}
         />
         <SelectInput
           label="Company"
@@ -160,7 +228,7 @@ export default function ClientFormTwo({ updateData = {} }) {
           className="w-full"
         />
         <TextInput
-          label="Date of Joining"
+          label="Date of Partnership"
           name="dateOfJoining"
           type="date"
           register={register}
