@@ -172,7 +172,7 @@ export default function CandidateForm({ user, updateData = {} }) {
         data,
         "Candidate Profile"
       );
-      setPdfUrl("");
+      // setPdfUrl("");
       router.back();
     } else {
       // make post request (create)
@@ -184,8 +184,8 @@ export default function CandidateForm({ user, updateData = {} }) {
         "Candidate Profile"
         // reset
       );
-      setPdfUrl("");
-      router.push("/");
+      // setPdfUrl("");
+      router.back();
     }
   }
 

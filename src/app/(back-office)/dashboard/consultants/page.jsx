@@ -1,11 +1,10 @@
 "use client";
 import PageHeader from "@/components/backOffice/PageHeader";
 import React from "react";
-import DataTable from "@/components/data-table-components/DataTable";
-import { columns } from "./columns";
 import useSWR from "swr";
 import { fetcher } from "@/lib/fetcher";
 import AnimatedBoxes from "@/components/ui/AnimatedBoxes";
+import ConsultantMasterTable from "./ConsultantMasterTable";
 
 export default function Page() {
   // const jobs = await getData("jobs");
@@ -33,7 +32,7 @@ export default function Page() {
 
       {/* table */}
       <div className="py-8">
-        <DataTable data={data} columns={columns} />
+        <ConsultantMasterTable data={data} />
       </div>
     </div>
   );
