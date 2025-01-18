@@ -1,4 +1,5 @@
 "use client";
+import SelectInputThree from "@/components/FormInputs/SelectInputThree";
 import { BottomGradient } from "@/components/ui/BottomGradient";
 import {
   Dialog,
@@ -8,27 +9,75 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { domainsData, sectorsData } from "@/data";
 import { Settings2 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import Select from "react-select";
-const sectorOptions = sectorsData;
-const domainOptions = domainsData;
-export default function ConsultantAssignment({ consultant }) {
+export default function ConsultantAssignment({ updateData = {}, consultant }) {
   console.log("name", consultant);
-
-  const { register, handleSubmit, reset, control } = useForm();
+  const [sectorsData, setSectorsData] = useState([]);
+  const [selectedSector, setSelectedSector] = useState(
+    updateData?.clientProfile?.sector?.id ?? ""
+  );
+  const [selectedDomains, setSelectedDomains] = useState([]);
+  const [domainOptions, setDomainOptions] = useState([]);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const {
+    register,
+    reset,
+    watch,
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      ...updateData.clientProfile,
+      isActive: true,
+    },
+  });
+
+  // Fetch sectors and domains on component mount
+  useEffect(() => {
+    async function fetchSectors() {
+      const response = await fetch("/api/sectors");
+      const data = await response.json();
+      setSectorsData(data);
+    }
+    fetchSectors();
+  }, []);
+
+  const handleSectorChange = (event) => {
+    const selectedSectorId = event.target.value;
+    setSelectedSector(selectedSectorId);
+    // Ensure domain selection resets if sector changes
+    setSelectedDomains([]);
+
+    // Find domains for the selected sector
+    const sector = sectorsData.find((s) => s.id === selectedSectorId);
+    // setSectorName(sector?.sectorName);
+    setDomainOptions(sector ? sector.domains : []);
+  };
+
+  // Handle domain change
+  const handleDomainChange = (selectedOptions) => {
+    setSelectedDomains(selectedOptions.map((option) => option.value));
+    // setDomainName(event.target.name);
+  };
 
   const onSubmit = async (data) => {
     try {
-      await fetch(`/api/consultants/${consultant.id}/assign`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
+      const payload = {
+        sector: selectedSector,
+        domains: selectedDomains, // Pass multiple domain IDs as an array
+      };
+      console.log("payload", payload);
+
+      // await fetch(`/api/consultants/${consultant.id}/assign`, {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify(data),
+      // });
       alert(`Assignments updated for ${consultant.name}`);
       reset();
     } catch (error) {
@@ -57,34 +106,54 @@ export default function ConsultantAssignment({ consultant }) {
               Assign Candidate Visibility for {consultant.name}
             </h3>
 
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <label className="block mb-2">Select Sectors</label>
-              <Controller
-                name="sectors"
-                control={control}
-                render={({ field }) => (
-                  <Select
-                    {...field}
-                    options={sectorOptions}
-                    isMulti
-                    className="mb-4"
-                  />
-                )}
-              />
-
-              <label className="block mb-2">Select Domains</label>
-              <Controller
-                name="domains"
-                control={control}
-                render={({ field }) => (
-                  <Select
-                    {...field}
-                    options={domainOptions}
-                    isMulti
-                    className="mb-4"
-                  />
-                )}
-              />
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="w-full max-w-4xl p-4 bg-white border border-gray-200 rounded-lg shadow-lg dark:shadow-emerald-500 sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700 mx-auto my-3"
+            >
+              <div className="flex flex-col gap-4 mb-8">
+                <SelectInputThree
+                  label="Sector"
+                  name="sector"
+                  register={register("sector", { required: true })} // Ensure gender is registered
+                  errors={errors}
+                  className="w-full"
+                  options={sectorsData.map((sector) => ({
+                    value: sector.id,
+                    label: sector.sectorName,
+                  }))}
+                  onChange={handleSectorChange}
+                  value={selectedSector}
+                />
+                <Controller
+                  name="domain"
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      isMulti
+                      options={domainOptions.map((domain) => ({
+                        value: domain.id,
+                        label: domain.name,
+                      }))}
+                      className="text-gray-900 dark:text-slate-900 dark:bg-zinc-600 bg-gray-300 hover:bg-lime-100 dark:hover:bg-slate-700"
+                      classNamePrefix="react-select"
+                      onChange={(selectedOptions) => {
+                        field.onChange(selectedOptions);
+                        setSelectedDomains(
+                          selectedOptions.map((option) => option.value)
+                        );
+                      }}
+                      value={domainOptions
+                        .filter((domain) => selectedDomains.includes(domain.id))
+                        .map((domain) => ({
+                          value: domain.id,
+                          label: domain.name,
+                        }))} // Fixes the issue
+                    />
+                  )}
+                />
+              </div>
               {loading ? (
                 <button
                   disabled
