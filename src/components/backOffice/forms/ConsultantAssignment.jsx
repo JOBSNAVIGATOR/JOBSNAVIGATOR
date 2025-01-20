@@ -15,10 +15,16 @@ import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import Select from "react-select";
 export default function ConsultantAssignment({ consultant }) {
-  console.log("name", consultant);
+  // console.log("name", consultant);
   const [sectorsData, setSectorsData] = useState([]);
   const [selectedSector, setSelectedSector] = useState("");
+  const [displaySectors, setDisplaySectors] = useState(
+    consultant?.assignedSectors || []
+  );
   const [selectedDomains, setSelectedDomains] = useState([]);
+  const [displayDomains, setDisplayDomains] = useState(
+    consultant?.assignedDomains || []
+  );
   const [domainOptions, setDomainOptions] = useState([]);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -31,7 +37,7 @@ export default function ConsultantAssignment({ consultant }) {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      ...consultant,
+      ...(consultant || {}),
       isActive: true,
     },
   });
@@ -44,7 +50,7 @@ export default function ConsultantAssignment({ consultant }) {
       setSectorsData(data);
     }
     fetchSectors();
-  }, []);
+  }, [consultant]);
 
   const handleSectorChange = (event) => {
     const selectedSectorId = event.target.value;
@@ -57,12 +63,61 @@ export default function ConsultantAssignment({ consultant }) {
     // setSectorName(sector?.sectorName);
     setDomainOptions(sector ? sector.domains : []);
   };
-
-  // Handle domain change
-  const handleDomainChange = (selectedOptions) => {
-    setSelectedDomains(selectedOptions.map((option) => option.value));
-    // setDomainName(event.target.name);
+  const handleRemoveSector = (sectorId) => {
+    setDisplaySectors((prev) => {
+      // Remove the sector by filtering out the one matching the ID
+      const updatedSectors = prev.filter((sector) => sector.id !== sectorId);
+      setSelectedDomains([]); // Reset domains when a sector is removed
+      return updatedSectors; // Return the updated list of sectors
+    });
   };
+  // Remove domain from the display list
+  const handleRemoveDomain = (domainId) => {
+    // Step 1: Find the domain that is being removed and its associated sectorId
+    const domainToRemove = sectorsData.flatMap((sector) =>
+      sector.domains.filter((domain) => domain.id === domainId)
+    )[0];
+    console.log("domaintoremove", domainToRemove);
+
+    // If no domain is found, return early (safety check)
+    if (!domainToRemove) return;
+
+    const sectorId = domainToRemove.sectorId;
+    console.log("sectorId", sectorId);
+
+    // Step 2: Remove the domain from displayDomains
+    setDisplayDomains((prevDomains) => {
+      const updatedDomains = prevDomains.filter(
+        (prevDomain) => prevDomain.id !== domainId
+      );
+      console.log("updatedDomains", updatedDomains);
+
+      // Step 3: Check if any domains from the same sector are still present in updatedDomains
+      const sectorHasRemainingDomains = sectorsData.some((sector) => {
+        if (sector.id === sectorId) {
+          // Check if any remaining domains from this sector are still in updatedDomains
+          return sector.domains.some((domain) =>
+            updatedDomains.some(
+              (updatedDomain) => updatedDomain.id === domain.id
+            )
+          );
+        }
+        return false;
+      });
+
+      // Step 4: If no domains from this sector remain, remove the sector from displaySectors
+      if (!sectorHasRemainingDomains) {
+        setDisplaySectors((prevSectors) =>
+          prevSectors.filter((sector) => sector.id !== sectorId)
+        );
+      }
+
+      return updatedDomains;
+    });
+  };
+
+  console.log("displaysectors", displaySectors);
+  console.log("displaydomains", displayDomains);
 
   const onSubmit = async (data) => {
     try {
@@ -107,6 +162,51 @@ export default function ConsultantAssignment({ consultant }) {
             <h3 className="text-xl font-bold mb-4">
               Assign Candidate Visibility for {consultant.name}
             </h3>
+            <div className="flex gap-8">
+              {/* Display Assigned Sectors with Cross Symbol */}
+              <div>
+                <h4 className="font-bold">Assigned Sectors</h4>
+                {displaySectors.map((sector) => {
+                  return (
+                    <span
+                      key={sector.id}
+                      className="flex items-center gap-2 mb-2"
+                    >
+                      {sector?.sectorName}
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveSector(sector.id)}
+                        className="text-red-500"
+                      >
+                        ✖
+                      </button>
+                    </span>
+                  );
+                })}
+              </div>
+
+              {/* Display Assigned Domains with Cross Symbol */}
+              <div>
+                <h4 className="font-bold">Assigned Domains</h4>
+                {displayDomains.map((domain) => {
+                  return (
+                    <span
+                      key={domain.id}
+                      className="flex items-center gap-2 mb-2"
+                    >
+                      {domain?.name}
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveDomain(domain.id)}
+                        className="text-red-500"
+                      >
+                        ✖
+                      </button>
+                    </span>
+                  );
+                })}
+              </div>
+            </div>
 
             <form
               onSubmit={handleSubmit(onSubmit)}
