@@ -148,21 +148,57 @@ export async function GET(req) {
     // Fetch all consultants from the candidate profile
     // console.log("get of consultants");
 
+    // const consultants = await db.consultantProfile.findMany({
+    //   include: {
+    //     user: true, // Assuming you have a relation to the user model
+    //     assignedSectors: true,
+    //     assignedDomains: true,
+    //   },
+    // });
     const consultants = await db.consultantProfile.findMany({
       include: {
-        user: true, // Assuming you have a relation to the user model
+        user: {
+          select: { name: true, email: true, contactNumber: true }, // Select specific user fields
+        },
+        assignedSectors: {
+          include: {
+            sector: { select: { id: true, sectorName: true } }, // Fetch sector details
+          },
+        },
+        assignedDomains: {
+          include: {
+            domain: { select: { id: true, name: true } }, // Fetch domain details
+          },
+        },
       },
     });
 
     // Map the data to include only the necessary fields
+    // const formattedConsultants = consultants.map((consultant) => ({
+    //   id: consultant.id,
+    //   // candidateCode: consultant.candidateCode,
+    //   name: consultant.user.name, // Assuming user has a name field
+    //   email: consultant.user.email, // Assuming user has an email field
+    //   contactNumber: consultant.user.contactNumber,
+    //   currentAddress: consultant.currentAddress,
+    //   // Include any other fields you need
+    // }));
+
+    // Format the response
     const formattedConsultants = consultants.map((consultant) => ({
       id: consultant.id,
-      // candidateCode: consultant.candidateCode,
-      name: consultant.user.name, // Assuming user has a name field
-      email: consultant.user.email, // Assuming user has an email field
-      contactNumber: consultant.user.contactNumber,
-      currentAddress: consultant.currentAddress,
-      // Include any other fields you need
+      name: consultant.user?.name || "N/A",
+      email: consultant.user?.email || "N/A",
+      contactNumber: consultant.user?.contactNumber || "N/A",
+      currentAddress: consultant.currentAddress || "N/A",
+      assignedSectors: consultant.assignedSectors.map((s) => ({
+        id: s.sector.id,
+        sectorName: s.sector.sectorName,
+      })),
+      assignedDomains: consultant.assignedDomains.map((d) => ({
+        id: d.domain.id,
+        name: d.domain.name,
+      })),
     }));
 
     return new Response(JSON.stringify(formattedConsultants), {
@@ -170,7 +206,7 @@ export async function GET(req) {
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
-    // console.error("Error fetching Consultants:", error);
+    console.error("Error fetching Consultants:", error);
     return new Response(
       JSON.stringify({ message: "Failed to fetch consultants", error }),
       { status: 500 }

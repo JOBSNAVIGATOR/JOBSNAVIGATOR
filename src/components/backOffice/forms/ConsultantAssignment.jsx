@@ -9,16 +9,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { makePostRequest } from "@/lib/apiRequest";
 import { Settings2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import Select from "react-select";
-export default function ConsultantAssignment({ updateData = {}, consultant }) {
+export default function ConsultantAssignment({ consultant }) {
   console.log("name", consultant);
   const [sectorsData, setSectorsData] = useState([]);
-  const [selectedSector, setSelectedSector] = useState(
-    updateData?.clientProfile?.sector?.id ?? ""
-  );
+  const [selectedSector, setSelectedSector] = useState("");
   const [selectedDomains, setSelectedDomains] = useState([]);
   const [domainOptions, setDomainOptions] = useState([]);
   const [open, setOpen] = useState(false);
@@ -32,7 +31,7 @@ export default function ConsultantAssignment({ updateData = {}, consultant }) {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      ...updateData.clientProfile,
+      ...consultant,
       isActive: true,
     },
   });
@@ -70,16 +69,19 @@ export default function ConsultantAssignment({ updateData = {}, consultant }) {
       const payload = {
         sector: selectedSector,
         domains: selectedDomains, // Pass multiple domain IDs as an array
+        consultant: consultant?.id,
       };
       console.log("payload", payload);
 
-      // await fetch(`/api/consultants/${consultant.id}/assign`, {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify(data),
-      // });
-      alert(`Assignments updated for ${consultant.name}`);
-      reset();
+      makePostRequest(
+        setLoading,
+        "api/consultants/assign",
+        payload,
+        "Assignment",
+        reset
+      );
+      // alert(`Assignments updated for ${consultant.name}`);
+      // reset();
     } catch (error) {
       alert("Failed to update assignments.");
     }

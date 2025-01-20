@@ -305,6 +305,9 @@ model ConsultantAssignedSectors {
   sectorId String @db.ObjectId
   sector   Sector @relation(fields: [sectorId], references: [id], onDelete: Cascade)
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@unique([consultantId, sectorId]) // Composite key for uniqueness
 }
 
@@ -315,6 +318,9 @@ model ConsultantAssignedDomains {
 
   domainId String @db.ObjectId
   domain   Domain @relation(fields: [domainId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([consultantId, domainId]) // Composite key for uniqueness
 }
