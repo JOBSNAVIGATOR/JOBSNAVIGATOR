@@ -63,6 +63,7 @@ export default function ConsultantAssignment({ consultant }) {
     // setSectorName(sector?.sectorName);
     setDomainOptions(sector ? sector.domains : []);
   };
+
   const handleRemoveSector = (sectorId) => {
     setDisplaySectors((prev) => {
       // Remove the sector by filtering out the one matching the ID
@@ -127,16 +128,29 @@ export default function ConsultantAssignment({ consultant }) {
         consultant: consultant?.id,
       };
       console.log("payload", payload);
+      const finalSectors = Array.from(
+        new Set([selectedSector, ...displaySectors.map((s) => s.id)])
+      );
+      const finalDomains = Array.from(
+        new Set([...selectedDomains, ...displayDomains.map((d) => d.id)])
+      );
+
+      const newPayload = {
+        finalSectors,
+        finalDomains,
+        consultant: consultant?.id,
+      };
+
+      console.log("newPayload", newPayload);
 
       makePostRequest(
         setLoading,
         "api/consultants/assign",
-        payload,
+        newPayload,
         "Assignment",
         reset
       );
-      // alert(`Assignments updated for ${consultant.name}`);
-      // reset();
+      reset();
     } catch (error) {
       alert("Failed to update assignments.");
     }

@@ -3,8 +3,8 @@ import { NextResponse } from "next/server";
 
 export async function POST(request) {
   try {
-    // Extract the credentials
-    const { consultant, sector, domains } = await request.json();
+    const { consultant, finalSectors, finalDomains } = await request.json();
+    console.log("backendddddd", consultant, finalSectors, finalDomains);
 
     // Check if the consultant exists
     const existingConsultant = await db.consultantProfile.findUnique({
@@ -18,70 +18,37 @@ export async function POST(request) {
       );
     }
 
-    // Check if the consultant is already assigned to this sector
-    const existingAssignedSector = await db.consultantAssignedSectors.findFirst(
-      {
-        where: {
-          consultantId: consultant,
-          sectorId: sector,
-        },
-      }
-    );
+    /*** 1️⃣ Delete Existing Assignments ***/
+    await db.consultantAssignedSectors.deleteMany({
+      where: { consultantId: consultant },
+    });
 
-    // Assign sector only if not already assigned
-    let consultantAssignedSector = null;
-    if (!existingAssignedSector) {
-      consultantAssignedSector = await db.consultantAssignedSectors.create({
-        data: {
-          consultant: { connect: { id: consultant } },
-          sector: { connect: { id: sector } },
-        },
+    await db.consultantAssignedDomains.deleteMany({
+      where: { consultantId: consultant },
+    });
+
+    /*** 2️⃣ Insert New Sector Assignments ***/
+    if (finalSectors.length > 0) {
+      await db.consultantAssignedSectors.createMany({
+        data: finalSectors.map((sectorId) => ({
+          consultantId: consultant,
+          sectorId,
+        })),
       });
     }
 
-    // Check if the consultant is already assigned to any of the provided domains
-    const existingAssignedDomains = await db.consultantAssignedDomains.findMany(
-      {
-        where: {
+    /*** 3️⃣ Insert New Domain Assignments ***/
+    if (finalDomains.length > 0) {
+      await db.consultantAssignedDomains.createMany({
+        data: finalDomains.map((domainId) => ({
           consultantId: consultant,
-          domainId: { in: domains },
-        },
-        include: { domain: true },
-      }
-    );
-
-    if (existingAssignedDomains.length > 0) {
-      return NextResponse.json(
-        {
-          data: null,
-          message: `Consultant has already been assigned these domains: ${existingAssignedDomains
-            .map((d) => d.domain.name)
-            .join(", ")}`,
-        },
-        { status: 400 }
-      );
+          domainId,
+        })),
+      });
     }
 
-    // Assign the consultant to multiple domains
-    const consultantAssignedDomains = await Promise.all(
-      domains.map((domainId) =>
-        db.consultantAssignedDomains.create({
-          data: {
-            consultant: { connect: { id: consultant } },
-            domain: { connect: { id: domainId } },
-          },
-        })
-      )
-    );
-
     return NextResponse.json(
-      {
-        data: {
-          ...(consultantAssignedSector && { consultantAssignedSector }), // Only include if created
-          consultantAssignedDomains,
-        },
-        message: "Sectors and Domains Assigned Successfully",
-      },
+      { message: "Sectors and Domains Assigned Successfully" },
       { status: 201 }
     );
   } catch (error) {
