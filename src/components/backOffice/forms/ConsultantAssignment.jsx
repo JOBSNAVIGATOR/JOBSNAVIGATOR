@@ -15,7 +15,6 @@ import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import Select from "react-select";
 export default function ConsultantAssignment({ consultant }) {
-  // console.log("name", consultant);
   const [sectorsData, setSectorsData] = useState([]);
   const [selectedSector, setSelectedSector] = useState("");
   const [displaySectors, setDisplaySectors] = useState(
@@ -117,17 +116,8 @@ export default function ConsultantAssignment({ consultant }) {
     });
   };
 
-  console.log("displaysectors", displaySectors);
-  console.log("displaydomains", displayDomains);
-
   const onSubmit = async (data) => {
     try {
-      const payload = {
-        sector: selectedSector,
-        domains: selectedDomains, // Pass multiple domain IDs as an array
-        consultant: consultant?.id,
-      };
-      console.log("payload", payload);
       const finalSectors = Array.from(
         new Set([selectedSector, ...displaySectors.map((s) => s.id)])
       );
@@ -140,9 +130,6 @@ export default function ConsultantAssignment({ consultant }) {
         finalDomains,
         consultant: consultant?.id,
       };
-
-      console.log("newPayload", newPayload);
-
       makePostRequest(
         setLoading,
         "api/consultants/assign",
@@ -150,7 +137,21 @@ export default function ConsultantAssignment({ consultant }) {
         "Assignment",
         reset
       );
-      reset();
+      // After the assignment is made, update displaySectors and displayDomains
+      setDisplaySectors((prev) => [
+        ...prev,
+        ...sectorsData.filter((sector) => finalSectors.includes(sector.id)),
+      ]);
+      setDisplayDomains((prev) => [
+        ...prev,
+        ...sectorsData
+          .flatMap((sector) => sector.domains)
+          .filter((domain) => finalDomains.includes(domain.id)),
+      ]);
+
+      // Optionally, you can reset the selected sector and domains after assignment
+      setSelectedSector("");
+      setSelectedDomains([]);
     } catch (error) {
       alert("Failed to update assignments.");
     }
@@ -230,7 +231,7 @@ export default function ConsultantAssignment({ consultant }) {
                 <SelectInputThree
                   label="Sector"
                   name="sector"
-                  register={register("sector", { required: true })} // Ensure gender is registered
+                  register={register("sector", { required: true })} // Ensure sector is registered
                   errors={errors}
                   className="w-full"
                   options={sectorsData.map((sector) => ({

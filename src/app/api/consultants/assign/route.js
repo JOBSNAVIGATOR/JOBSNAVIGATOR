@@ -18,6 +18,17 @@ export async function POST(request) {
       );
     }
 
+    // Check if both finalSectors and finalDomains have length greater than 0
+    if (finalSectors.length === 0 || finalDomains.length === 0) {
+      return NextResponse.json(
+        {
+          message:
+            "Both sectors and domains should have at least one assignment.",
+        },
+        { status: 400 }
+      );
+    }
+
     /*** 1️⃣ Delete Existing Assignments ***/
     await db.consultantAssignedSectors.deleteMany({
       where: { consultantId: consultant },
