@@ -5,6 +5,7 @@ import { ArrowRight } from "lucide-react";
 import useMediaQuery from "@custom-react-hooks/use-media-query";
 import DataTable from "@/components/data-table-components/DataTable";
 import { columns } from "./columns";
+import AnimatedBoxes from "@/components/ui/AnimatedBoxes";
 
 // Common Job Detail Component
 const JobDetail = ({ title, detail }) => (
@@ -74,8 +75,8 @@ export default function Page({ params: { id } }) {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        Loading...
+      <div className="flex justify-center items-center h-screen">
+        <AnimatedBoxes />
       </div>
     );
   }

@@ -22,6 +22,13 @@ enum Gender {
   PREFER_NOT_TO_SAY
 }
 
+enum EventType {
+  PROFILE_CREATED
+  APPLIED_TO_JOB
+  STATUS_CHANGED
+  EMAIL_SENT
+}
+
 model User {
   id                       String    @id @default(auto()) @map("_id") @db.ObjectId
   name                     String
@@ -68,6 +75,8 @@ model ConsultantProfile {
   assignedSectors ConsultantAssignedSectors[]
   assignedDomains ConsultantAssignedDomains[]
 
+  journeys CandidateJourney[] // Ensure the relation is properly defined on both sides
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -76,8 +85,6 @@ model CandidateProfile {
   id                     String   @id @default(auto()) @map("_id") @db.ObjectId
   gender                 Gender?
   emergencyContactNumber String?
-  // sector                 String?
-  // domain                 String?
   currentCtc             String?
   designation            String?
   currentCompany         String?
@@ -112,6 +119,8 @@ model CandidateProfile {
 
   // Relation to the CandidateTag join model
   candidateTags CandidateTag[] // Many-to-many relation through the join model
+
+  journeys CandidateJourney[] // Ensure the relation is properly defined on both sides
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -195,6 +204,8 @@ model Job {
   domain   Domain? @relation("jobDomain", fields: [domainId], references: [id], onDelete: SetNull)
   domainId String? @db.ObjectId
 
+  journeys CandidateJourney[] // Ensure the relation is properly defined on both sides
+
   isActive Boolean @default(true)
 
   createdAt DateTime @default(now())
@@ -211,7 +222,7 @@ model JobApplicant {
   // New field to track who assigned the candidate
   assignedById      String            @db.ObjectId
   assignedByName    String? // Optionally store the creator's ID
-  consultantProfile ConsultantProfile @relation(fields: [assignedById], references: [id])
+  consultantProfile ConsultantProfile @relation(fields: [assignedById], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -323,4 +334,19 @@ model ConsultantAssignedDomains {
   updatedAt DateTime @updatedAt
 
   @@unique([consultantId, domainId]) // Composite key for uniqueness
+}
+
+model CandidateJourney {
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId // Unique history ID
+  candidateId  String    @db.ObjectId
+  jobId        String?   @db.ObjectId // Nullable if not job-related
+  consultantId String?   @db.ObjectId // Nullable if not consultant-related
+  eventType    EventType // "Profile Created", "Applied to Job", "Status Changed", "Email Sent"
+  status       String? // Applicable for job-related events
+  remarks      String? // Additional details (e.g., "Candidate shortlisted")
+  createdAt    DateTime  @default(now()) // Event timestamp
+
+  candidate  CandidateProfile   @relation(fields: [candidateId], references: [id])
+  job        Job?               @relation(fields: [jobId], references: [id])
+  consultant ConsultantProfile? @relation(fields: [consultantId], references: [id])
 }

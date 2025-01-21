@@ -73,62 +73,6 @@ export const columns = (updateStatus) => [
       <SortableColumn column={column} title="Current Salary (LPA)" />
     ),
   },
-  // {
-  //   accessorKey: "status",
-  //   header: ({ column }) => <SortableColumn column={column} title="Status" />,
-  //   cell: ({ row }) => {
-  //     const [status, setStatus] = useState(row.original.status);
-
-  //     const handleChange = async (e) => {
-  //       const newStatus = e.target.value;
-
-  //       // Show a confirmation dialog
-  //       const isConfirmed = window.confirm(
-  //         `Are you sure you want to change the status to ${newStatus}?`
-  //       );
-
-  //       if (isConfirmed) {
-  //         setStatus(newStatus); // Optimistically update the status
-
-  //         // Perform API call to update status
-  //         try {
-  //           const response = await fetch("/api/updateStatus", {
-  //             method: "POST",
-  //             headers: {
-  //               "Content-Type": "application/json",
-  //             },
-  //             body: JSON.stringify({
-  //               id: row.original.id,
-  //               status: newStatus,
-  //             }),
-  //           });
-
-  //           if (!response.ok) {
-  //             throw new Error("Failed to update status");
-  //           }
-
-  //           updateStatus(row.original.id, newStatus); // Call parent function to update state if needed
-  //           alert("Status updated successfully!");
-  //         } catch (error) {
-  //           console.error("Error updating status:", error);
-  //           alert("Failed to update status. Please try again.");
-  //         }
-  //       }
-  //     };
-
-  //     return (
-  //       <
-  //         name="status"
-  //         register={() => {}} // No need for register here
-  //         errors={{}} // No need for errors here
-  //         className="w-full dark:text-black"
-  //         options={statusOptions}
-  //         value={status} // Ensure the value reflects the current status
-  //         onChange={handleChange} // Handle status change
-  //       />
-  //     );
-  //   },
-  // },
   {
     accessorKey: "status",
     header: ({ column }) => <SortableColumn column={column} title="Status" />,
