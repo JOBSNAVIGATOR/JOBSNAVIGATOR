@@ -39,6 +39,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import useSWR from "swr";
 import { fetcher } from "@/lib/fetcher";
+import AnimatedBoxes from "@/components/ui/AnimatedBoxes";
 
 export default function JobCard({ jobItem }) {
   // useSWR should always be called at the top level of your component
@@ -55,7 +56,9 @@ export default function JobCard({ jobItem }) {
   const { data: session, status } = useSession();
   if (status === "loading") {
     // <Loading />;
-    <p>loading...</p>;
+    <div className="flex justify-center items-center h-screen">
+      <AnimatedBoxes />
+    </div>;
   }
   // const userId = session?.user?.id;
   // console.log(userId);
@@ -162,7 +165,7 @@ export default function JobCard({ jobItem }) {
                     <span>Sector</span>
                     <ArrowRight className="h-4 w-4 mx-2" />
                   </h2>
-                  <div className="flex-1">{jobItem.jobSector}</div>
+                  <div className="flex-1">{jobItem.sector.sectorName}</div>
                 </div>
                 {/* job Domain */}
                 <div className="flex mb-2">
@@ -170,7 +173,7 @@ export default function JobCard({ jobItem }) {
                     <span>Domain</span>
                     <ArrowRight className="h-4 w-4 mx-2" />
                   </h2>
-                  <div className="flex-1">{jobItem.jobDomain}</div>
+                  <div className="flex-1">{jobItem.domain.name}</div>
                 </div>
                 {/* CTC offered */}
                 <div className="flex mb-2">
@@ -181,7 +184,7 @@ export default function JobCard({ jobItem }) {
                   <div className="flex-1">{jobItem.jobSalary} LPA</div>
                 </div>
                 {/* job Skills */}
-                <div className="flex mb-2">
+                {/* <div className="flex mb-2">
                   <h2 className="flex w-40 justify-between">
                     <span>Desired Skills</span>
                     <ArrowRight className="h-4 w-4 mx-2" />
@@ -189,7 +192,19 @@ export default function JobCard({ jobItem }) {
                   <div className="flex-1">
                     {jobItem.skillsRequired.join(", ")}
                   </div>
-                </div>
+                </div> */}
+                {/* job Skills */}
+                {jobItem.skillsRequired.length > 0 && (
+                  <div className="flex mb-2">
+                    <h2 className="flex w-40 justify-between">
+                      <span>Desired Skills</span>
+                      <ArrowRight className="h-4 w-4 mx-2" />
+                    </h2>
+                    <div className="flex-1">
+                      {jobItem.skillsRequired.join(", ")}
+                    </div>
+                  </div>
+                )}
               </DialogDescription>
               <DialogFooter className="pt-2">
                 {/* a confirmation dialog */}

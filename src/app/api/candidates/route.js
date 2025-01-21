@@ -151,6 +151,8 @@ export async function GET(req) {
     const candidates = await db.candidateProfile.findMany({
       include: {
         user: true, // Assuming you have a relation to the user model
+        sector: true,
+        domain: true,
       },
     });
 
@@ -163,8 +165,8 @@ export async function GET(req) {
       gender: candidate.gender,
       contactNumber: candidate.user.contactNumber,
       emergencyContactNumber: candidate.emergencyContactNumber,
-      sector: candidate.sector,
-      domain: candidate.domain,
+      sector: candidate.sector.sectorName,
+      domain: candidate.domain.name,
       currentCtc: candidate.currentCtc,
       designation: candidate.designation,
       currentCompany: candidate.currentCompany,

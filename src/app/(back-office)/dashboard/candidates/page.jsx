@@ -1,19 +1,13 @@
 "use client";
 import React from "react";
-import DataTable from "@/components/data-table-components/DataTable";
-import { columns } from "./columns";
 import Heading from "@/components/backOffice/Heading";
 import useSWR from "swr";
 import { fetcher } from "@/lib/fetcher";
 import Link from "next/link";
 import AnimatedBoxes from "@/components/ui/AnimatedBoxes";
-import DataTableModified from "./DataTableModified";
-import NewJobMailTemplate from "@/components/MailTemplates/NewJobMailTemplate";
 import CandidateMasterTable from "./CandidateMasterTable";
 
 export default function Page() {
-  // const jobs = await getData("jobs");
-
   const { data, error } = useSWR("/api/candidates", fetcher, {
     refreshInterval: 5000, // refetch data every 5 seconds
   }); // replace with your API endpoint

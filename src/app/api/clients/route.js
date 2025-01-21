@@ -148,6 +148,8 @@ export async function GET(req) {
       include: {
         user: true, // Assuming you have a relation to the user model
         company: true,
+        sector: true,
+        domain: true,
       },
     });
 
@@ -159,8 +161,8 @@ export async function GET(req) {
       email: client.user.email, // Assuming user has an email field
       contactNumber: client.user.contactNumber,
       currentCtc: client.currentCtc,
-      sector: client.sector,
-      domain: client.domain,
+      sector: client.sector.sectorName,
+      domain: client.domain.name,
       designation: client.designation,
       functionalArea: client.functionalArea,
       currentJobLocation: client.currentJobLocation,

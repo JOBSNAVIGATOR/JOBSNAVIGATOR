@@ -135,6 +135,8 @@ export async function GET(req) {
           jobApplicants: true,
           jobCompany: true,
           clientSpoc: { include: { user: true } },
+          sector: true,
+          domain: true,
         },
       });
     } else {
@@ -164,6 +166,8 @@ export async function GET(req) {
             jobApplicants: true,
             jobCompany: true,
             clientSpoc: { include: { user: true } },
+            sector: true,
+            domain: true,
           },
         });
       } else if (role === "CONSULTANT") {
@@ -173,6 +177,8 @@ export async function GET(req) {
             jobApplicants: true,
             jobCompany: true,
             clientSpoc: { include: { user: true } },
+            sector: true,
+            domain: true,
           },
         });
       } else {
