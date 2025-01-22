@@ -6,6 +6,7 @@ import SortableColumn from "@/components/DataTableColumns/SortableColumn";
 import ActionColumn from "@/components/DataTableColumns/ActionColumn";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import CandidateHistory from "@/components/backOffice/CandidateHistory";
 
 export const columns = [
   {
@@ -50,12 +51,12 @@ export const columns = [
     accessorKey: "jobTitle",
     header: ({ column }) => <SortableColumn column={column} title="Position" />,
   },
-  {
-    accessorKey: "xsax",
-    header: ({ column }) => (
-      <SortableColumn column={column} title="Experience" />
-    ),
-  },
+  // {
+  //   accessorKey: "xsax",
+  //   header: ({ column }) => (
+  //     <SortableColumn column={column} title="Experience" />
+  //   ),
+  // },
   {
     accessorKey: "jobSalary",
     header: ({ column }) => <SortableColumn column={column} title="CTC" />,
@@ -79,6 +80,13 @@ export const columns = [
   {
     accessorKey: "isActive",
     header: ({ column }) => <SortableColumn column={column} title="Status" />,
+  },
+  {
+    id: "history",
+    cell: ({ row }) => {
+      const candidate = row.original;
+      return <CandidateHistory />;
+    },
   },
   {
     id: "view",

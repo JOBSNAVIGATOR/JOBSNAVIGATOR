@@ -20,6 +20,7 @@ import toast from "react-hot-toast";
 import { Briefcase, MailIcon, Tag } from "lucide-react";
 import AssignTagButton from "@/components/backOffice/AssignTagButton";
 import AssignJobButton from "@/components/backOffice/AssignJobButton";
+import CandidateHistory from "@/components/backOffice/CandidateHistory";
 
 const Example = ({ data }) => {
   const columns = useMemo(
@@ -268,6 +269,16 @@ const Example = ({ data }) => {
             size: 200,
           },
         ],
+      },
+      //View Candidate History
+      {
+        id: "history",
+        // header: ({ column }) => <SortableColumn column={column} title="CV" />,
+        header: "View History",
+        Cell: ({ row }) => {
+          const candidate = row.original;
+          return <CandidateHistory />;
+        },
       },
       //View Resume
       {
