@@ -85,6 +85,15 @@ export async function PUT(request) {
         },
       },
     });
+    // Create an entry in CandidateJourney (History)
+    const newCandidateJourney = await db.candidateJourney.create({
+      data: {
+        candidateId: candidateProfile.id, // Linking the journey to the new candidate profile
+        eventType: "PROFILE_MODIFIED", // Event type: Profile Created
+        remarks: `Candidate ${candidateProfile.name} profile updated.`,
+        createdAt: new Date(), // Current timestamp
+      },
+    });
 
     return NextResponse.json(updatedCandidateProfile);
   } catch (error) {

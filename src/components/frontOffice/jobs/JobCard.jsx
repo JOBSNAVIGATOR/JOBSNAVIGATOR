@@ -31,7 +31,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-import useMediaQuery from "@custom-react-hooks/use-media-query";
+import { useMediaQuery } from "@custom-react-hooks/use-media-query";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import toast from "react-hot-toast";

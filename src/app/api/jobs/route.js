@@ -128,7 +128,7 @@ export async function GET(req) {
 
     // If no session or if the user is a candidate, show all jobs
     let jobs;
-    if (!session || session.role === "CANDIDATE") {
+    if (!session || session.user.role === "CANDIDATE") {
       jobs = await db.job.findMany({
         where: { isActive: true }, // Active jobs for everyone (whether logged in or a candidate)
         include: {

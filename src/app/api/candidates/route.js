@@ -125,6 +125,15 @@ export async function POST(request) {
       },
     });
     // console.log(newCandidateProfile);
+    // Create an entry in CandidateJourney (History)
+    const newCandidateJourney = await db.candidateJourney.create({
+      data: {
+        candidateId: newCandidateProfile.id, // Linking the journey to the new candidate profile
+        eventType: "PROFILE_CREATED", // Event type: Profile Created
+        remarks: `Candidate ${existingUser.name} profile created.`,
+        createdAt: new Date(), // Current timestamp
+      },
+    });
 
     return NextResponse.json(
       {
