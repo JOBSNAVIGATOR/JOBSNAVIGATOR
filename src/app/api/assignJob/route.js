@@ -37,7 +37,7 @@ export async function POST(request) {
     // console.log(userData?.candidateProfile?.id);
     const consultantId = userData?.consultantProfile?.id;
 
-    // Create or update CandidateTag records for each candidate
+    // Create or update  records for each candidate
     await Promise.all(
       candidateIds.map((candidateId) =>
         db.jobApplicant.upsert({
@@ -64,6 +64,17 @@ export async function POST(request) {
       )
     );
 
+    // Create a candidate journey after assigning the job
+    const journeyPromises = candidateIds.map((candidateId) => {
+      return createCandidateJourney(
+        candidateId,
+        jobId,
+        assignedByName,
+        consultantId
+      ); // Call your function to create a candidate journey
+    });
+    // Wait for all journey creation promises to resolve
+    await Promise.all(journeyPromises);
     return NextResponse.json(
       {
         message: "Job assigned to candidates successfully.",
@@ -80,4 +91,24 @@ export async function POST(request) {
       { status: 500 }
     );
   }
+}
+
+// Function to create a candidate journey after job assignment
+function createCandidateJourney(
+  candidateId,
+  jobId,
+  assignedByName,
+  consultantId
+) {
+  return db.candidateJourney.create({
+    data: {
+      candidateId, // Linking the journey to the new candidate profile
+      eventType: "JOB_ASSIGNED", // Event type: Job Assigned
+      remarks: `Job with ID ${jobId} was assigned to the candidate by ${assignedByName}.`,
+      status: "Applied",
+      consultantId,
+      jobId,
+      createdAt: new Date(), // Current timestamp
+    },
+  });
 }

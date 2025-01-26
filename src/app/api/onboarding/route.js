@@ -70,6 +70,7 @@ export async function POST(request) {
         previousCompanyName,
         resume, // URL or file path to the resume
         skills,
+        
         candidateCode, // Storing the generated candidate code
         sector: {
           connect: { id: sector }, // Linking candidate profile to the existing user

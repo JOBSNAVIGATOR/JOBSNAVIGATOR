@@ -1,5 +1,7 @@
+import { authOptions } from "@/lib/authOptions";
 import db from "@/lib/db";
 import createTransporter from "@/lib/email"; // Import the transporter function
+import { getServerSession } from "next-auth";
 
 // Helper function to replace specific placeholders
 function replacePlaceholders(template, candidate) {
@@ -38,6 +40,28 @@ export async function POST(request) {
 
     return transporter.sendMail(mailOptions);
   });
+  const session = await getServerSession(authOptions);
+  const user = session?.user;
+  if (!user) {
+    return new Response(
+      JSON.stringify({ message: "User not authenticated." }),
+      { status: 401 }
+    );
+  }
+  const consultantData = await db.consultantProfile.findUnique({
+    where: {
+      userId: user.id,
+    },
+  });
+  if (!consultantData) {
+    return NextResponse.json(
+      {
+        data: null,
+        message: "No Consultant Profile Found, Please Create One",
+      },
+      { status: 404 }
+    );
+  }
 
   try {
     // Wait for all email promises to resolve
@@ -61,9 +85,22 @@ export async function POST(request) {
 
     // Wait for all candidate updates to complete
     await Promise.all(updatePromises);
+    // Create a candidate journey for each candidate after email is sent
+    const journeyPromises = candidates.map((candidate) => {
+      return createCandidateJourney(
+        candidate.id,
+        consultantData.id,
+        templateName
+      ); // Call your function to create a candidate journey
+    });
+
+    // Wait for all journey creation promises to resolve
+    await Promise.all(journeyPromises);
 
     return new Response(
-      JSON.stringify({ message: "Bulk emails sent successfully!" }),
+      JSON.stringify({
+        message: "Bulk emails sent and journeys created successfully!",
+      }),
       { status: 200 }
     );
   } catch (error) {
@@ -76,4 +113,16 @@ export async function POST(request) {
       { status: 500 }
     );
   }
+}
+
+function createCandidateJourney(candidateId, consultantId, templateName) {
+  return db.candidateJourney.create({
+    data: {
+      candidateId, // Linking the journey to the new candidate profile
+      eventType: "EMAIL_SENT", // Event type: Profile Created
+      remarks: `Template ${templateName} was sent.`,
+      consultantId,
+      createdAt: new Date(), // Current timestamp
+    },
+  });
 }
