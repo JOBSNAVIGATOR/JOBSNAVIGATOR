@@ -33,13 +33,13 @@ export default function SectorForm({ updateData = {} }) {
     data.domains = domains.map((domain) => domain.toUpperCase());
     try {
       if (id) {
-        console.log("updateddddd", data);
+        // console.log("updateddddd", data);
         // make put request (update)
         makePutRequest(setLoading, `api/sectors/${id}`, data, "Sector", reset);
         // router.back();
         // console.log("Update Request:", data);
       } else {
-        console.log("POst Data", data);
+        // console.log("POst Data", data);
         // make post request (create)
         makePostRequest(setLoading, "api/sectors", data, "Sector", reset);
         router.back();

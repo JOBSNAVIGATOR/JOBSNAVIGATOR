@@ -77,20 +77,20 @@ export default function ConsultantAssignment({ consultant }) {
     const domainToRemove = sectorsData.flatMap((sector) =>
       sector.domains.filter((domain) => domain.id === domainId)
     )[0];
-    console.log("domaintoremove", domainToRemove);
+    // console.log("domaintoremove", domainToRemove);
 
     // If no domain is found, return early (safety check)
     if (!domainToRemove) return;
 
     const sectorId = domainToRemove.sectorId;
-    console.log("sectorId", sectorId);
+    // console.log("sectorId", sectorId);
 
     // Step 2: Remove the domain from displayDomains
     setDisplayDomains((prevDomains) => {
       const updatedDomains = prevDomains.filter(
         (prevDomain) => prevDomain.id !== domainId
       );
-      console.log("updatedDomains", updatedDomains);
+      // console.log("updatedDomains", updatedDomains);
 
       // Step 3: Check if any domains from the same sector are still present in updatedDomains
       const sectorHasRemainingDomains = sectorsData.some((sector) => {

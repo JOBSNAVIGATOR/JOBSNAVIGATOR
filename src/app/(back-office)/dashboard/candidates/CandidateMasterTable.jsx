@@ -211,7 +211,7 @@ const Example = ({ data }) => {
 
             cell: ({ getValue }) => {
               const value = getValue(); // Correctly get the value
-              console.log("Value of mailSent:", value); // Check the value
+              // console.log("Value of mailSent:", value); // Check the value
               if (value === undefined || value === null) {
                 return "No Data"; // Display a placeholder if value is missing
               }

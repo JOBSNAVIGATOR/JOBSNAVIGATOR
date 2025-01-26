@@ -23,7 +23,7 @@ export default function UserAvatar({ user = {} }) {
   const role = user?.role;
   const router = useRouter();
   async function handleLogout() {
-    console.log("Logged Out");
+    // console.log("Logged Out");
     await signOut();
     router.push("/");
   }

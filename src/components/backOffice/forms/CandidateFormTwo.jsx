@@ -43,7 +43,7 @@ export default function CandidateFormTwo({ updateData = {} }) {
     }
     fetchSectors();
   }, []);
-  console.log(sectorsData);
+  // console.log(sectorsData);
 
   // Handle sector change and update domains
   const handleSectorChange = (event) => {
@@ -153,7 +153,7 @@ export default function CandidateFormTwo({ updateData = {} }) {
       data.resume = watermarkedResume; // Update the resume with the watermarked version
     }
 
-    console.log(data);
+    // console.log(data);
 
     // make post request (create)
     makePostRequest(

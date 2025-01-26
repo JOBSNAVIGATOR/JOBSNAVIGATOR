@@ -49,7 +49,7 @@ export default function TagForm({ updateData = {} }) {
         data.createdByName = session?.user?.name;
         data.createdById = session?.user?.id;
 
-        console.log("POst Data", data);
+        // console.log("POst Data", data);
         // make post request (create)
         makePostRequest(setLoading, "api/tags", data, "Tag", reset);
         router.back();

@@ -96,7 +96,7 @@ export default function ClientFormTwo({ user, updateData = {} }) {
     data.domain = selectedDomain;
     data.sectorName = sector?.sectorName;
     data.domainName = domain?.name;
-    console.log(data);
+    // console.log(data);
     setLoading(true);
     if (id) {
       // make put request (update)

@@ -99,7 +99,7 @@ const EmailEditor = ({ templates, data = {} }) => {
       subject,
       content: editor.getHTML(),
     };
-    console.log(data);
+    // console.log(data);
 
     try {
       const result = await Swal.fire({

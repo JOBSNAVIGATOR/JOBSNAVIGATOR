@@ -36,7 +36,7 @@ export default function Page() {
       </div>
     );
 
-  console.log("hello", userId, userRole);
+  // console.log("hello", userId, userRole);
 
   return (
     <div>
