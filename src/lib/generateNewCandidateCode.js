@@ -3,7 +3,7 @@ export function generateNewCandidateCode(candidateData) {
   const sector = candidateData.sectorName;
 
   // 6. Domain initials (e.g., "Software Development" -> "SD")
-  const domainInitials = candidateData.domainName
+  const domainInitials = candidateData?.domainName
     .split(" ")
     .map((word) => word.charAt(0).toUpperCase())
     .join("");

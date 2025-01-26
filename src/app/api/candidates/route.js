@@ -7,6 +7,8 @@ import base64url from "base64url";
 import { Resend } from "resend";
 import { EmailTemplateTwo } from "@/components/email-template-two";
 import { generateRandomPassword } from "@/lib/generateRandomPassword";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/authOptions";
 
 export async function POST(request) {
   const resend = new Resend(process.env.RESEND_API_KEY);
@@ -156,46 +158,93 @@ export async function POST(request) {
 
 export async function GET(req) {
   try {
-    // Fetch all candidates from the candidate profile
+    // Get the logged-in user's session
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.id) {
+      return new Response(JSON.stringify({ message: "Unauthorized access" }), {
+        status: 401,
+      });
+    }
+    // If user is an ADMIN, fetch all candidates
+    if (session.user.role === "ADMIN") {
+      const allCandidates = await db.candidateProfile.findMany({
+        include: {
+          user: true,
+          sector: true,
+          domain: true,
+        },
+      });
+
+      return new Response(JSON.stringify(formatCandidates(allCandidates)), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    // Find the consultant profile of the logged-in user
+    const consultant = await db.consultantProfile.findUnique({
+      where: { userId: session.user.id },
+      include: { assignedDomains: true },
+    });
+
+    if (!consultant) {
+      return new Response(
+        JSON.stringify({ message: "Consultant profile not found" }),
+        { status: 404 }
+      );
+    }
+    // Get the domain IDs assigned to the consultant
+    const assignedDomainIds = consultant.assignedDomains.map(
+      (assignedDomain) => assignedDomain.domainId
+    );
+
+    if (assignedDomainIds.length === 0) {
+      return new Response(
+        JSON.stringify({ message: "No assigned domains found" }),
+        { status: 200 }
+      );
+    }
+
+    // Fetch candidates whose domainId matches any of the consultant's assigned domains
     const candidates = await db.candidateProfile.findMany({
+      where: { domainId: { in: assignedDomainIds } },
       include: {
-        user: true, // Assuming you have a relation to the user model
+        user: true,
         sector: true,
         domain: true,
       },
     });
-
     // Map the data to include only the necessary fields
-    const formattedCandidates = candidates.map((candidate) => ({
-      id: candidate.id,
-      candidateCode: candidate.candidateCode,
-      name: candidate.user.name, // Assuming user has a name field
-      email: candidate.user.email, // Assuming user has an email field
-      gender: candidate.gender,
-      contactNumber: candidate.user.contactNumber,
-      emergencyContactNumber: candidate.emergencyContactNumber,
-      sector: candidate.sector.sectorName,
-      domain: candidate.domain.name,
-      currentCtc: candidate.currentCtc,
-      designation: candidate.designation,
-      currentCompany: candidate.currentCompany,
-      currentJobLocation: candidate.currentJobLocation,
-      totalWorkingExperience: candidate.totalWorkingExperience,
-      degree: candidate.degree,
-      collegeName: candidate.collegeName,
-      graduationYear: candidate.graduationYear,
-      previousCompanyName: candidate.previousCompanyName,
-      skills: candidate.skills,
-      resume: candidate.resume,
-      mailSent: candidate.mailSent,
-      mailSentDate: candidate.mailSentDate,
-      mailSubject: candidate.mailSubject,
-      mailTemplateName: candidate.mailTemplateName,
-      mailSender: candidate.mailSender,
-      // Include any other fields you need
-    }));
+    // const formattedCandidates = candidates.map((candidate) => ({
+    //   id: candidate.id,
+    //   candidateCode: candidate.candidateCode,
+    //   name: candidate.user.name, // Assuming user has a name field
+    //   email: candidate.user.email, // Assuming user has an email field
+    //   gender: candidate.gender,
+    //   contactNumber: candidate.user.contactNumber,
+    //   emergencyContactNumber: candidate.emergencyContactNumber,
+    //   sector: candidate.sector.sectorName,
+    //   domain: candidate.domain.name,
+    //   currentCtc: candidate.currentCtc,
+    //   designation: candidate.designation,
+    //   currentCompany: candidate.currentCompany,
+    //   currentJobLocation: candidate.currentJobLocation,
+    //   totalWorkingExperience: candidate.totalWorkingExperience,
+    //   degree: candidate.degree,
+    //   collegeName: candidate.collegeName,
+    //   graduationYear: candidate.graduationYear,
+    //   previousCompanyName: candidate.previousCompanyName,
+    //   skills: candidate.skills,
+    //   resume: candidate.resume,
+    //   mailSent: candidate.mailSent,
+    //   mailSentDate: candidate.mailSentDate,
+    //   mailSubject: candidate.mailSubject,
+    //   mailTemplateName: candidate.mailTemplateName,
+    //   mailSender: candidate.mailSender,
+    //   // Include any other fields you need
+    // }));
 
-    return new Response(JSON.stringify(formattedCandidates), {
+    return new Response(JSON.stringify(formatCandidates(candidates)), {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });
@@ -206,4 +255,35 @@ export async function GET(req) {
       { status: 500 }
     );
   }
+}
+
+// Helper function to format candidate data
+function formatCandidates(candidates) {
+  return candidates.map((candidate) => ({
+    id: candidate.id,
+    candidateCode: candidate.candidateCode,
+    name: candidate.user.name,
+    email: candidate.user.email,
+    gender: candidate.gender,
+    contactNumber: candidate.user.contactNumber,
+    emergencyContactNumber: candidate.emergencyContactNumber,
+    sector: candidate.sector.sectorName,
+    domain: candidate.domain.name,
+    currentCtc: candidate.currentCtc,
+    designation: candidate.designation,
+    currentCompany: candidate.currentCompany,
+    currentJobLocation: candidate.currentJobLocation,
+    totalWorkingExperience: candidate.totalWorkingExperience,
+    degree: candidate.degree,
+    collegeName: candidate.collegeName,
+    graduationYear: candidate.graduationYear,
+    previousCompanyName: candidate.previousCompanyName,
+    skills: candidate.skills,
+    resume: candidate.resume,
+    mailSent: candidate.mailSent,
+    mailSentDate: candidate.mailSentDate,
+    mailSubject: candidate.mailSubject,
+    mailTemplateName: candidate.mailTemplateName,
+    mailSender: candidate.mailSender,
+  }));
 }
