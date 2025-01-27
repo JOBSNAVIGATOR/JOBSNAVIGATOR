@@ -4,11 +4,7 @@ import Link from "next/link";
 import { Button } from "@mui/material";
 import { Modal } from "flowbite-react";
 import React, { useEffect, useState } from "react";
-import {
-  VerticalTimeline,
-  VerticalTimelineElement,
-} from "react-vertical-timeline-component";
-import "react-vertical-timeline-component/style.min.css";
+import Timeline from "../ui/Timeline";
 
 export default function CandidateHistory({ candidateId }) {
   const [openModal, setOpenModal] = useState(false);
@@ -86,36 +82,7 @@ export default function CandidateHistory({ candidateId }) {
           {loading ? (
             <p className="text-center text-white">Loading history...</p>
           ) : candidateHistory.length > 0 ? (
-            <VerticalTimeline lineColor="red">
-              {candidateHistory.map((amendment, index) => (
-                <VerticalTimelineElement
-                  key={index}
-                  className="vertical-timeline-element--work"
-                  contentStyle={{
-                    background: "rgb(255, 255, 0)",
-                    color: "#fff",
-                  }}
-                  contentArrowStyle={{
-                    borderRight: "7px solid  rgb(33, 150, 243)",
-                  }}
-                  date={amendment.date}
-                  iconStyle={{
-                    background: "rgb(33, 150, 243)",
-                    color: "#fff",
-                  }}
-                  icon={<Pencil />}
-                >
-                  <h3 className="vertical-timeline-element-title">
-                    History {amendment.title}
-                  </h3>
-                  <p>{amendment.subtitle}</p>
-                  <p>{amendment.description}</p>
-                </VerticalTimelineElement>
-              ))}
-              <VerticalTimelineElement
-                iconStyle={{ background: "rgb(16, 204, 82)", color: "#fff" }}
-              />
-            </VerticalTimeline>
+            <Timeline />
           ) : (
             <p className="text-center text-white">No history found.</p>
           )}
