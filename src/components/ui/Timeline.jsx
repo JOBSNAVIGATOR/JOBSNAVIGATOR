@@ -1,10 +1,10 @@
 import React from "react";
 import "./timeline.css";
-export default function Timeline() {
+export default function Timeline({ history }) {
   return (
     <div className="main">
-      <h3 className="heading">Responsive Timeline</h3>
-      <div className="container">
+      {/* <h3 className="heading">Responsive Timeline</h3> */}
+      <div className="container p-4">
         <ul>
           <li className="transition duration-300 ease-in-out transform hover:-translate-y-4 hover:shadow-2xl">
             <h3 className="title">Frontend Developer</h3>

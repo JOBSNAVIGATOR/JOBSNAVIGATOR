@@ -277,7 +277,7 @@ const Example = ({ data }) => {
         header: "View History",
         Cell: ({ row }) => {
           const candidate = row.original;
-          return <CandidateHistory />;
+          return <CandidateHistory candidateId={candidate.id} />;
         },
       },
       //View Resume
