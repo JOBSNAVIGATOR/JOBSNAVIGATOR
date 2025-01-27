@@ -69,6 +69,7 @@ export async function POST(request) {
       return createCandidateJourney(
         candidateId,
         jobId,
+        jobExists.jobTitle,
         assignedByName,
         consultantId
       ); // Call your function to create a candidate journey
@@ -97,6 +98,7 @@ export async function POST(request) {
 function createCandidateJourney(
   candidateId,
   jobId,
+  jobName,
   assignedByName,
   consultantId
 ) {
@@ -104,7 +106,7 @@ function createCandidateJourney(
     data: {
       candidateId, // Linking the journey to the new candidate profile
       eventType: "JOB_ASSIGNED", // Event type: Job Assigned
-      remarks: `Job with ID ${jobId} was assigned to the candidate by ${assignedByName}.`,
+      remarks: `Job with Name:- ${jobName} was assigned to the candidate by ${assignedByName}.`,
       status: "Applied",
       consultantId,
       jobId,

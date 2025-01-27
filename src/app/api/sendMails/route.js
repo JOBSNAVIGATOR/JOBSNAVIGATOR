@@ -90,6 +90,7 @@ export async function POST(request) {
       return createCandidateJourney(
         candidate.id,
         consultantData.id,
+        user.name,
         templateName
       ); // Call your function to create a candidate journey
     });
@@ -115,12 +116,17 @@ export async function POST(request) {
   }
 }
 
-function createCandidateJourney(candidateId, consultantId, templateName) {
+function createCandidateJourney(
+  candidateId,
+  consultantId,
+  consultantName,
+  templateName
+) {
   return db.candidateJourney.create({
     data: {
       candidateId, // Linking the journey to the new candidate profile
       eventType: "EMAIL_SENT", // Event type: Profile Created
-      remarks: `Template ${templateName} was sent.`,
+      remarks: `Template ${templateName} was sent by ${consultantName}.`,
       consultantId,
       createdAt: new Date(), // Current timestamp
     },
