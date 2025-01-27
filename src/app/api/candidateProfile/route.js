@@ -1,5 +1,7 @@
+import { authOptions } from "@/lib/authOptions";
 import db from "@/lib/db";
 import { generateNewCandidateCode } from "@/lib/generateNewCandidateCode";
+import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 
 export async function PUT(request) {
@@ -25,10 +27,19 @@ export async function PUT(request) {
       resume, // Assuming the resume is base64 encoded'
       candidateCode,
     } = await request.json();
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.id) {
+      return new Response(JSON.stringify({ message: "Unauthorized access" }), {
+        status: 401,
+      });
+    }
 
     const candidateProfile = await db.candidateProfile.findUnique({
       where: {
         id,
+      },
+      include: {
+        user: true,
       },
     });
     if (!candidateProfile) {
@@ -90,7 +101,7 @@ export async function PUT(request) {
       data: {
         candidateId: candidateProfile.id, // Linking the journey to the new candidate profile
         eventType: "PROFILE_MODIFIED", // Event type: Profile Created
-        remarks: `Candidate ${candidateProfile.name} profile updated.`,
+        remarks: `Candidate ${candidateProfile.user.name} profile updated by ${session?.user?.name}.`,
         createdAt: new Date(), // Current timestamp
       },
     });
