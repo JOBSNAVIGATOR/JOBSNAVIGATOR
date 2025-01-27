@@ -9,7 +9,7 @@ export async function GET(request, { params }) {
       where: { id },
       include: { journeys: true },
     });
-    console.log(existingCandidate.journeys);
+    // console.log(existingCandidate.journeys);
 
     if (!existingCandidate) {
       return NextResponse.json(

@@ -39,7 +39,7 @@ export default function CandidateHistory({ candidateId }) {
       setLoading(false);
     }
   };
-  console.log(history);
+  // console.log(history);
 
   return (
     <div className="flex items-center justify-end">

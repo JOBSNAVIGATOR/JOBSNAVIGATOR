@@ -18,7 +18,7 @@ export default function Jobs() {
 
   // Handle loading and error states without affecting the hooks order
   if (error) return <div>Error loading jobs.</div>;
-  console.log(error);
+  // console.log(error);
 
   if (!jobs) return <div>Loading...</div>;
 

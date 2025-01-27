@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 export async function POST(request) {
   try {
     const { consultant, finalSectors, finalDomains } = await request.json();
-    console.log("backendddddd", consultant, finalSectors, finalDomains);
+    // console.log("backendddddd", consultant, finalSectors, finalDomains);
 
     // Check if the consultant exists
     const existingConsultant = await db.consultantProfile.findUnique({

@@ -2,7 +2,6 @@ import React from "react";
 import { format } from "date-fns"; // Import the date-fns library
 import "./timeline.css";
 export default function Timeline({ history }) {
-  console.log("timleine", history);
   // Function to format the createdAt field
   const formatDate = (dateString) => {
     const date = new Date(dateString);
