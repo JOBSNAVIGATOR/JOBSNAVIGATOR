@@ -20,6 +20,8 @@ export async function GET(request, { params: { id } }) {
             candidateProfile: {
               include: {
                 user: true, // Include user in candidateProfile
+                sector: true,
+                domain: true,
               },
             },
           },

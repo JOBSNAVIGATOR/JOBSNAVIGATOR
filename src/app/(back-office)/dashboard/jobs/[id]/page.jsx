@@ -6,6 +6,7 @@ import { useMediaQuery } from "@custom-react-hooks/use-media-query";
 import DataTable from "@/components/data-table-components/DataTable";
 import { columns } from "./columns";
 import AnimatedBoxes from "@/components/ui/AnimatedBoxes";
+import ApplicantsMasterTable from "./ApplicantsMasterTable";
 
 // Common Job Detail Component
 const JobDetail = ({ title, detail }) => (
@@ -39,11 +40,16 @@ export default function Page({ params: { id } }) {
         // Format applicants when job data is fetched
         const applicants = data?.jobApplicants || [];
         const formatted = applicants.map((applicant) => ({
-          id: applicant?.id,
+          id: applicant?.candidateProfile?.id,
           candidateCode: applicant?.candidateProfile?.candidateCode,
           name: applicant?.candidateProfile?.user?.name,
           email: applicant?.candidateProfile?.user?.email,
           contactNumber: applicant?.candidateProfile?.user?.contactNumber,
+          sectorName: applicant?.candidateProfile?.sector?.sectorName,
+          domainName: applicant?.candidateProfile?.domain?.name,
+          designation: applicant?.candidateProfile?.designation,
+          totalWorkingExperience:
+            applicant?.candidateProfile?.totalWorkingExperience,
           currentCtc: applicant?.candidateProfile?.currentCtc,
           currentJobLocation: applicant?.candidateProfile?.currentJobLocation,
           currentCompany: applicant?.candidateProfile?.currentCompany,
@@ -137,11 +143,12 @@ export default function Page({ params: { id } }) {
       {/* Applicants Table */}
       <div className="py-8">
         {formattedApplicants.length > 0 ? (
-          <DataTable
-            data={formattedApplicants}
-            columns={columns(updateStatus)}
-            filterKeys={["name"]}
-          />
+          // <DataTable
+          //   data={formattedApplicants}
+          //   columns={columns(updateStatus)}
+          //   filterKeys={["name"]}
+          // />
+          <ApplicantsMasterTable data={formattedApplicants} />
         ) : (
           <div className="text-center text-gray-500">
             No applicants for this job.

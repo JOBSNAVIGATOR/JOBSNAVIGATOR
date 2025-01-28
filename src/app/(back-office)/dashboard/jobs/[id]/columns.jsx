@@ -43,6 +43,10 @@ export const columns = (updateStatus) => [
     enableHiding: false,
   },
   {
+    accessorKey: "candidateCode",
+    header: ({ column }) => <SortableColumn column={column} title="Code" />,
+  },
+  {
     accessorKey: "name",
     header: ({ column }) => <SortableColumn column={column} title="Name" />,
   },
@@ -67,6 +71,14 @@ export const columns = (updateStatus) => [
     header: ({ column }) => (
       <SortableColumn column={column} title="Current Location" />
     ),
+  },
+  {
+    accessorKey: "sectorName",
+    header: ({ column }) => <SortableColumn column={column} title="Sector" />,
+  },
+  {
+    accessorKey: "domainName",
+    header: ({ column }) => <SortableColumn column={column} title="Domain" />,
   },
   {
     accessorKey: "currentCtc",
