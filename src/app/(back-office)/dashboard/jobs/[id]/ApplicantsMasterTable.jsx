@@ -22,6 +22,7 @@ import AssignTagButton from "@/components/backOffice/AssignTagButton";
 import AssignJobButton from "@/components/backOffice/AssignJobButton";
 import CandidateHistory from "@/components/backOffice/CandidateHistory";
 import PreviewResume from "@/components/ui/PreviewResume";
+import ChangeStatus from "@/components/backOffice/ChangeStatus";
 
 const Example = ({ data }) => {
   const columns = useMemo(
@@ -132,11 +133,25 @@ const Example = ({ data }) => {
           },
         ],
       },
+      // Status
+      {
+        id: "status", //id used to define `group` column
+        header: "Status",
+        columns: [
+          {
+            accessorKey: "status", //accessorKey used to define `data` column. `id` gets set to accessorKey automatically
+            enableClickToCopy: true,
+            filterVariant: "autocomplete",
+            header: "Status",
+            size: 250,
+          },
+        ],
+      },
       //View Buttons
       {
         id: "buttons",
         header: "Buttons",
-        minSize: 350,
+        minSize: 550,
         Cell: ({ row }) => {
           const candidate = row.original;
           return (
@@ -151,6 +166,7 @@ const Example = ({ data }) => {
               }}
             >
               <CandidateHistory candidateId={candidate.id} />
+              <ChangeStatus candidateId={candidate.id} />
               <PreviewResume resume={candidate.resume} />
             </div>
           );

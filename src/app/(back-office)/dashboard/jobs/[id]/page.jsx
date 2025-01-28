@@ -3,8 +3,6 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { useMediaQuery } from "@custom-react-hooks/use-media-query";
-import DataTable from "@/components/data-table-components/DataTable";
-import { columns } from "./columns";
 import AnimatedBoxes from "@/components/ui/AnimatedBoxes";
 import ApplicantsMasterTable from "./ApplicantsMasterTable";
 
