@@ -1,14 +1,10 @@
 "use client";
 import React from "react";
-import DataTable from "@/components/data-table-components/DataTable";
-import { columns } from "./columns";
-import Heading from "@/components/backOffice/Heading";
 import useSWR from "swr";
 import { fetcher } from "@/lib/fetcher";
-import Link from "next/link";
-import DownloadCSV from "@/components/backOffice/DownloadCsv";
 import PageHeader from "@/components/backOffice/PageHeader";
 import AnimatedBoxes from "@/components/ui/AnimatedBoxes";
+import JobMasterTable from "./JobMasterTable";
 
 export default function Page() {
   const { data: jobs, error } = useSWR("/api/jobs", fetcher, {
@@ -22,7 +18,6 @@ export default function Page() {
         <AnimatedBoxes />
       </div>
     );
-  // console.log("jobs", jobs);
 
   // Customize job data
   const customizedJobData = jobs.map((job) => {
@@ -83,8 +78,6 @@ export default function Page() {
     };
   });
 
-  // console.log("customized ", customizedJobData);
-
   return (
     <div>
       {/* Header */}
@@ -93,17 +86,9 @@ export default function Page() {
         href={"/dashboard/jobs/new"}
         linkTitle={"Post Job"}
       />
-      {/* <div className="flex justify-end">
-        <DownloadExcel data={jobs} fileName="jobs.xlsx" />
-      </div> */}
-
       {/* table */}
       <div className="py-8">
-        <DataTable
-          data={customizedJobData}
-          columns={columns}
-          filterKeys={["jobSector", "jobDomain", "jobLocation"]}
-        />
+        <JobMasterTable data={customizedJobData} />
       </div>
     </div>
   );

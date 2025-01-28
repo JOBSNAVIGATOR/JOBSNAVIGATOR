@@ -58,7 +58,7 @@ export default function CandidateHistory({ candidateId }) {
         className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg shadow-md"
       >
         <Modal.Header className="h-[80px]">
-          <p className="mx-auto text-[30px] font-medium text-purple-700 relative mb-20 after:absolute after:content-[''] after:w-1/2 after:h-1 after:left-1/2 after:-bottom-1 after:bg-gradient-to-r after:from-purple-700 after:to-pink-500 after:-translate-x-1/2">
+          <p className="mx-auto text-[30px] font-medium text-purple-700 relative mb-20 after:absolute after:content-[''] after:w-1/2 after:h-1 after:left-1/2 after:-bottom-1 after:bg-gradient-to-r after:from-purple-700 after:to-pink-500 after:-translate-x-1/2 dark:text-[#BA68C8]">
             Candidate History
           </p>
         </Modal.Header>

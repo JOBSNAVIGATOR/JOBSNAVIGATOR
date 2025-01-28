@@ -131,7 +131,7 @@ ul li .date {
     background-image: linear-gradient(to right, rgb(106, 6, 236), rgb(220, 0, 240));
     display: grid;
     place-items: center;
-    font-size: 10px;
+    font-size: 15px;
 }
 
 .container ul li .circle {

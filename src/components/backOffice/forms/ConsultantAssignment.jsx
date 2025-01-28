@@ -152,6 +152,7 @@ export default function ConsultantAssignment({ consultant }) {
       // Optionally, you can reset the selected sector and domains after assignment
       setSelectedSector("");
       setSelectedDomains([]);
+      setOpen(false);
     } catch (error) {
       alert("Failed to update assignments.");
     }

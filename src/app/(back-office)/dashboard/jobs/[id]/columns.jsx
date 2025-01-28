@@ -4,6 +4,7 @@ import SortableColumn from "@/components/DataTableColumns/SortableColumn";
 import { useForm } from "react-hook-form";
 import { statusData } from "@/data";
 import SelectInputTwo from "@/components/FormInputs/SelectInputTwo";
+import CandidateHistory from "@/components/backOffice/CandidateHistory";
 
 const statusOptions = statusData;
 
@@ -72,6 +73,13 @@ export const columns = (updateStatus) => [
     header: ({ column }) => (
       <SortableColumn column={column} title="Current Salary (LPA)" />
     ),
+  },
+  {
+    id: "history",
+    cell: ({ row }) => {
+      const candidate = row.original;
+      return <CandidateHistory candidateId={candidate.id} />;
+    },
   },
   {
     accessorKey: "status",
