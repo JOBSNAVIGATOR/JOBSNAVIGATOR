@@ -9,14 +9,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { makePostRequest } from "@/lib/apiRequest";
+import { makePostRequest, makePutRequest } from "@/lib/apiRequest";
 import { Settings2 } from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
-import SelectInputTwo from "../FormInputs/SelectInputTwo";
 import { statusData } from "@/data";
 import TextAreaInput from "../FormInputs/TextAreaInput";
 import SelectInputThree from "../FormInputs/SelectInputThree";
-export default function ChangeStatus({ candidateId }) {
+export default function ChangeStatus({ candidateId, jobApplicantId, jobId }) {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const statusOptions = statusData;
@@ -30,16 +29,13 @@ export default function ChangeStatus({ candidateId }) {
     defaultValues: {},
   });
   async function onSubmit(data) {
+    data.jobApplicantId = jobApplicantId;
+    data.candidateId = candidateId;
+    data.jobId = jobId;
+
     console.log("change status", data);
-    // make post request (create)
-    // makePostRequest(
-    //   setLoading,
-    //   "api/updateStatus",
-    //   data,
-    //   "Candidate Status",
-    //   reset
-    // );
-    // setPdfUrl("");
+    // make put request (create)
+    makePutRequest(setLoading, "api/updateStatus", data, "Status");
     // router.back();
   }
   return (
@@ -55,7 +51,7 @@ export default function ChangeStatus({ candidateId }) {
         <DialogContent className="sm:max-w-[425px] bg-slate-200  dark:bg-zinc-800 rounded-xl">
           <DialogHeader className="flex flex-col items-center justify-between gap-2">
             <DialogTitle className="mb-0 pb-0">
-              <h3 className="text-xl font-bold">Change Status</h3>
+              <p className="text-xl font-bold">Change Status</p>
             </DialogTitle>
             <br />
           </DialogHeader>
@@ -69,7 +65,6 @@ export default function ChangeStatus({ candidateId }) {
               <SelectInputThree
                 name="status"
                 label="Status"
-                // register={register}
                 register={register("status", { required: true })} // Ensure status is registered
                 errors={errors}
                 className="w-full"
@@ -81,6 +76,7 @@ export default function ChangeStatus({ candidateId }) {
                 register={register}
                 errors={errors}
                 className="w-full"
+                isRequired={false}
               />
             </div>
             {loading ? (

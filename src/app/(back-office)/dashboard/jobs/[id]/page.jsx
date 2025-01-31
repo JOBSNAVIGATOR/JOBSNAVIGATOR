@@ -53,6 +53,8 @@ export default function Page({ params: { id } }) {
           currentCompany: applicant?.candidateProfile?.currentCompany,
           status: applicant?.status,
           resume: applicant?.candidateProfile?.resume,
+          jobId: id,
+          jobApplicantId: applicant?.id,
         }));
         setFormattedApplicants(formatted);
       } catch (err) {
@@ -65,17 +67,6 @@ export default function Page({ params: { id } }) {
 
     fetchJob();
   }, [id]);
-
-  const updateStatus = (candidateId, newStatus) => {
-    // Update status in your state
-    setFormattedApplicants((prevApplicants) =>
-      prevApplicants.map((applicant) =>
-        applicant.id === candidateId
-          ? { ...applicant, status: newStatus }
-          : applicant
-      )
-    );
-  };
 
   if (loading) {
     return (

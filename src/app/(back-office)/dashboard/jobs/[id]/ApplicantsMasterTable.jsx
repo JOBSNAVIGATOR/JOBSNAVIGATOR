@@ -154,6 +154,8 @@ const Example = ({ data }) => {
         minSize: 550,
         Cell: ({ row }) => {
           const candidate = row.original;
+          // console.log("candidateData", candidate);
+
           return (
             <div
               className=""
@@ -166,7 +168,11 @@ const Example = ({ data }) => {
               }}
             >
               <CandidateHistory candidateId={candidate.id} />
-              <ChangeStatus candidateId={candidate.id} />
+              <ChangeStatus
+                candidateId={candidate.id}
+                jobApplicantId={candidate.jobApplicantId}
+                jobId={candidate.jobId}
+              />
               <PreviewResume resume={candidate.resume} />
             </div>
           );
