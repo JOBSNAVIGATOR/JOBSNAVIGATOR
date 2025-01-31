@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { BottomGradient } from "@/components/ui/BottomGradient";
 import {
   Dialog,
@@ -9,34 +9,32 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { makePostRequest, makePutRequest } from "@/lib/apiRequest";
+import { makePutRequest } from "@/lib/apiRequest";
 import { Settings2 } from "lucide-react";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { statusData } from "@/data";
 import TextAreaInput from "../FormInputs/TextAreaInput";
 import SelectInputThree from "../FormInputs/SelectInputThree";
+import { useRouter } from "next/navigation";
 export default function ChangeStatus({ candidateId, jobApplicantId, jobId }) {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const statusOptions = statusData;
   const {
     register,
-    reset,
-    watch,
     handleSubmit,
     formState: { errors },
   } = useForm({
     defaultValues: {},
   });
+  const router = useRouter();
   async function onSubmit(data) {
     data.jobApplicantId = jobApplicantId;
     data.candidateId = candidateId;
     data.jobId = jobId;
-
-    console.log("change status", data);
     // make put request (create)
     makePutRequest(setLoading, "api/updateStatus", data, "Status");
-    // router.back();
+    router.back();
   }
   return (
     <div className="flex items-center justify-end">

@@ -132,11 +132,6 @@ export default function Page({ params: { id } }) {
       {/* Applicants Table */}
       <div className="py-8">
         {formattedApplicants.length > 0 ? (
-          // <DataTable
-          //   data={formattedApplicants}
-          //   columns={columns(updateStatus)}
-          //   filterKeys={["name"]}
-          // />
           <ApplicantsMasterTable data={formattedApplicants} />
         ) : (
           <div className="text-center text-gray-500">
