@@ -17,19 +17,35 @@ export default function FilterSection({ jobs, setFilteredJobs }) {
   const [isFilterVisible, setIsFilterVisible] = useState(false); // State to manage filter visibility
 
   // Extract unique values for each filter category
-  const jobSectors = [...new Set(jobs.map((job) => job.jobSector))]
-    .sort()
-    .map((sector) => ({
-      value: sector,
-      label: sector,
-    }));
+  // const jobSectors = [...new Set(jobs.map((job) => job.jobSector))]
+  //   .sort()
+  //   .map((sector) => ({
+  //     value: sector,
+  //     label: sector,
+  //   }));
+  const jobSectors = [
+    ...new Map(
+      jobs.map((job) => [
+        job.sector.id,
+        { value: job.sector.id, label: job.sector.sectorName },
+      ])
+    ).values(),
+  ];
 
-  const jobDomains = [...new Set(jobs.map((job) => job.jobDomain))]
-    .sort()
-    .map((domain) => ({
-      value: domain,
-      label: domain,
-    }));
+  // const jobDomains = [...new Set(jobs.map((job) => job.jobDomain))]
+  //   .sort()
+  //   .map((domain) => ({
+  //     value: domain,
+  //     label: domain,
+  //   }));
+  const jobDomains = [
+    ...new Map(
+      jobs.map((job) => [
+        job.domain.id,
+        { value: job.domain.id, label: job.domain.name },
+      ])
+    ).values(),
+  ];
 
   const jobLocations = [...new Set(jobs.map((job) => job.jobLocation))]
     .sort()
@@ -41,10 +57,12 @@ export default function FilterSection({ jobs, setFilteredJobs }) {
   useEffect(() => {
     const filtered = jobs.filter((job) => {
       const sectorMatch = selectedSectors.length
-        ? selectedSectors.some((sector) => job.jobSector === sector.value)
+        ? // ? selectedSectors.some((sector) => job.jobSector === sector.value)
+          selectedSectors.some((sector) => job.sector.id === sector.value)
         : true;
       const domainMatch = selectedDomains.length
-        ? selectedDomains.some((domain) => job.jobDomain === domain.value)
+        ? // ? selectedDomains.some((domain) => job.jobDomain === domain.value)
+          selectedDomains.some((domain) => job.domain.id === domain.value)
         : true;
       const locationMatch = selectedLocations.length
         ? selectedLocations.some(

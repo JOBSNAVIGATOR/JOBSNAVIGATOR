@@ -40,6 +40,7 @@ import { useRouter } from "next/navigation";
 import useSWR from "swr";
 import { fetcher } from "@/lib/fetcher";
 import AnimatedBoxes from "@/components/ui/AnimatedBoxes";
+import { makePostRequest } from "@/lib/apiRequest";
 
 export default function JobCard({ jobItem }) {
   // useSWR should always be called at the top level of your component

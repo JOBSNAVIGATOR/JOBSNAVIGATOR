@@ -1,6 +1,7 @@
 "use client";
 import FilterSection from "@/components/frontOffice/jobs/FilterSection";
 import JobsSection from "@/components/frontOffice/jobs/JobsSection";
+import AnimatedBoxes from "@/components/ui/AnimatedBoxes";
 import { fetcher } from "@/lib/fetcher";
 import React, { useState } from "react";
 import useSWR from "swr";
@@ -20,9 +21,14 @@ export default function Jobs() {
   if (error) return <div>Error loading jobs.</div>;
   // console.log(error);
 
-  if (!jobs) return <div>Loading...</div>;
+  if (!jobs)
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <AnimatedBoxes />
+      </div>
+    );
 
-  // console.log("jobs", jobs);
+  console.log("jobs", jobs);
   // console.log("filteredjobs", filteredJobs);
 
   return (

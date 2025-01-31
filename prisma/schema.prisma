@@ -215,16 +215,16 @@ model Job {
 }
 
 model JobApplicant {
-  id                String            @id @default(auto()) @map("_id") @db.ObjectId
-  candidateProfile  CandidateProfile  @relation(fields: [candidateId], references: [id], onDelete: Cascade)
-  candidateId       String            @db.ObjectId
-  job               Job               @relation(fields: [jobId], references: [id], onDelete: Cascade)
-  jobId             String            @db.ObjectId
+  id                String             @id @default(auto()) @map("_id") @db.ObjectId
+  candidateProfile  CandidateProfile   @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  candidateId       String             @db.ObjectId
+  job               Job                @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  jobId             String             @db.ObjectId
   status            String // Status of the application (e.g., "Applied", "Interviewed", "Selected", etc.)
   // New field to track who assigned the candidate
-  assignedById      String            @db.ObjectId
+  assignedById      String?            @db.ObjectId
   assignedByName    String? // Optionally store the creator's ID
-  consultantProfile ConsultantProfile @relation(fields: [assignedById], references: [id], onDelete: Cascade)
+  consultantProfile ConsultantProfile? @relation(fields: [assignedById], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
