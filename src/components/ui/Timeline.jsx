@@ -10,7 +10,6 @@ export default function Timeline({ history }) {
 
   return (
     <div className="main">
-      {/* <h3 className="heading">Responsive Timeline</h3> */}
       <div className="container p-4">
         <ul>
           {history.map((historyElement, index) => {

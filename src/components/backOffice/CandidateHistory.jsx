@@ -55,24 +55,28 @@ export default function CandidateHistory({ candidateId }) {
         dismissible
         show={openModal}
         onClose={() => setOpenModal(false)}
-        className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg shadow-md"
+        className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg shadow-md min-w-fit"
       >
-        <Modal.Header className="h-[80px]">
-          <p className="mx-auto text-[30px] font-medium text-purple-700 relative mb-20 after:absolute after:content-[''] after:w-1/2 after:h-1 after:left-1/2 after:-bottom-1 after:bg-gradient-to-r after:from-purple-700 after:to-pink-500 after:-translate-x-1/2 dark:text-[#BA68C8]">
-            Candidate History
-          </p>
-        </Modal.Header>
-        <Modal.Body className="bg-gray-700">
-          {loading ? (
-            <p className="text-center text-white">Loading history...</p>
-          ) : error ? (
-            <p className="text-center text-red-500">{error}</p> // Display error message
-          ) : history.length > 0 ? (
-            <Timeline history={history} /> // Pass history data to Timeline component
-          ) : (
-            <p className="text-center text-white">No history found.</p>
-          )}
-        </Modal.Body>
+        <div className="flex flex-col h-[500px] ">
+          {" "}
+          {/* Fixed modal height */}
+          <Modal.Header className="h-[80px] sticky top-0">
+            <p className="mx-auto text-[30px] font-medium text-purple-700 relative mb-20 after:absolute after:content-[''] after:w-1/2 after:h-1 after:left-1/2 after:-bottom-1 after:bg-gradient-to-r after:from-purple-700 after:to-pink-500 after:-translate-x-1/2 dark:text-[#BA68C8]">
+              Candidate History
+            </p>
+          </Modal.Header>
+          <Modal.Body className="bg-gray-700 flex-1 overflow-y-auto">
+            {loading ? (
+              <p className="text-center text-white">Loading history...</p>
+            ) : error ? (
+              <p className="text-center text-red-500">{error}</p> // Display error message
+            ) : history.length > 0 ? (
+              <Timeline history={history} /> // Pass history data to Timeline component
+            ) : (
+              <p className="text-center text-white">No history found.</p>
+            )}
+          </Modal.Body>
+        </div>
       </Modal>
     </div>
   );
