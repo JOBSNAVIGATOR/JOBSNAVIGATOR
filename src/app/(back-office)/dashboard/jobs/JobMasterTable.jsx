@@ -93,11 +93,22 @@ const Example = ({ data }) => {
             size: 220,
           },
           {
-            accessorKey: "isActive", //accessorKey used to define `data` column. `id` gets set to accessorKey automatically
+            accessorKey: "isActive",
+            header: "Active Status",
+            size: 220,
             enableClickToCopy: true,
             filterVariant: "autocomplete",
-            header: "isActive",
-            size: 220,
+            Cell: ({ row }) => {
+              return (
+                <span
+                  className={
+                    row.original.isActive ? "text-green-700" : "text-red-500"
+                  }
+                >
+                  {row.original.isActive ? "Active" : "Inactive"}
+                </span>
+              );
+            },
           },
         ],
       },
@@ -105,7 +116,7 @@ const Example = ({ data }) => {
       {
         id: "applicants",
         // header: ({ column }) => <SortableColumn column={column} title="CV" />,
-        header: "View Applicants",
+        header: "View Job & Applicants",
         Cell: ({ row }) => {
           const job = row.original;
           return (

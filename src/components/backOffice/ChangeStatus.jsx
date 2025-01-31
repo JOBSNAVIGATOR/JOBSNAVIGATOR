@@ -34,7 +34,7 @@ export default function ChangeStatus({ candidateId, jobApplicantId, jobId }) {
     data.jobId = jobId;
     // make put request (create)
     makePutRequest(setLoading, "api/updateStatus", data, "Status");
-    router.back();
+    setOpen(false);
   }
   return (
     <div className="flex items-center justify-end">

@@ -77,6 +77,7 @@ export default function Page() {
       clientSpocName: clientSpoc?.user?.name.toUpperCase() || "N/A", // safely access clientSpoc.user.name
     };
   });
+  // console.log(customizedJobData);
 
   return (
     <div>

@@ -5,6 +5,8 @@ import { ArrowRight } from "lucide-react";
 import { useMediaQuery } from "@custom-react-hooks/use-media-query";
 import AnimatedBoxes from "@/components/ui/AnimatedBoxes";
 import ApplicantsMasterTable from "./ApplicantsMasterTable";
+import useSWR from "swr";
+import { fetcher } from "@/lib/fetcher";
 
 // Common Job Detail Component
 const JobDetail = ({ title, detail }) => (
@@ -20,78 +22,47 @@ const JobDetail = ({ title, detail }) => (
 export default function Page({ params: { id } }) {
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const [job, setJob] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  // const [error, setError] = useState(null);
   const [formattedApplicants, setFormattedApplicants] = useState([]);
 
+  const { data, error } = useSWR(`/api/jobs/${id}`, fetcher, {
+    refreshInterval: 5000, // refetch data every 5 seconds
+  }); // replace with your API endpoint
   useEffect(() => {
-    // Fetch the job from the API
-    const fetchJob = async () => {
-      try {
-        const response = await fetch(`/api/jobs/${id}`);
-        if (!response.ok) {
-          throw new Error("Failed to fetch job");
-        }
-        const data = await response.json();
-        setJob(data);
+    if (data) {
+      setJob(data);
 
-        // Format applicants when job data is fetched
-        const applicants = data?.jobApplicants || [];
-        const formatted = applicants.map((applicant) => ({
-          id: applicant?.candidateProfile?.id,
-          candidateCode: applicant?.candidateProfile?.candidateCode,
-          name: applicant?.candidateProfile?.user?.name,
-          email: applicant?.candidateProfile?.user?.email,
-          contactNumber: applicant?.candidateProfile?.user?.contactNumber,
-          sectorName: applicant?.candidateProfile?.sector?.sectorName,
-          domainName: applicant?.candidateProfile?.domain?.name,
-          designation: applicant?.candidateProfile?.designation,
-          totalWorkingExperience:
-            applicant?.candidateProfile?.totalWorkingExperience,
-          currentCtc: applicant?.candidateProfile?.currentCtc,
-          currentJobLocation: applicant?.candidateProfile?.currentJobLocation,
-          currentCompany: applicant?.candidateProfile?.currentCompany,
-          status: applicant?.status,
-          resume: applicant?.candidateProfile?.resume,
-          jobId: id,
-          jobApplicantId: applicant?.id,
-        }));
-        setFormattedApplicants(formatted);
-      } catch (err) {
-        // console.error("Error fetching job:", err);
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+      const applicants = data?.jobApplicants || [];
+      const formatted = applicants.map((applicant) => ({
+        id: applicant?.candidateProfile?.id,
+        candidateCode: applicant?.candidateProfile?.candidateCode,
+        name: applicant?.candidateProfile?.user?.name,
+        email: applicant?.candidateProfile?.user?.email,
+        contactNumber: applicant?.candidateProfile?.user?.contactNumber,
+        sectorName: applicant?.candidateProfile?.sector?.sectorName,
+        domainName: applicant?.candidateProfile?.domain?.name,
+        designation: applicant?.candidateProfile?.designation,
+        totalWorkingExperience:
+          applicant?.candidateProfile?.totalWorkingExperience,
+        currentCtc: applicant?.candidateProfile?.currentCtc,
+        currentJobLocation: applicant?.candidateProfile?.currentJobLocation,
+        currentCompany: applicant?.candidateProfile?.currentCompany,
+        status: applicant?.status,
+        resume: applicant?.candidateProfile?.resume,
+        jobId: id,
+        jobApplicantId: applicant?.id,
+      }));
 
-    fetchJob();
-  }, [id]);
-
-  if (loading) {
+      setFormattedApplicants(formatted);
+    }
+  }, [data, id]); // Runs only when `data` changes
+  if (error) return <div>Error loading applicants.</div>;
+  if (!data)
     return (
       <div className="flex justify-center items-center h-screen">
         <AnimatedBoxes />
       </div>
     );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        {error}
-      </div>
-    );
-  }
-
-  if (!job) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        Job not found
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen gap-4">
       {/* Job Detail Section */}
@@ -104,13 +75,13 @@ export default function Page({ params: { id } }) {
         <div className="w-full md:w-1/3 flex flex-col items-center justify-between gap-2 space-y-1.5 text-center sm:text-left">
           <Image
             src={job?.jobCompany?.companyLogo || "/bankLogo/dcbbank.jpeg"}
-            alt={job.companyName || "Company Logo"}
+            alt={job?.jobCompany?.companyName || "Company Logo"}
             unoptimized={true}
             height={400}
             width={400}
             className="h-40 w-40"
           />
-          <h1 className="text-2xl">{job.jobTitle}</h1>
+          <h1 className="text-2xl">{job?.jobTitle}</h1>
         </div>
 
         {/* Other Job Details */}
@@ -119,12 +90,12 @@ export default function Page({ params: { id } }) {
             title="Company Name"
             detail={job?.jobCompany?.companyName}
           />
-          <JobDetail title="Job Description" detail={job.jobDescription} />
-          <JobDetail title="Location" detail={job.jobLocation} />
-          <JobDetail title="CTC" detail={`${job.jobSalary} LPA`} />
+          <JobDetail title="Job Description" detail={job?.jobDescription} />
+          <JobDetail title="Location" detail={job?.jobLocation} />
+          <JobDetail title="CTC" detail={`${job?.jobSalary} LPA`} />
           <JobDetail
             title="Desired Skills"
-            detail={job.skillsRequired.join(", ")}
+            detail={job?.skillsRequired.join(", ")}
           />
         </div>
       </div>
