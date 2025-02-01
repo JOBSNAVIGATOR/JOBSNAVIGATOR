@@ -348,7 +348,7 @@ model CandidateJourney {
   remarks      String? // Additional details (e.g., "Candidate shortlisted")
   createdAt    DateTime  @default(now()) // Event timestamp
 
-  candidate  CandidateProfile   @relation(fields: [candidateId], references: [id])
+  candidate  CandidateProfile   @relation(fields: [candidateId], references: [id], onDelete: Cascade)
   job        Job?               @relation(fields: [jobId], references: [id])
   consultant ConsultantProfile? @relation(fields: [consultantId], references: [id])
 }
