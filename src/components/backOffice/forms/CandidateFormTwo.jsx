@@ -1,11 +1,11 @@
 "use client";
 import SubmitButton from "@/components/FormInputs/SubmitButton";
 import TextInput from "@/components/FormInputs/TextInput";
-import { makePostRequest, makePutRequest } from "@/lib/apiRequest";
+import { makePostRequest } from "@/lib/apiRequest";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { domainsData, genderData, sectorsData } from "@/data";
+import { genderData } from "@/data";
 import { degrees, PDFDocument, rgb } from "pdf-lib";
 import ArrayItemsInput from "@/components/FormInputs/ArrayItemsInput";
 import SelectInputThree from "@/components/FormInputs/SelectInputThree";
