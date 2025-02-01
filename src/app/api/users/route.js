@@ -3,13 +3,12 @@ import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
 import base64url from "base64url";
-import { Resend } from "resend";
-import EmailTemplate from "@/components/email-template";
-import { LogIn } from "lucide-react";
 import { PrismaClient } from "@prisma/client";
+import createTransporter from "@/lib/email";
+import { userEmailTemplate } from "@/lib/userEmailTemplate";
 
 export async function POST(request) {
-  const resend = new Resend(process.env.RESEND_API_KEY);
+  // const resend = new Resend(process.env.RESEND_API_KEY);
   try {
     //extract the credentials
     const { name, email, password, role, contactNumber } = await request.json();
@@ -50,16 +49,42 @@ export async function POST(request) {
     });
     // console.log(newUser);
 
-    // Send an email with the token on the link as a search param
-    const userId = newUser.id;
+    const transporter = createTransporter();
     const linkText = "Verify Account";
+    const userId = newUser.id;
     const redirectUrl = `login?token=${token}&id=${userId}`;
-    const sendMail = await resend.emails.send({
-      from: "LifeEasyWay <info@lifeeasyway.com>",
-      to: email,
-      subject: "Account Verification from Auth System",
-      react: EmailTemplate({ name, redirectUrl, linkText }),
-    });
+    const description = `Thank you for creating an account with us. We request you to click
+                on the link below to ${linkText}. Thank you!`;
+    const emailHtml = userEmailTemplate(
+      name,
+      description,
+      linkText,
+      redirectUrl
+    );
+
+    const mailOptions = {
+      from: process.env.EMAIL_USER, // Sender address
+      to: email, // Recipient address
+      subject: "Account Verification from JOBSNAVIGATOR",
+      html: emailHtml,
+    };
+    try {
+      await transporter.sendMail(mailOptions);
+      console.log("Email sent successfully to:", email);
+    } catch (mailError) {
+      console.error("Failed to send email:", mailError);
+    }
+
+    // Send an email with the token on the link as a search param
+    // const userId = newUser.id;
+    // const linkText = "Verify Account";
+    // const redirectUrl = `login?token=${token}&id=${userId}`;
+    // const sendMail = await resend.emails.send({
+    //   from: "LifeEasyWay <info@lifeeasyway.com>",
+    //   to: email,
+    //   subject: "Account Verification from JOBSNAVIGATOR",
+    //   react: EmailTemplate({ name, redirectUrl, linkText }),
+    // });
 
     // console.log(sendMail);
     // console.log(rawToken);
@@ -73,7 +98,7 @@ export async function POST(request) {
       { status: 201 }
     );
   } catch (error) {
-    // console.log(error);
+    console.log(error);
     return NextResponse.json(
       {
         error,

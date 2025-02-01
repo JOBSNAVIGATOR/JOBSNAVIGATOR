@@ -1,13 +1,11 @@
 import db from "@/lib/db";
 import { NextResponse } from "next/server";
-import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
 import base64url from "base64url";
-import { Resend } from "resend";
-import { EmailTemplate } from "@/components/email-template";
+import createTransporter from "@/lib/email";
+import { userEmailTemplate } from "@/lib/userEmailTemplate";
 
 export async function PUT(request) {
-  const resend = new Resend(process.env.RESEND_API_KEY);
   try {
     //extract the credentials
     const { email } = await request.json();
@@ -45,23 +43,32 @@ export async function PUT(request) {
       },
     });
     // console.log(updatedUser);
-
-    // Send an email with the token on the link as a search param
-
-    const userId = existingUser.id;
+    const transporter = createTransporter();
     const linkText = "Reset Password";
-    const redirectUrl = `reset-password?token=${token}&id=${userId}`;
+    const userId = existingUser.id;
     const name = existingUser.name;
-    const sendMail = await resend.emails.send({
-      from: "LifeEasyWay <info@lifeeasyway.com>",
-      to: email,
-      subject: "Account Verification from Auth System",
-      react: EmailTemplate({ name, redirectUrl, linkText }),
-    });
+    const redirectUrl = `reset-password?token=${token}&id=${userId}`;
+    const description = `Thank you for contacting JOBSNAVIGATOR. We request you to click
+                on the link below to ${linkText}. Thank you!`;
+    const emailHtml = userEmailTemplate(
+      name,
+      description,
+      linkText,
+      redirectUrl
+    );
 
-    // console.log(sendMail);
-    // console.log(rawToken);
-    // console.log(token);
+    const mailOptions = {
+      from: process.env.EMAIL_USER, // Sender address
+      to: email, // Recipient address
+      subject: "Password Reset from JOBSNAVIGATOR",
+      html: emailHtml,
+    };
+    try {
+      await transporter.sendMail(mailOptions);
+      console.log("Email sent successfully to:", email);
+    } catch (mailError) {
+      console.error("Failed to send email:", mailError);
+    }
     return NextResponse.json(
       {
         data: updatedUser,

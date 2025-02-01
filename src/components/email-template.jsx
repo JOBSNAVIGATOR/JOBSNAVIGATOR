@@ -48,10 +48,10 @@ export const EmailTemplate = ({
             {linkText}
           </Link>
         </Section>
-        <Text style={links}>
+        {/* <Text style={links}>
           <Link style={link}>Your security audit log</Link> ・{" "}
           <Link style={link}>Contact support</Link>
-        </Text>
+        </Text> */}
 
         <Text style={footer}>Auth System By UJJWAL JINDAL . ・INDIA ・</Text>
       </Container>

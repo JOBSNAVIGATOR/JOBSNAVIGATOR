@@ -163,7 +163,7 @@ export default function CandidateFormTwo({ updateData = {} }) {
       "Candidate Profile",
       reset
     );
-    setPdfUrl("");
+    // setPdfUrl("");
     router.back();
   }
 

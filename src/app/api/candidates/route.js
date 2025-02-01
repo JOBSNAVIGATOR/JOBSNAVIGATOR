@@ -4,14 +4,13 @@ import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
 import base64url from "base64url";
-import { Resend } from "resend";
-import { EmailTemplateTwo } from "@/components/email-template-two";
 import { generateRandomPassword } from "@/lib/generateRandomPassword";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
+import createTransporter from "@/lib/email";
+import { userEmailTemplate } from "@/lib/userEmailTemplate";
 
 export async function POST(request) {
-  const resend = new Resend(process.env.RESEND_API_KEY);
   try {
     //extract the credentials
     const {
@@ -74,16 +73,31 @@ export async function POST(request) {
       },
     });
 
-    // Send an email with the token on the link as a search param
-    const userId = newUser.id;
+    const transporter = createTransporter();
     const linkText = "Verify Account";
+    const userId = newUser.id;
     const redirectUrl = `login?token=${token}&id=${userId}`;
-    const sendMail = await resend.emails.send({
-      from: "LifeEasyWay <info@lifeeasyway.com>",
-      to: email,
-      subject: "Account Verification from Auth System",
-      react: EmailTemplateTwo({ name, redirectUrl, linkText, defaultPassword }),
-    });
+    const description = `Thank you for creating an account with us. We request you to click
+                on the link below to ${linkText}. Thank you! Your default password for login is: ${defaultPassword}`;
+    const emailHtml = userEmailTemplate(
+      name,
+      description,
+      linkText,
+      redirectUrl
+    );
+
+    const mailOptions = {
+      from: process.env.EMAIL_USER, // Sender address
+      to: email, // Recipient address
+      subject: "Account Verification from JOBSNAVIGATOR",
+      html: emailHtml,
+    };
+    try {
+      await transporter.sendMail(mailOptions);
+      console.log("Email sent successfully to:", email);
+    } catch (mailError) {
+      console.error("Failed to send email:", mailError);
+    }
 
     const sequenceNumber = (await db.candidateProfile.count()) + 1;
     const candidateData = {
@@ -132,7 +146,7 @@ export async function POST(request) {
       data: {
         candidateId: newCandidateProfile.id, // Linking the journey to the new candidate profile
         eventType: "PROFILE_CREATED", // Event type: Profile Created
-        remarks: `Candidate ${existingUser.name} profile created.`,
+        remarks: `Candidate ${name} profile created.`,
         createdAt: new Date(), // Current timestamp
       },
     });
@@ -145,7 +159,7 @@ export async function POST(request) {
       { status: 201 }
     );
   } catch (error) {
-    // console.log(error);
+    console.log(error);
     return NextResponse.json(
       {
         error,
