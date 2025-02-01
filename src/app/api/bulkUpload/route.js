@@ -1,173 +1,10 @@
-// export async function POST(request) {
-//   try {
-//     const formData = await request.formData();
-//     const file = formData.get("file"); // Uploaded CSV file
-//     const initialSequenceNumber = (await db.candidateProfile.count()) + 1;
-
-//     if (!file) {
-//       return NextResponse.json(
-//         { message: "No file uploaded" },
-//         { status: 400 }
-//       );
-//     }
-
-//     // Convert the file buffer into a CSV string
-//     const buffer = await file.arrayBuffer();
-//     const csvData = Buffer.from(buffer).toString(); // Convert ArrayBuffer to string
-
-//     // Parse the CSV data using PapaParse
-//     const { data, errors } = Papa.parse(csvData, {
-//       header: true,
-//       skipEmptyLines: true,
-//     });
-
-//     if (errors.length) {
-//       return NextResponse.json(
-//         {
-//           message: "Error parsing the CSV file",
-//           details: errors.map((err) => ({
-//             row: err.row,
-//             error: err.message,
-//           })),
-//         },
-//         { status: 400 }
-//       );
-//     }
-
-//     const failedRows = [];
-//     const sequenceNumberOffset = initialSequenceNumber;
-
-//     // Start a single transaction
-//     const results = await db.$transaction(
-//       data.map((row, index) => {
-//         try {
-//           const {
-//             name,
-//             email,
-//             contactNumber,
-//             emergencyContactNumber,
-//             gender,
-//             sector,
-//             domain,
-//             designation,
-//             currentCompany,
-//             previousCompanyName,
-//             currentJobLocation,
-//             totalWorkingExperience,
-//             currentCtc,
-//             degree,
-//             collegeName,
-//             graduationYear,
-//             skills,
-//             resume,
-//           } = row;
-
-//           if (!name || !email || !contactNumber) {
-//             throw new Error(`Missing required fields in row ${index + 1}`);
-//           }
-
-//           const defaultPassword = generateRandomPassword();
-//           const hashedPassword = bcrypt.hashSync(defaultPassword, 10);
-
-//           const rawToken = uuidv4();
-//           const token = base64url.encode(rawToken);
-
-//           const candidateData = {
-//             name,
-//             currentCtc,
-//             sector,
-//             domain,
-//             currentJobLocation,
-//           };
-//           const candidateCode = generateCandidateCode(
-//             candidateData,
-//             sequenceNumberOffset + index
-//           );
-
-//           const skillsArray = skills
-//             ? skills.split(",").map((skill) => skill.trim())
-//             : [];
-
-//           return db.user.create({
-//             data: {
-//               name,
-//               email,
-//               contactNumber,
-//               password: defaultPassword,
-//               hashedPassword,
-//               role: "CANDIDATE",
-//               verificationToken: token,
-//               candidateProfile: {
-//                 create: {
-//                   gender: gender || null,
-//                   emergencyContactNumber: emergencyContactNumber || null,
-//                   sector: sector || null,
-//                   domain: domain || null,
-//                   currentCtc: currentCtc || null,
-//                   designation: designation || null,
-//                   currentCompany: currentCompany || null,
-//                   currentJobLocation: currentJobLocation || null,
-//                   totalWorkingExperience: totalWorkingExperience || null,
-//                   degree: degree || null,
-//                   collegeName: collegeName || null,
-//                   graduationYear: graduationYear || null,
-//                   previousCompanyName: previousCompanyName || null,
-//                   resume: resume || null,
-//                   skills: skillsArray,
-//                   candidateCode: candidateCode || null,
-//                   bulkUpload: true,
-//                 },
-//               },
-//             },
-//           });
-//         } catch (err) {
-//           const errorField = extractErrorField(err);
-//           failedRows.push({
-//             row: index + 1,
-//             error: err.message,
-//           });
-//         }
-//       })
-//     );
-
-//     if (failedRows.length > 0) {
-//       return NextResponse.json(
-//         {
-//           message: "Some rows failed during validation",
-//           failedRows,
-//         },
-//         { status: 400 }
-//       );
-//     }
-
-//     return NextResponse.json(
-//       {
-//         success: true,
-//         message: "Bulk upload successful",
-//         createdUsers: results, // Include created users and profiles
-//       },
-//       { status: 201 }
-//     );
-//   } catch (error) {
-//     console.error("Error in bulk upload:", error);
-//     return NextResponse.json(
-//       {
-//         message: `Server error during bulk upload: ${error.message}`,
-//         error: error.message,
-//       },
-//       { status: 500 }
-//     );
-//   }
-// }
-
 import { NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 import bcrypt from "bcrypt";
 import base64url from "base64url";
 import Papa from "papaparse";
-
 import db from "@/lib/db";
-import { generateCandidateCode } from "@/lib/generateCandidateCode";
+import { bulkGenerateCandidateCode } from "@/lib/bulkGenerateCandidateCode";
 
 export async function POST(request) {
   try {
@@ -206,60 +43,110 @@ export async function POST(request) {
     const failedRows = [];
 
     // Validate and process each row
-    const validData = data.filter((row, index) => {
+    const validData = data.filter(async (row, index) => {
       try {
         validateRow(row); // Custom function to validate individual rows
-        row.candidateCode = generateCandidateCode(
-          row,
-          initialSequenceNumber + index
-        );
+        // console.log(row);
         return true;
-      } catch (err) {
-        failedRows.push({ row: index + 1, error: err.message });
+      } catch (error) {
+        // console.error("Error in bulk upload:", error);
+        failedRows.push({ row: index + 1, error: error.message });
         return false;
       }
     });
 
+    // Filter out any rows that were invalid (null) and then proceed with bulk user creation
     const results = await db.$transaction(
-      validData.map((row) => {
-        const password = generateRandomPassword(); // Generate unique password
-        const hashedPassword = bcrypt.hashSync(password, 10); // Hash the unique password
-
-        return db.user.create({
-          data: {
-            name: row.name,
-            email: row.email,
-            contactNumber: row.contactNumber,
-            password, // Store the plaintext password (if needed to send to the user)
-            hashedPassword, // Store the hashed password for authentication
-            role: "CANDIDATE",
-            verificationToken: base64url.encode(uuidv4()),
-            candidateProfile: {
-              create: {
-                gender: row.gender || null,
-                emergencyContactNumber: row.emergencyContactNumber || null,
-                sector: row.sector || null,
-                domain: row.domain || null,
-                currentCtc: row.currentCtc || null,
-                designation: row.designation || null,
-                currentCompany: row.currentCompany || null,
-                currentJobLocation: row.currentJobLocation || null,
-                totalWorkingExperience: row.totalWorkingExperience || null,
-                degree: row.degree || null,
-                collegeName: row.collegeName || null,
-                graduationYear: row.graduationYear || null,
-                previousCompanyName: row.previousCompanyName || null,
-                resume: row.resume || null,
-                skills: row.skills
-                  ? row.skills.split(",").map((skill) => skill.trim())
-                  : [],
-                candidateCode: row.candidateCode,
-                bulkUpload: true,
-              },
+      await Promise.all(
+        validData.map(async (row, index) => {
+          const password = generateRandomPassword(); // Generate unique password
+          const hashedPassword = bcrypt.hashSync(password, 10); // Hash the unique password
+          const existingSector = await db.sector.findFirst({
+            where: {
+              sectorName: { equals: row.sector, mode: "insensitive" },
             },
-          },
-        });
-      })
+          });
+          if (!existingSector) {
+            return NextResponse.json(
+              { data: null, message: "No Sector Found, Please Create One" },
+              { status: 404 }
+            );
+          }
+          // console.log("existing sector", existingSector);
+
+          const existingDomain = await db.domain.findFirst({
+            where: {
+              name: { equals: row.domain, mode: "insensitive" },
+            },
+          });
+          if (!existingDomain) {
+            return NextResponse.json(
+              { data: null, message: "No Domain Found, Please Create One" },
+              { status: 404 }
+            );
+          }
+          // console.log("existing domain", existingDomain);
+          row.existingSectorName = existingSector.sectorName;
+          row.existingDomainName = existingDomain.name;
+          const candidateCode = bulkGenerateCandidateCode(
+            row,
+            initialSequenceNumber + index
+          );
+          return db.user
+            .create({
+              data: {
+                name: row.name,
+                email: row.email,
+                contactNumber: row.contactNumber,
+                password, // Store the plaintext password (if needed to send to the user)
+                hashedPassword, // Store the hashed password for authentication
+                role: "CANDIDATE",
+                verificationToken: base64url.encode(uuidv4()),
+                candidateProfile: {
+                  create: {
+                    gender: row.gender || null,
+                    emergencyContactNumber: row.emergencyContactNumber || null,
+                    // sector: row.sector || null,
+                    // domain: row.domain || null,
+                    sector: {
+                      connect: { id: existingSector.id }, // Linking candidate profile to the existing user
+                    },
+                    domain: {
+                      connect: { id: existingDomain.id }, // Linking candidate profile to the existing user
+                    },
+                    currentCtc: row.currentCtc || null,
+                    designation: row.designation || null,
+                    currentCompany: row.currentCompany || null,
+                    currentJobLocation: row.currentJobLocation || null,
+                    totalWorkingExperience: row.totalWorkingExperience || null,
+                    degree: row.degree || null,
+                    collegeName: row.collegeName || null,
+                    graduationYear: row.graduationYear || null,
+                    previousCompanyName: row.previousCompanyName || null,
+                    resume: row.resume || null,
+                    skills: row.skills
+                      ? row.skills.split(",").map((skill) => skill.trim())
+                      : [],
+                    candidateCode: candidateCode,
+                    bulkUpload: true,
+                  },
+                },
+              },
+            })
+            .then(async (user) => {
+              // Explicitly fetch the candidate profile after user creation
+              const candidateProfile = await db.candidateProfile.findUnique({
+                where: { userId: user.id }, // Make sure to fetch by the correct relation
+              });
+
+              // Now that we have the candidate profile, create the candidate journey
+              if (candidateProfile) {
+                await createCandidateJourney(candidateProfile.id, user.name);
+              }
+              return user;
+            });
+        })
+      )
     );
 
     // Return a response, including any failed rows
@@ -300,6 +187,17 @@ function validateRow(row) {
   if (!row.name || !row.email || !row.contactNumber) {
     throw new Error("Missing required fields: name, email, or contactNumber");
   }
+}
+// Function to create candidate journey
+async function createCandidateJourney(candidateProfileId, name) {
+  await db.candidateJourney.create({
+    data: {
+      candidateId: candidateProfileId,
+      eventType: "PROFILE_CREATED", // Event type: Profile Created
+      remarks: `Candidate ${name} profile created.`,
+      createdAt: new Date(), // Current timestamp
+    },
+  });
 }
 
 export async function GET(req) {
