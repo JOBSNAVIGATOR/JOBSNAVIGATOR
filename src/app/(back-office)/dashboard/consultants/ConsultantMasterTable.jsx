@@ -231,10 +231,10 @@ const Example = ({ data }) => {
     ],
   });
   // Update filtered row count whenever filters or global filter change
-  useEffect(() => {
-    const filteredRows = table.getFilteredRowModel().rows;
-    setFilteredRowCount(filteredRows.length);
-  }, [table.getState().columnFilters, table.getState().globalFilter]);
+  // useEffect(() => {
+  //   const filteredRows = table.getFilteredRowModel().rows;
+  //   setFilteredRowCount(filteredRows.length);
+  // }, [table.getState().columnFilters, table.getState().globalFilter]);
 
   return (
     <>

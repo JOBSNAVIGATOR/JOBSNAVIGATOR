@@ -167,15 +167,15 @@ export default function ConsultantAssignment({ consultant }) {
           <BottomGradient />
         </button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] bg-slate-200  dark:bg-zinc-800 rounded-xl">
+      <DialogContent className="sm:max-w-[625px] bg-slate-200  dark:bg-zinc-800 rounded-xl">
         <DialogHeader className="flex flex-col items-center justify-between gap-2">
           <DialogTitle className="">Select The Candidate Criteria</DialogTitle>
           <br />
         </DialogHeader>
         <DialogDescription></DialogDescription>
         <div>
-          <div className="flex flex-col gap-8">
-            <h3 className="text-xl font-bold mb-4">
+          <div className="flex flex-col gap-4">
+            <h3 className="text-xl font-bold mb-4 text-center">
               Assign Candidate Visibility for {consultant.name}
             </h3>
             <div className="flex gap-8">
@@ -204,23 +204,25 @@ export default function ConsultantAssignment({ consultant }) {
               {/* Display Assigned Domains with Cross Symbol */}
               <div>
                 <h4 className="font-bold">Assigned Domains</h4>
-                {displayDomains.map((domain) => {
-                  return (
-                    <span
-                      key={domain.id}
-                      className="flex items-center gap-2 mb-2"
-                    >
-                      {domain?.name}
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveDomain(domain.id)}
-                        className="text-red-500"
+                <div className="flex flex-wrap gap-x-8">
+                  {displayDomains.map((domain) => {
+                    return (
+                      <span
+                        key={domain.id}
+                        className="flex items-center gap-2 mb-2"
                       >
-                        ✖
-                      </button>
-                    </span>
-                  );
-                })}
+                        {domain?.name}
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveDomain(domain.id)}
+                          className="text-red-500"
+                        >
+                          ✖
+                        </button>
+                      </span>
+                    );
+                  })}
+                </div>
               </div>
             </div>
 
