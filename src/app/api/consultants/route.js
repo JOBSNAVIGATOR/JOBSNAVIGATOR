@@ -93,10 +93,15 @@ export async function POST(request) {
           currentAddress,
           joiningDate: validJoiningDate,
           isActive,
-          userId: newUser.id, // Link the ConsultantProfile to the newly created user
+          role: {
+            connect: { id: "67c45ea394b146da116aea1d" }, // by default making as basic consultant
+          },
+          // userId: newUser.id, // Link the ConsultantProfile to the newly created user
+          user: {
+            connect: { id: newUser.id }, // Ensure this user exists
+          },
         },
       });
-
       // If the ConsultantProfile creation fails
       if (!consultantProfile) {
         // Optionally, you could rollback the user creation here if needed (manual delete)
@@ -132,7 +137,7 @@ export async function POST(request) {
       { status: 201 }
     );
   } catch (error) {
-    // console.error(error);
+    console.error(error);
     return NextResponse.json(
       {
         error,

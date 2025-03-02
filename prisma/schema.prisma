@@ -58,6 +58,32 @@ model User {
   updatedAt DateTime @updatedAt
 }
 
+model Permission {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String @unique // Example: "postJob", "editCandidate", "deleteCandidate"
+
+  roles RolePermission[]
+}
+
+model Role {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String @unique // Example: "Basic Consultant", "Senior Consultant"
+
+  permissions RolePermission[]
+  consultants ConsultantProfile[]
+}
+
+model RolePermission {
+  id           String @id @default(auto()) @map("_id") @db.ObjectId
+  roleId       String @db.ObjectId
+  permissionId String @db.ObjectId
+
+  role       Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@unique([roleId, permissionId])
+}
+
 model ConsultantProfile {
   id                     String   @id @default(auto()) @map("_id") @db.ObjectId
   gender                 Gender
@@ -78,6 +104,9 @@ model ConsultantProfile {
   assignedDomains ConsultantAssignedDomains[]
 
   journeys CandidateJourney[] // Ensure the relation is properly defined on both sides
+
+  role   Role   @relation(fields: [roleId], references: [id])
+  roleId String @db.ObjectId
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
