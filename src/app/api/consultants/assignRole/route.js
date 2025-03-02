@@ -4,7 +4,6 @@ import { NextResponse } from "next/server";
 export async function PUT(request) {
   try {
     const { id, roleId } = await request.json();
-    console.log("entereddddddd");
 
     // Validate inputs
     if (!id || !roleId) {

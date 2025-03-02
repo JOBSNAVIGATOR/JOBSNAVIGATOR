@@ -70,7 +70,7 @@ export async function POST(request) {
     };
     try {
       await transporter.sendMail(mailOptions);
-      console.log("Email sent successfully to:", email);
+      // console.log("Email sent successfully to:", email);
     } catch (mailError) {
       console.error("Failed to send email:", mailError);
     }
@@ -98,7 +98,7 @@ export async function POST(request) {
       { status: 201 }
     );
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return NextResponse.json(
       {
         error,

@@ -65,7 +65,7 @@ export async function PUT(request) {
     };
     try {
       await transporter.sendMail(mailOptions);
-      console.log("Email sent successfully to:", email);
+      // console.log("Email sent successfully to:", email);
     } catch (mailError) {
       console.error("Failed to send email:", mailError);
     }

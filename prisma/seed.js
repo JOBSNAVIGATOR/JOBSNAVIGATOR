@@ -1,7 +1,7 @@
 const db = require("../src/lib/db");
 
 async function main() {
-  console.log("Seeding database...");
+  // console.log("Seeding database...");
 
   // Create Permissions
   const permissions = [
@@ -168,7 +168,7 @@ async function main() {
     }
   }
 
-  console.log("Database seeding completed.");
+  // console.log("Database seeding completed.");
 }
 
 main()

@@ -7,7 +7,7 @@ import { NextResponse } from "next/server";
 export async function GET(req) {
   try {
     const roles = await db.role.findMany({}); // Fetch all sectors
-    console.log(roles);
+    // console.log(roles);
 
     return NextResponse.json(roles, { status: 200 });
   } catch (error) {

@@ -28,7 +28,7 @@ export default function Jobs() {
       </div>
     );
 
-  console.log("jobs", jobs);
+  // console.log("jobs", jobs);
   // console.log("filteredjobs", filteredJobs);
 
   return (

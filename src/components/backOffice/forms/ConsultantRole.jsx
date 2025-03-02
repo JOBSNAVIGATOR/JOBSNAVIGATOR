@@ -15,7 +15,7 @@ import { Settings2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 export default function ConsultantRole({ consultant }) {
-  console.log("hii", consultant);
+//   console.log("hii", consultant);
 
   const [rolesData, setRolesData] = useState([]);
   const [open, setOpen] = useState(false);
@@ -55,9 +55,9 @@ export default function ConsultantRole({ consultant }) {
   }, [consultant, reset]);
 
   async function onSubmit(data) {
-    console.log(data);
+    // console.log(data);
     try {
-      console.log("hello");
+    //   console.log("hello");
 
       makePutRequest(
         setLoading,
@@ -68,9 +68,7 @@ export default function ConsultantRole({ consultant }) {
       );
       setOpen(false);
     } catch (error) {
-      console.log(error);
-
-      alert("Failed to update Role.");
+    //   console.log(error);
     }
   }
 
