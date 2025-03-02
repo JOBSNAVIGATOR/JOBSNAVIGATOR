@@ -30,6 +30,8 @@ export default function ConsultantRole({ consultant }) {
   } = useForm({
     defaultValues: {
       ...(consultant || {}),
+      //   ...consultant, // Spread existing consultant data
+      roleId: consultant?.role?.id || "", // Override roleId explicitly
     },
   });
 
@@ -42,6 +44,15 @@ export default function ConsultantRole({ consultant }) {
     }
     fetchRoles();
   }, [consultant]);
+  // Update default values when consultant data changes
+  useEffect(() => {
+    if (consultant) {
+      reset({
+        ...consultant, // Spread consultant data
+        roleId: consultant.role?.id || "", // Ensure roleId is properly set
+      });
+    }
+  }, [consultant, reset]);
 
   async function onSubmit(data) {
     console.log(data);
