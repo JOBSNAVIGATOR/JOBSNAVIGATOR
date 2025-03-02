@@ -5,11 +5,19 @@ import { fetcher } from "@/lib/fetcher";
 import PageHeader from "@/components/backOffice/PageHeader";
 import AnimatedBoxes from "@/components/ui/AnimatedBoxes";
 import JobMasterTable from "./JobMasterTable";
+import { useSession } from "next-auth/react";
+import { data } from "autoprefixer";
 
 export default function Page() {
   const { data: jobs, error } = useSWR("/api/jobs", fetcher, {
     refreshInterval: 5000, // refetch data every 5 seconds
   }); // replace with your API endpoint
+  const { data: session, status } = useSession();
+  if (status === "loading") {
+    // <Loading />;
+    <p>loading...</p>;
+  }
+  console.log("giii", session);
 
   if (error) return <div>Error loading jobs.</div>;
   if (!jobs)

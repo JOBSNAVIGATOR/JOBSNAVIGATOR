@@ -150,20 +150,16 @@ export async function POST(request) {
 
 export async function GET(req) {
   try {
-    // Fetch all consultants from the candidate profile
-    // console.log("get of consultants");
-
-    // const consultants = await db.consultantProfile.findMany({
-    //   include: {
-    //     user: true, // Assuming you have a relation to the user model
-    //     assignedSectors: true,
-    //     assignedDomains: true,
-    //   },
-    // });
     const consultants = await db.consultantProfile.findMany({
       include: {
         user: {
           select: { name: true, email: true, contactNumber: true }, // Select specific user fields
+        },
+        role: {
+          select: {
+            id: true,
+            name: true, // Fetch only role ID and name
+          },
         },
         assignedSectors: {
           include: {
@@ -178,17 +174,6 @@ export async function GET(req) {
       },
     });
 
-    // Map the data to include only the necessary fields
-    // const formattedConsultants = consultants.map((consultant) => ({
-    //   id: consultant.id,
-    //   // candidateCode: consultant.candidateCode,
-    //   name: consultant.user.name, // Assuming user has a name field
-    //   email: consultant.user.email, // Assuming user has an email field
-    //   contactNumber: consultant.user.contactNumber,
-    //   currentAddress: consultant.currentAddress,
-    //   // Include any other fields you need
-    // }));
-
     // Format the response
     const formattedConsultants = consultants.map((consultant) => ({
       id: consultant.id,
@@ -196,6 +181,9 @@ export async function GET(req) {
       email: consultant.user?.email || "N/A",
       contactNumber: consultant.user?.contactNumber || "N/A",
       currentAddress: consultant.currentAddress || "N/A",
+      role: consultant.role
+        ? { id: consultant.role.id, name: consultant.role.name }
+        : null, // ✅ Include Role
       assignedSectors: consultant.assignedSectors.map((s) => ({
         id: s.sector.id,
         sectorName: s.sector.sectorName,

@@ -13,6 +13,7 @@ import Link from "next/link";
 import Swal from "sweetalert2";
 import toast from "react-hot-toast";
 import ConsultantAssignment from "@/components/backOffice/forms/ConsultantAssignment";
+import ConsultantRole from "@/components/backOffice/forms/ConsultantRole";
 
 const Example = ({ data }) => {
   const columns = useMemo(
@@ -55,10 +56,24 @@ const Example = ({ data }) => {
         id: "view",
         // header: ({ column }) => <SortableColumn column={column} title="CV" />,
         header: "Manage Consultant",
+        minSize: 350,
         Cell: ({ row }) => {
           const consultant = row.original;
-
-          return <ConsultantAssignment consultant={consultant} />;
+          return (
+            <div
+              className=""
+              style={{
+                display: "flex",
+                gap: "8px",
+                justifyContent: "center",
+                overflow: "visible",
+                padding: "2px",
+              }}
+            >
+              <ConsultantAssignment consultant={consultant} />
+              <ConsultantRole consultant={consultant} />
+            </div>
+          );
         },
       },
     ],

@@ -32,6 +32,23 @@ export const authOptions = {
           //Check if user exists
           const existingUser = await db.user.findUnique({
             where: { email: credentials.email },
+            include: {
+              consultantProfile: {
+                include: {
+                  role: {
+                    include: {
+                      permissions: {
+                        include: {
+                          permission: true, // Fetch permission names
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+              candidateProfile: true, // Check if the user is a candidate
+              clientProfile: true, // Check if the user is a client
+            },
           });
           if (!existingUser) {
             // console.log("No user found");
@@ -50,13 +67,38 @@ export const authOptions = {
             throw { error: "Password Incorrect", status: 401 };
           }
           // console.log("Pass 3 Checked");
+
+          // Determine user type & set profile ID
+          let profileId = null;
+          let profileType = null;
+          let permissions = [];
+
+          if (existingUser.consultantProfile) {
+            profileId = existingUser.consultantProfile.id;
+            profileType = "consultant";
+            // Extract permission names into an array
+            permissions =
+              existingUser.consultantProfile.role?.permissions.map(
+                (p) => p.permission.name
+              ) || [];
+          } else if (existingUser.candidateProfile) {
+            profileId = existingUser.candidateProfile.id;
+            profileType = "candidate";
+          } else if (existingUser.clientProfile) {
+            profileId = existingUser.clientProfile.id;
+            profileType = "client";
+          }
+
           const user = {
             id: existingUser.id,
             name: existingUser.name,
             email: existingUser.email,
             role: existingUser.role,
-            image: existingUser.image,
+            // image: existingUser.image,
             emailVerified: existingUser.emailVerified,
+            profileId, // Store the profile ID dynamically
+            profileType, // Store the profile type (consultant, candidate, or client)
+            permissions, // Add extracted permissions
           };
           //
           // console.log("User Compiled");
@@ -79,8 +121,11 @@ export const authOptions = {
         session.user.name = token.name;
         session.user.email = token.email;
         session.user.role = token.role;
-        session.user.image = token.picture;
+        // session.user.image = token.picture;
         session.user.emailVerified = token.emailVerified;
+        session.user.profileId = token.profileId; // Add profileId to session
+        session.user.profileType = token.profileType; // Add profileType to session
+        session.user.permissions = token.permissions; // Add permissions
       }
       // console.log(`session:${session.user}`);
       return session;
@@ -91,8 +136,11 @@ export const authOptions = {
         token.name = user.name;
         token.email = user.email;
         token.role = user.role;
-        token.image = user.picture;
+        // token.image = user.picture;
         token.emailVerified = user.emailVerified;
+        token.profileId = user.profileId; // Add profileId to JWT
+        token.profileType = user.profileType; // Add profileType to JWT
+        token.permissions = user.permissions; // Add permissions
       }
       // console.log(`token:${token}`);
       //   this token is sent to session now
