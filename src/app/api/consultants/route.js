@@ -156,6 +156,9 @@ export async function GET(req) {
         user: {
           select: { name: true, email: true, contactNumber: true }, // Select specific user fields
         },
+        assignedJobs: {
+          select: { id: true, jobId: true }, // Select specific user fields
+        },
         role: {
           select: {
             id: true,
@@ -192,6 +195,9 @@ export async function GET(req) {
       assignedDomains: consultant.assignedDomains.map((d) => ({
         id: d.domain.id,
         name: d.domain.name,
+      })),
+      assignedJobs: consultant.assignedJobs.map((j) => ({
+        jobId: j.jobId,
       })),
     }));
 

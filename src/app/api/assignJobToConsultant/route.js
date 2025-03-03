@@ -32,13 +32,18 @@ export async function POST(request) {
         { status: 404 }
       );
     }
+    // **Step 1: Delete existing job assignments for this consultant**
+    await db.jobAssignment.deleteMany({
+      where: { consultantId },
+    });
 
-    // Fetch all valid jobIds to avoid errors with non-existing jobs
+    // **Step 2: Fetch valid job IDs**
     const existingJobs = await db.job.findMany({
       where: { id: { in: jobIds } },
-      select: { id: true }, // Only fetch the IDs
+      select: { id: true },
     });
     const validJobIds = existingJobs.map((job) => job.id);
+
     if (validJobIds.length === 0) {
       return NextResponse.json(
         {
@@ -49,18 +54,14 @@ export async function POST(request) {
       );
     }
 
-    // Assign jobs to the consultant
+    // **Step 3: Assign new jobs to the consultant**
     const assignedJobs = await Promise.all(
       validJobIds.map(async (jobId) => {
-        return db.jobAssignment.upsert({
-          where: {
-            consultantId_jobId: { consultantId, jobId }, // Unique composite key
-          },
-          create: {
+        return db.jobAssignment.create({
+          data: {
             consultant: { connect: { id: consultantId } },
             job: { connect: { id: jobId } },
           },
-          update: {}, // No updates needed, just ensuring existence
         });
       })
     );

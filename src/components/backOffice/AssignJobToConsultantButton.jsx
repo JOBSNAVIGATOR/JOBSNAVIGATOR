@@ -24,6 +24,13 @@ export default function AssignJobToConsultantButton({ consultant }) {
     refreshInterval: 5000, // refetch data every 5 seconds
   }); // replace with your API endpoint
 
+  // Extract assigned job IDs from consultant
+  const assignedJobIds = useMemo(
+    () => consultant?.assignedJobs?.map((job) => job.jobId) || [],
+    [consultant]
+  );
+  console.log("assigned", assignedJobIds);
+
   const {
     register,
     reset,
@@ -33,7 +40,7 @@ export default function AssignJobToConsultantButton({ consultant }) {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      ...consultant,
+      jobs: assignedJobIds, // Pre-select already assigned jobs
     },
   });
 
@@ -45,14 +52,17 @@ export default function AssignJobToConsultantButton({ consultant }) {
       value: job.id, // Job ID as value
     }));
   }, [jobs]);
-  console.log("jobs", formattedJobs);
-  async function onSubmit(data) {
-    console.log("data", data);
 
+  useEffect(() => {
+    // Update selected jobs when consultant changes
+    setValue("jobs", assignedJobIds);
+  }, [assignedJobIds, setValue]);
+  async function onSubmit(data) {
+    console.log("consultant", consultant);
     makePostRequest(
       setLoading,
       "api/assignJobToConsultant",
-      data,
+      { id: consultant.id, jobs: data.jobs }, // Send consultant ID and selected jobs
       "Assignment of Job to Consultant ",
       reset
     );
