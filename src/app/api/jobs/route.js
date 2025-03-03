@@ -231,7 +231,6 @@ export async function GET(req) {
         );
       }
     }
-    console.log("jobs", jobs);
 
     // Return the fetched jobs
     return NextResponse.json(jobs, { status: 200 });

@@ -15,6 +15,7 @@ import { fetcher } from "@/lib/fetcher";
 import MultiSelectInput from "../FormInputs/MultiSelectInput";
 import { useForm } from "react-hook-form";
 import SubmitButton from "../FormInputs/SubmitButton";
+import { makePostRequest } from "@/lib/apiRequest";
 
 export default function AssignJobToConsultantButton({ consultant }) {
   const [loading, setLoading] = useState(false);
@@ -47,6 +48,15 @@ export default function AssignJobToConsultantButton({ consultant }) {
   console.log("jobs", formattedJobs);
   async function onSubmit(data) {
     console.log("data", data);
+
+    makePostRequest(
+      setLoading,
+      "api/assignJobToConsultant",
+      data,
+      "Assignment of Job to Consultant ",
+      reset
+    );
+    setOpen(false);
   }
   return (
     <div className="sm:col-span-1">

@@ -395,4 +395,6 @@ model JobAssignment {
   consultant   ConsultantProfile @relation(fields: [consultantId], references: [id], onDelete: Cascade)
   consultantId String            @db.ObjectId
   assignedAt   DateTime          @default(now())
+
+  @@unique([consultantId, jobId]) // Ensure unique combination of candidate and tag
 }
