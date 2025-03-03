@@ -29,7 +29,7 @@ export default function Page() {
     // <Loading />;
     return <p>Loading...</p>; // ✅ Now properly rendering the loading state
   }
-  if (error) return <div>Error loading clients.</div>;
+  if (error) return <div>Error loading consultants.</div>;
   if (!data)
     return (
       <div className="flex justify-center items-center h-screen">
