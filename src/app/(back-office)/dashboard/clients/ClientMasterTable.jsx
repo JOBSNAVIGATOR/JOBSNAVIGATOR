@@ -14,19 +14,26 @@ import Swal from "sweetalert2";
 import toast from "react-hot-toast";
 import { Briefcase, MailIcon, Tag } from "lucide-react";
 
-const Example = ({ data, canEditJob, canDeleteJob }) => {
+const Example = ({ data, canEditClient, canDeleteClient }) => {
   const columns = useMemo(
     () => [
       // Job Details
       {
-        id: "jobDetails", //id used to define `group` column
-        header: "Job Code",
+        id: "clientDetails", //id used to define `group` column
+        header: "ClientDetails",
         columns: [
           {
-            accessorKey: "jobCode", //accessorKey used to define `data` column. `id` gets set to accessorKey automatically
+            accessorKey: "clientCode", //accessorKey used to define `data` column. `id` gets set to accessorKey automatically
             enableClickToCopy: true,
             filterVariant: "autocomplete",
-            header: "Job Code",
+            header: "Client Code",
+            size: 400,
+          },
+          {
+            accessorKey: "name", //accessorKey used to define `data` column. `id` gets set to accessorKey automatically
+            enableClickToCopy: true,
+            filterVariant: "autocomplete",
+            header: "Client Name",
             size: 400,
           },
         ],
@@ -37,98 +44,41 @@ const Example = ({ data, canEditJob, canDeleteJob }) => {
         header: "Basic Details",
         columns: [
           {
-            accessorKey: "jobSector", //accessorKey used to define `data` column. `id` gets set to accessorKey automatically
+            accessorKey: "sector", //accessorKey used to define `data` column. `id` gets set to accessorKey automatically
             // enableClickToCopy: true,
             filterVariant: "autocomplete",
             header: "Sector",
             size: 200,
           },
           {
-            accessorKey: "jobDomain", //accessorKey used to define `data` column. `id` gets set to accessorKey automatically
+            accessorKey: "domain", //accessorKey used to define `data` column. `id` gets set to accessorKey automatically
             // enableClickToCopy: true,
             filterVariant: "autocomplete",
             header: "Domain",
             size: 200,
           },
           {
-            accessorKey: "companyName", //accessorKey used to define `data` column. `id` gets set to accessorKey automatically
+            accessorKey: "designation", //accessorKey used to define `data` column. `id` gets set to accessorKey automatically
+            enableClickToCopy: true,
+            filterVariant: "autocomplete",
+            header: "Designation",
+            size: 220,
+          },
+          {
+            accessorKey: "functionalArea", //accessorKey used to define `data` column. `id` gets set to accessorKey automatically
+            enableClickToCopy: true,
+            filterVariant: "autocomplete",
+            header: "Functional Area",
+            size: 220,
+          },
+          {
+            accessorKey: "currentCompany", //accessorKey used to define `data` column. `id` gets set to accessorKey automatically
             enableClickToCopy: true,
             filterVariant: "autocomplete",
             header: "Company",
             size: 220,
           },
-          {
-            accessorKey: "jobTitle", //accessorKey used to define `data` column. `id` gets set to accessorKey automatically
-            enableClickToCopy: true,
-            filterVariant: "autocomplete",
-            header: "Title",
-            size: 220,
-          },
-          {
-            accessorKey: "jobLocation", //accessorKey used to define `data` column. `id` gets set to accessorKey automatically
-            enableClickToCopy: true,
-            filterVariant: "autocomplete",
-            header: "Location",
-            size: 220,
-          },
-          {
-            accessorKey: "jobSalary", //accessorKey used to define `data` column. `id` gets set to accessorKey automatically
-            // enableClickToCopy: true,
-            // filterVariant: "autocomplete",
-            header: "Salary",
-            size: 220,
-          },
-          {
-            accessorKey: "clientSpocName", //accessorKey used to define `data` column. `id` gets set to accessorKey automatically
-            enableClickToCopy: true,
-            filterVariant: "autocomplete",
-            header: "Client",
-            size: 220,
-          },
-          {
-            accessorKey: "jobVacanciesRemaining", //accessorKey used to define `data` column. `id` gets set to accessorKey automatically
-            // enableClickToCopy: true,
-            // filterVariant: "autocomplete",
-            header: "Remaining Vacancies",
-            size: 220,
-          },
-          {
-            accessorKey: "isActive",
-            header: "Active Status",
-            size: 220,
-            enableClickToCopy: true,
-            filterVariant: "autocomplete",
-            Cell: ({ row }) => {
-              return (
-                <span
-                  className={
-                    row.original.isActive ? "text-green-700" : "text-red-500"
-                  }
-                >
-                  {row.original.isActive ? "Active" : "Inactive"}
-                </span>
-              );
-            },
-          },
         ],
-      },
-      //View applicants
-      {
-        id: "applicants",
-        // header: ({ column }) => <SortableColumn column={column} title="CV" />,
-        header: "View Job & Applicants",
-        Cell: ({ row }) => {
-          const job = row.original;
-          return (
-            <Link href={`/dashboard/jobs/${job.id}`}>
-              <button className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">
-                <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-                  View Job
-                </span>
-              </button>
-            </Link>
-          );
-        },
       },
     ],
     []
@@ -240,20 +190,20 @@ const Example = ({ data, canEditJob, canDeleteJob }) => {
 
     renderRowActionMenuItems: ({ closeMenu, row }) =>
       [
-        canEditJob && (
+        canEditClient && (
           <MenuItem key="edit" onClick={closeMenu} sx={{ m: 0 }}>
             <Link
-              href={`${baseUrl}/dashboard/jobs/update/${row.original.id}`}
+              href={`${baseUrl}/dashboard/clients/update/${row.original.id}`}
               className="flex items-center"
             >
               <ListItemIcon>
                 <Briefcase />
               </ListItemIcon>
-              Edit Job
+              Edit Client
             </Link>
           </MenuItem>
         ),
-        canDeleteJob && (
+        canDeleteClient && (
           <MenuItem
             key="delete"
             onClick={() => {
@@ -268,7 +218,7 @@ const Example = ({ data, canEditJob, canDeleteJob }) => {
               }).then(async (result) => {
                 if (result.isConfirmed) {
                   const res = await fetch(
-                    `${baseUrl}/api/jobs/${row.original.id}`,
+                    `${baseUrl}/api/clients/${row.original.id}`,
                     {
                       method: "DELETE",
                     }
@@ -276,7 +226,7 @@ const Example = ({ data, canEditJob, canDeleteJob }) => {
 
                   if (res.ok) {
                     router.refresh();
-                    toast.success("Job Deleted Successfully");
+                    toast.success("Client Deleted Successfully");
                   }
                 }
               });
@@ -301,10 +251,14 @@ const Example = ({ data, canEditJob, canDeleteJob }) => {
   );
 };
 
-const JobMasterTable = ({ data, canEditJob, canDeleteJob }) => (
+const ClientMasterTable = ({ data, canEditClient, canDeleteClient }) => (
   <LocalizationProvider dateAdapter={AdapterDayjs}>
-    <Example data={data} canEditJob={canEditJob} canDeleteJob={canDeleteJob} />
+    <Example
+      data={data}
+      canEditClient={canEditClient}
+      canDeleteClient={canDeleteClient}
+    />
   </LocalizationProvider>
 );
 
-export default JobMasterTable;
+export default ClientMasterTable;

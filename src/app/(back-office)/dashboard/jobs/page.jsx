@@ -15,6 +15,8 @@ export default function Page() {
   const { data: session, status } = useSession();
   // Determine if the user can post a job
   const hasPermissionToPostJob = useHasPermission("postJob"); // ✅ Hook must be called at the top level
+  const hasPermissionToEditJob = useHasPermission("editJob"); // ✅ Hook must be called at the top level
+  const hasPermissionToDeleteJob = useHasPermission("deleteJob"); // ✅ Hook must be called at the top level
 
   if (status === "loading") {
     // <Loading />;
@@ -23,9 +25,9 @@ export default function Page() {
   const canPostJob =
     session?.user?.role === "ADMIN" ? true : hasPermissionToPostJob;
   const canEditJob =
-    session?.user?.role === "ADMIN" ? true : hasPermissionToPostJob;
+    session?.user?.role === "ADMIN" ? true : hasPermissionToEditJob;
   const canDeleteJob =
-    session?.user?.role === "ADMIN" ? true : hasPermissionToPostJob;
+    session?.user?.role === "ADMIN" ? true : hasPermissionToDeleteJob;
 
   console.log(canPostJob);
 
@@ -108,7 +110,11 @@ export default function Page() {
       />
       {/* table */}
       <div className="py-8">
-        <JobMasterTable data={customizedJobData} />
+        <JobMasterTable
+          data={customizedJobData}
+          canEditJob={canEditJob}
+          canDeleteJob={canDeleteJob}
+        />
       </div>
     </div>
   );
