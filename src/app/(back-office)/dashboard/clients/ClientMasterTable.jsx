@@ -238,7 +238,7 @@ const Example = ({ data, canEditClient, canDeleteClient }) => {
             <ListItemIcon>
               <Delete />
             </ListItemIcon>
-            Delete Job
+            Delete Client
           </MenuItem>
         ),
       ].filter(Boolean), // Remove `false` or `undefined` values from the array

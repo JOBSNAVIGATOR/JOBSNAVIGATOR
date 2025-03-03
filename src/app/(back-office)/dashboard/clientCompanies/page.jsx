@@ -1,42 +1,3 @@
-// "use client";
-// import PageHeader from "@/components/backOffice/PageHeader";
-// import React from "react";
-// import { companiesData } from "@/data";
-// import DataTable from "@/components/data-table-components/DataTable";
-// import { columns } from "./columns";
-// import DownloadExcel from "@/components/backOffice/DownloadCsv";
-// import useSWR from "swr";
-// import { fetcher } from "@/lib/fetcher";
-
-// export default function page() {
-//   const { data, error } = useSWR("/api/companies", fetcher, {
-//     refreshInterval: 5000, // refetch data every 5 seconds
-//   }); // replace with your API endpoint
-
-//   if (error) return <div>Error loading candidates.</div>;
-//   if (!data) return <div>Loading...</div>;
-//   console.log(data);
-//   return (
-//     <div>
-//       {/* Header */}
-//       <PageHeader
-//         heading={"Companies"}
-//         href={"/dashboard/clientCompanies/new"}
-//         linkTitle={"Add Company"}
-//       />
-
-//       {/* <div className="flex justify-end">
-//         <DownloadExcel data={companiesData} fileName="companies.xlsx" />
-//       </div> */}
-
-//       {/* table */}
-//       <div className="py-8">
-//         <DataTable data={companiesData} columns={columns} />
-//       </div>
-//     </div>
-//   );
-// }
-
 "use client";
 import React from "react";
 import DataTable from "@/components/data-table-components/DataTable";
@@ -48,6 +9,9 @@ import Link from "next/link";
 import DownloadCSV from "@/components/backOffice/DownloadCsv";
 import PageHeader from "@/components/backOffice/PageHeader";
 import AnimatedBoxes from "@/components/ui/AnimatedBoxes";
+import { useSession } from "next-auth/react";
+import useHasPermission from "@/hooks/useHasPermission";
+import ClientCompanyMasterTable from "./ClientCompanyMasterTable";
 
 export default function Page() {
   // const jobs = await getData("jobs");
@@ -55,6 +19,14 @@ export default function Page() {
   const { data, error } = useSWR("/api/companies", fetcher, {
     refreshInterval: 5000, // refetch data every 5 seconds
   }); // replace with your API endpoint
+  const { data: session, status } = useSession();
+  const hasPermissionToAddCompany = useHasPermission("addCompany");
+  const hasPermissionToEditCompany = useHasPermission("editCompany");
+  const hasPermissionToDeleteCompany = useHasPermission("deleteCompany");
+  if (status === "loading") {
+    // <Loading />;
+    return <p>Loading...</p>; // ✅ Now properly rendering the loading state
+  }
 
   if (error) return <div>Error loading companies.</div>;
   if (!data)
@@ -63,6 +35,12 @@ export default function Page() {
         <AnimatedBoxes />
       </div>
     );
+  const canAddCompany =
+    session?.user?.role === "ADMIN" ? true : hasPermissionToAddCompany;
+  const canEditCompany =
+    session?.user?.role === "ADMIN" ? true : hasPermissionToEditCompany;
+  const canDeleteCompany =
+    session?.user?.role === "ADMIN" ? true : hasPermissionToDeleteCompany;
 
   return (
     <div>
@@ -71,6 +49,7 @@ export default function Page() {
         heading={"Companies"}
         href={"/dashboard/clientCompanies/new"}
         linkTitle={"Add Company"}
+        canUseFeature={canAddCompany}
       />
 
       {/* <div className="flex justify-end">
@@ -79,7 +58,11 @@ export default function Page() {
 
       {/* table */}
       <div className="py-8">
-        <DataTable data={data} columns={columns} />
+        <ClientCompanyMasterTable
+          data={data}
+          canEditCompany={canEditCompany}
+          canDeleteCompany={canDeleteCompany}
+        />
       </div>
     </div>
   );

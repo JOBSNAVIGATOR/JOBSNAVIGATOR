@@ -12,84 +12,31 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Swal from "sweetalert2";
 import toast from "react-hot-toast";
-import ConsultantAssignment from "@/components/backOffice/forms/ConsultantAssignment";
-import ConsultantRole from "@/components/backOffice/forms/ConsultantRole";
-import AssignJobToConsultantButton from "@/components/backOffice/AssignJobToConsultantButton";
+import { Briefcase, MailIcon, Tag } from "lucide-react";
 
-const Example = ({
-  data,
-  canEditConsultant,
-  canDeleteConsultant,
-  canAssignJobToConsultants,
-  canManageConsultant,
-  canChangeVisibilityOfCandidates,
-}) => {
+const Example = ({ data, canEditCompany, canDeleteCompany }) => {
   const columns = useMemo(
     () => [
-      // basic details
+      // cmpany Details
       {
-        id: "basicDetails", //id used to define `group` column
-        header: "Basic Details",
+        id: "clientCompanyDetails", //id used to define `group` column
+        header: "companyDetails",
         columns: [
           {
-            accessorKey: "name", //accessorKey used to define `data` column. `id` gets set to accessorKey automatically
+            accessorKey: "companyName", //accessorKey used to define `data` column. `id` gets set to accessorKey automatically
             enableClickToCopy: true,
             filterVariant: "autocomplete",
-            header: "Name",
-            size: 220,
+            header: "Company Name",
+            size: 400,
           },
-        ],
-      },
-      // contact details
-      {
-        id: "contactDetails", //id used to define `group` column
-        header: "Contact Details",
-        columns: [
           {
-            accessorKey: "email", //accessorKey used to define `data` column. `id` gets set to accessorKey automatically
+            accessorKey: "companyDescription", //accessorKey used to define `data` column. `id` gets set to accessorKey automatically
             enableClickToCopy: true,
             filterVariant: "autocomplete",
-            header: "Email",
-            size: 260,
-          },
-          {
-            accessorKey: "contactNumber", //accessorKey used to define `data` column. `id` gets set to accessorKey
-            header: "Contact Number",
-            size: 200,
+            header: "Description",
+            size: 400,
           },
         ],
-      },
-      // manage consultant
-      {
-        id: "view",
-        // header: ({ column }) => <SortableColumn column={column} title="CV" />,
-        header: "Manage Consultant",
-        minSize: 350,
-        Cell: ({ row }) => {
-          const consultant = row.original;
-          return (
-            <div
-              className=""
-              style={{
-                display: "flex",
-                gap: "8px",
-                justifyContent: "center",
-                overflow: "visible",
-                padding: "2px",
-              }}
-            >
-              {canChangeVisibilityOfCandidates && (
-                <ConsultantAssignment consultant={consultant} />
-              )}
-              {canManageConsultant && (
-                <ConsultantRole consultant={consultant} />
-              )}
-              {canAssignJobToConsultants && (
-                <AssignJobToConsultantButton consultant={consultant} />
-              )}
-            </div>
-          );
-        },
       },
     ],
     []
@@ -97,10 +44,10 @@ const Example = ({
 
   //optionally access the underlying virtualizer instance
   const rowVirtualizerInstanceRef = useRef(null);
-  const [filteredRowCount, setFilteredRowCount] = useState(0); // Track filtered rows
   const [tableData, setTableData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [sorting, setSorting] = useState([]);
+  const [filteredRowCount, setFilteredRowCount] = useState(0); // Track filtered rows
   const router = useRouter();
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   useEffect(() => {
@@ -125,11 +72,10 @@ const Example = ({
     columns,
     data: tableData, //10,000 rows
     enableBottomToolbar: true,
-    // enableGlobalFilterModes: true,
+    enableGlobalFilterModes: true,
     // enableColumnOrdering: true,
     // enableGrouping: true,
     enableColumnFilterModes: true,
-    // enableColumnResizing: true,
     enableColumnPinning: true,
     // enableRowSelection: true,
     enableRowActions: true,
@@ -139,10 +85,10 @@ const Example = ({
     enableStickyFooter: true,
     paginationDisplayMode: "pages",
     enableRowNumbers: true,
-    // enableRowVirtualization: true,
+    enableRowVirtualization: true,
     onSortingChange: setSorting,
-    // rowVirtualizerInstanceRef, //optional
-    // rowVirtualizerOptions: { overscan: 5 }, //optionally customize the row virtualizer
+    rowVirtualizerInstanceRef, //optional
+    rowVirtualizerOptions: { overscan: 5 }, //optionally customize the row virtualizer
     muiTableContainerProps: {
       sx: { maxHeight: "1000px", border: "2px solid rgba(81, 81, 81, .5)" },
     },
@@ -191,6 +137,7 @@ const Example = ({
     initialState: {
       isFullScreen: false,
       showColumnFilters: true,
+      showGlobalFilter: true,
       density: "compact",
       hoveredRow: true,
       columnPinning: {
@@ -201,22 +148,20 @@ const Example = ({
 
     renderRowActionMenuItems: ({ closeMenu, row }) =>
       [
-        // Edit Consultant
-        canEditConsultant && (
+        canEditCompany && (
           <MenuItem key="edit" onClick={closeMenu} sx={{ m: 0 }}>
             <Link
-              href={`${baseUrl}/dashboard/consultants/update/${row.original.id}`}
+              href={`${baseUrl}/dashboard/clientCompanies/update/${row.original.id}`}
               className="flex items-center"
             >
               <ListItemIcon>
-                <AccountCircle />
+                <Briefcase />
               </ListItemIcon>
-              Edit Consultant
+              Edit Company
             </Link>
           </MenuItem>
         ),
-        // Delete Consultant
-        canDeleteConsultant && (
+        canDeleteCompany && (
           <MenuItem
             key="delete"
             onClick={() => {
@@ -231,7 +176,7 @@ const Example = ({
               }).then(async (result) => {
                 if (result.isConfirmed) {
                   const res = await fetch(
-                    `${baseUrl}/api/consultants/${row.original.id}`,
+                    `${baseUrl}/api/companies/${row.original.id}`,
                     {
                       method: "DELETE",
                     }
@@ -239,7 +184,7 @@ const Example = ({
 
                   if (res.ok) {
                     router.refresh();
-                    toast.success("Consultant Deleted Successfully");
+                    toast.success("Company Deleted Successfully");
                   }
                 }
               });
@@ -251,16 +196,11 @@ const Example = ({
             <ListItemIcon>
               <Delete />
             </ListItemIcon>
-            Delete Consultant
+            Delete Company
           </MenuItem>
         ),
       ].filter(Boolean), // Remove `false` or `undefined` values from the array
   });
-  // Update filtered row count whenever filters or global filter change
-  // useEffect(() => {
-  //   const filteredRows = table.getFilteredRowModel().rows;
-  //   setFilteredRowCount(filteredRows.length);
-  // }, [table.getState().columnFilters, table.getState().globalFilter]);
 
   return (
     <>
@@ -269,24 +209,18 @@ const Example = ({
   );
 };
 
-const ConsultantMasterTable = ({
+const ClientCompanyMasterTable = ({
   data,
-  canEditConsultant,
-  canDeleteConsultant,
-  canAssignJobToConsultants,
-  canManageConsultant,
-  canChangeVisibilityOfCandidates,
+  canEditCompany,
+  canDeleteCompany,
 }) => (
   <LocalizationProvider dateAdapter={AdapterDayjs}>
     <Example
       data={data}
-      canEditConsultant={canEditConsultant}
-      canDeleteConsultant={canDeleteConsultant}
-      canAssignJobToConsultants={canAssignJobToConsultants}
-      canManageConsultant={canManageConsultant}
-      canChangeVisibilityOfCandidates={canChangeVisibilityOfCandidates}
+      canEditCompany={canEditCompany}
+      canDeleteCompany={canDeleteCompany}
     />
   </LocalizationProvider>
 );
 
-export default ConsultantMasterTable;
+export default ClientCompanyMasterTable;
