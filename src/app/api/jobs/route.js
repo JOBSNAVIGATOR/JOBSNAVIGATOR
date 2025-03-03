@@ -146,7 +146,14 @@ export async function GET(req) {
       // Fetch user data and consultantProfile (if available)
       const userData = await db.user.findUnique({
         where: { id: userId },
-        include: { consultantProfile: true },
+        // include: { consultantProfile: true },
+        include: {
+          consultantProfile: {
+            include: {
+              role: true,
+            },
+          },
+        },
       });
 
       // Handle case if no user data is found
@@ -158,6 +165,7 @@ export async function GET(req) {
       }
 
       const consultantId = userData?.consultantProfile?.id;
+      const userRole = userData?.consultantProfile?.role?.name;
 
       // Query jobs based on role
       if (role === "ADMIN") {
@@ -170,9 +178,44 @@ export async function GET(req) {
             domain: true,
           },
         });
-      } else if (role === "CONSULTANT") {
+      } else if (role === "CONSULTANT" && userRole === "Admin Consultant") {
         jobs = await db.job.findMany({
-          where: { consultantId }, // Filter jobs based on consultant ID
+          // where: { consultantId }, // Filter jobs based on consultant ID
+          include: {
+            jobApplicants: true,
+            jobCompany: true,
+            clientSpoc: { include: { user: true } },
+            sector: true,
+            domain: true,
+          },
+        });
+      } else if (role === "CONSULTANT" && userRole === "Team Leader") {
+        jobs = await db.job.findMany({
+          where: {
+            OR: [
+              { consultantId }, // Jobs posted by this consultant
+              {
+                assignedConsultants: {
+                  some: { consultantId }, // Jobs assigned to this consultant
+                },
+              },
+            ],
+          },
+          include: {
+            jobApplicants: true,
+            jobCompany: true,
+            clientSpoc: { include: { user: true } },
+            sector: true,
+            domain: true,
+          },
+        });
+      } else if (role === "CONSULTANT" && userRole === "Consultant") {
+        jobs = await db.job.findMany({
+          where: {
+            assignedConsultants: {
+              some: { consultantId }, // Only fetch assigned jobs
+            },
+          }, // Filter jobs based on consultant ID
           include: {
             jobApplicants: true,
             jobCompany: true,
@@ -188,6 +231,7 @@ export async function GET(req) {
         );
       }
     }
+    console.log("jobs", jobs);
 
     // Return the fetched jobs
     return NextResponse.json(jobs, { status: 200 });

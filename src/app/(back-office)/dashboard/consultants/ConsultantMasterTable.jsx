@@ -14,6 +14,7 @@ import Swal from "sweetalert2";
 import toast from "react-hot-toast";
 import ConsultantAssignment from "@/components/backOffice/forms/ConsultantAssignment";
 import ConsultantRole from "@/components/backOffice/forms/ConsultantRole";
+import AssignJobToConsultantButton from "@/components/backOffice/AssignJobToConsultantButton";
 
 const Example = ({ data }) => {
   const columns = useMemo(
@@ -72,6 +73,7 @@ const Example = ({ data }) => {
             >
               <ConsultantAssignment consultant={consultant} />
               <ConsultantRole consultant={consultant} />
+              <AssignJobToConsultantButton consultant={consultant} />
             </div>
           );
         },

@@ -19,7 +19,7 @@ import Swal from "sweetalert2";
 import toast from "react-hot-toast";
 import { Briefcase, MailIcon, Tag } from "lucide-react";
 import AssignTagButton from "@/components/backOffice/AssignTagButton";
-import AssignJobButton from "@/components/backOffice/AssignJobButton";
+import AssignJobButton from "@/components/backOffice/AssignJobToCandidatesButton";
 import CandidateHistory from "@/components/backOffice/CandidateHistory";
 import PreviewResume from "@/components/ui/PreviewResume";
 import ChangeStatus from "@/components/backOffice/ChangeStatus";

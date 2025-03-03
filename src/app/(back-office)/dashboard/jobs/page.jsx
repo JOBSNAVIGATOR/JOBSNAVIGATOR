@@ -6,7 +6,6 @@ import PageHeader from "@/components/backOffice/PageHeader";
 import AnimatedBoxes from "@/components/ui/AnimatedBoxes";
 import JobMasterTable from "./JobMasterTable";
 import { useSession } from "next-auth/react";
-import { data } from "autoprefixer";
 import useHasPermission from "@/hooks/useHasPermission";
 
 export default function Page() {
@@ -22,6 +21,10 @@ export default function Page() {
     return <p>Loading...</p>; // ✅ Now properly rendering the loading state
   }
   const canPostJob =
+    session?.user?.role === "ADMIN" ? true : hasPermissionToPostJob;
+  const canEditJob =
+    session?.user?.role === "ADMIN" ? true : hasPermissionToPostJob;
+  const canDeleteJob =
     session?.user?.role === "ADMIN" ? true : hasPermissionToPostJob;
 
   console.log(canPostJob);

@@ -69,6 +69,7 @@ export async function POST(request) {
         hashedPassword,
         role,
         verificationToken: token,
+        emailVerified: true,
       },
     });
 
@@ -94,7 +95,7 @@ export async function POST(request) {
           joiningDate: validJoiningDate,
           isActive,
           role: {
-            connect: { id: "67c45ea394b146da116aea1d" }, // by default making as basic consultant
+            connect: { id: "67c5e39d74aceaec54315e55" }, // by default making as basic consultant
           },
           // userId: newUser.id, // Link the ConsultantProfile to the newly created user
           user: {

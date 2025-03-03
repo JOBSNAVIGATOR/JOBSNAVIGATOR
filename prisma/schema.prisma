@@ -108,6 +108,9 @@ model ConsultantProfile {
   role   Role   @relation(fields: [roleId], references: [id])
   roleId String @db.ObjectId
 
+  // New relation to track assigned jobs
+  assignedJobs JobAssignment[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -238,6 +241,9 @@ model Job {
   journeys CandidateJourney[] // Ensure the relation is properly defined on both sides
 
   isActive Boolean @default(true)
+
+  // New relation for assigned consultants
+  assignedConsultants JobAssignment[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -380,4 +386,13 @@ model CandidateJourney {
   candidate  CandidateProfile   @relation(fields: [candidateId], references: [id], onDelete: Cascade)
   job        Job?               @relation(fields: [jobId], references: [id])
   consultant ConsultantProfile? @relation(fields: [consultantId], references: [id])
+}
+
+model JobAssignment {
+  id           String            @id @default(auto()) @map("_id") @db.ObjectId
+  job          Job               @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  jobId        String            @db.ObjectId
+  consultant   ConsultantProfile @relation(fields: [consultantId], references: [id], onDelete: Cascade)
+  consultantId String            @db.ObjectId
+  assignedAt   DateTime          @default(now())
 }

@@ -19,9 +19,9 @@ import Swal from "sweetalert2";
 import toast from "react-hot-toast";
 import { Briefcase, MailIcon, Tag } from "lucide-react";
 import AssignTagButton from "@/components/backOffice/AssignTagButton";
-import AssignJobButton from "@/components/backOffice/AssignJobButton";
 import CandidateHistory from "@/components/backOffice/CandidateHistory";
 import PreviewResume from "@/components/ui/PreviewResume";
+import AssignJobToCandidatesButton from "@/components/backOffice/AssignJobToCandidatesButton";
 
 const Example = ({ data }) => {
   const columns = useMemo(
@@ -634,11 +634,11 @@ const Example = ({ data }) => {
         )}
         {/* Assign Job */}
         {table.getIsSomeRowsSelected() || table.getIsAllRowsSelected() ? (
-          <AssignJobButton candidates={selectedDataMail} />
+          <AssignJobToCandidatesButton candidates={selectedDataMail} />
         ) : (
           <button className="bg-gradient-to-br relative group/btn from-black dark:from-lime-200 dark:to-lime-900 to-neutral-600  dark:bg-zinc-800 w-80 font-bold text-white dark:text-slate-900 rounded-xl h-10 shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset] opacity-50 cursor-not-allowed flex items-center justify-center gap-2">
             <Briefcase />
-            Assign Job
+            Assign Job to Candidates
             <BottomGradient />
           </button>
         )}

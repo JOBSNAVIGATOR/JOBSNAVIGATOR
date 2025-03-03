@@ -16,7 +16,8 @@ import { Briefcase } from "lucide-react";
 import useSWR from "swr";
 import { fetcher } from "@/lib/fetcher";
 
-export default function AssignJobButton({ candidates }) {
+export default function AssignJobToConsultantButton({ consultant }) {
+  const candidates = {};
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [selectedJob, setSelectedJob] = useState(null);
@@ -25,6 +26,8 @@ export default function AssignJobButton({ candidates }) {
   const { data: jobs, error } = useSWR("/api/jobs", fetcher, {
     refreshInterval: 5000, // refetch data every 5 seconds
   }); // replace with your API endpoint
+  console.log("jobs", jobs);
+
   useEffect(() => {
     if (candidates?.length && jobs?.length) {
       setSelectedJob(jobs[0]); // Set initial selection if needed
@@ -59,7 +62,7 @@ export default function AssignJobButton({ candidates }) {
       };
 
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/assignJob`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/assignJobToCandidate`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -87,7 +90,7 @@ export default function AssignJobButton({ candidates }) {
         <DialogTrigger asChild>
           <button className="bg-gradient-to-br relative group/btn from-black dark:from-lime-200 dark:to-lime-900 to-neutral-600 dark:bg-zinc-800 w-80 font-bold text-white dark:text-slate-900 rounded-xl h-10 shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset] flex items-center justify-center gap-2">
             <Briefcase />
-            Assign Job
+            Assign Job to Consultant
             <BottomGradient />
           </button>
         </DialogTrigger>
@@ -156,7 +159,7 @@ export default function AssignJobButton({ candidates }) {
                     fill="currentColor"
                   />
                 </svg>
-                Assigning Job
+                Assigning Job to Consultant
               </button>
             ) : (
               <button
@@ -169,7 +172,7 @@ export default function AssignJobButton({ candidates }) {
                 } block dark:bg-zinc-800 w-80 font-bold text-white dark:text-slate-900 rounded-xl h-10 shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]`}
                 disabled={candidates.length === 0}
               >
-                Assign Job
+                Assign Job to Consultant
                 <BottomGradient />
               </button>
             )}
