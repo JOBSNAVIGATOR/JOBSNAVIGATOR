@@ -16,7 +16,14 @@ import ConsultantAssignment from "@/components/backOffice/forms/ConsultantAssign
 import ConsultantRole from "@/components/backOffice/forms/ConsultantRole";
 import AssignJobToConsultantButton from "@/components/backOffice/AssignJobToConsultantButton";
 
-const Example = ({ data }) => {
+const Example = ({
+  data,
+  canEditConsultant,
+  canDeleteConsultant,
+  canAssignJobToConsultants,
+  canManageConsultant,
+  canChangeVisibilityOfCandidates,
+}) => {
   const columns = useMemo(
     () => [
       // basic details
@@ -71,9 +78,15 @@ const Example = ({ data }) => {
                 padding: "2px",
               }}
             >
-              <ConsultantAssignment consultant={consultant} />
-              <ConsultantRole consultant={consultant} />
-              <AssignJobToConsultantButton consultant={consultant} />
+              {canChangeVisibilityOfCandidates && (
+                <ConsultantAssignment consultant={consultant} />
+              )}
+              {canManageConsultant && (
+                <ConsultantRole consultant={consultant} />
+              )}
+              {canAssignJobToConsultants && (
+                <AssignJobToConsultantButton consultant={consultant} />
+              )}
             </div>
           );
         },
@@ -186,66 +199,62 @@ const Example = ({ data }) => {
       },
     },
 
-    renderRowActionMenuItems: ({ closeMenu, row }) => [
-      // Edit Consultant
-      <MenuItem
-        key={0}
-        onClick={() => {
-          // Access candidate.id here
-          // const candidate = row.original; // Get candidate.id from row.original
-          closeMenu();
-        }}
-        sx={{ m: 0 }}
-      >
-        <Link
-          href={`${baseUrl}/dashboard/consultants/update/${row.original.id}`}
-        >
-          <ListItemIcon>
-            <AccountCircle />
-          </ListItemIcon>
-          Edit Consultant
-        </Link>
-      </MenuItem>,
-      // Delete Consultant
-      <MenuItem
-        key={1}
-        onClick={() => {
-          Swal.fire({
-            title: "Are you sure?",
-            text: "You won't be able to revert this!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, delete it!",
-          }).then(async (result) => {
-            if (result.isConfirmed) {
-              // console.log("Yes have been clicked", endpoint);
-              const res = await fetch(
-                `${baseUrl}/api/consultants/${row.original.id}`,
-                {
-                  method: "DELETE",
+    renderRowActionMenuItems: ({ closeMenu, row }) =>
+      [
+        // Edit Consultant
+        canEditConsultant && (
+          <MenuItem key="edit" onClick={closeMenu} sx={{ m: 0 }}>
+            <Link
+              href={`${baseUrl}/dashboard/consultants/update/${row.original.id}`}
+              className="flex items-center"
+            >
+              <ListItemIcon>
+                <AccountCircle />
+              </ListItemIcon>
+              Edit Consultant
+            </Link>
+          </MenuItem>
+        ),
+        // Delete Consultant
+        canDeleteConsultant && (
+          <MenuItem
+            key="delete"
+            onClick={() => {
+              Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!",
+              }).then(async (result) => {
+                if (result.isConfirmed) {
+                  const res = await fetch(
+                    `${baseUrl}/api/consultants/${row.original.id}`,
+                    {
+                      method: "DELETE",
+                    }
+                  );
+
+                  if (res.ok) {
+                    router.refresh();
+                    toast.success("Consultant Deleted Successfully");
+                  }
                 }
-              );
-              // console.log(res);
-              if (res.ok) {
-                router.refresh();
-                toast.success(`Consultant Deleted Successfully`);
-              }
-            } else {
-              // console.log("No has been clicked");
-            }
-          });
-          closeMenu();
-        }}
-        sx={{ m: 0 }}
-      >
-        <ListItemIcon>
-          <Delete />
-        </ListItemIcon>
-        Delete Consultant
-      </MenuItem>,
-    ],
+              });
+
+              closeMenu();
+            }}
+            sx={{ m: 0 }}
+          >
+            <ListItemIcon>
+              <Delete />
+            </ListItemIcon>
+            Delete Job
+          </MenuItem>
+        ),
+      ].filter(Boolean), // Remove `false` or `undefined` values from the array
   });
   // Update filtered row count whenever filters or global filter change
   // useEffect(() => {
@@ -260,9 +269,23 @@ const Example = ({ data }) => {
   );
 };
 
-const ConsultantMasterTable = ({ data }) => (
+const ConsultantMasterTable = ({
+  data,
+  canEditConsultant,
+  canDeleteConsultant,
+  canAssignJobToConsultants,
+  canManageConsultant,
+  canChangeVisibilityOfCandidates,
+}) => (
   <LocalizationProvider dateAdapter={AdapterDayjs}>
-    <Example data={data} />
+    <Example
+      data={data}
+      canEditConsultant={canEditConsultant}
+      canDeleteConsultant={canDeleteConsultant}
+      canAssignJobToConsultants={canAssignJobToConsultants}
+      canManageConsultant={canManageConsultant}
+      canChangeVisibilityOfCandidates={canChangeVisibilityOfCandidates}
+    />
   </LocalizationProvider>
 );
 

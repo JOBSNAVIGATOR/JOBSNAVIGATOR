@@ -23,6 +23,7 @@ async function main() {
     { name: "editConsultant" },
     { name: "deleteConsultant" },
     { name: "manageConsultant" },
+    { name: "changeVisibilityOfCandidates" },
     { name: "addMailTemplate" },
     { name: "editMailTemplate" },
     { name: "deleteMailTemplate" },
@@ -122,6 +123,7 @@ async function main() {
         "editConsultant",
         "deleteConsultant",
         "manageConsultant",
+        "changeVisibilityOfCandidates",
       ],
     },
   ];
