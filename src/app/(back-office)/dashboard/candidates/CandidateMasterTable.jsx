@@ -6,10 +6,8 @@ import {
 } from "material-react-table";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { Box, Button, lighten, ListItemIcon, MenuItem } from "@mui/material";
-import FileDownloadIcon from "@mui/icons-material/FileDownload";
-import { AccountCircle, Delete, Send } from "@mui/icons-material";
-import ActionColumn from "@/components/DataTableColumns/ActionColumn";
+import { Box, ListItemIcon, MenuItem } from "@mui/material";
+import { Delete } from "@mui/icons-material";
 import DownloadCSV from "@/components/backOffice/DownloadCsv";
 import { BottomGradient } from "@/components/ui/BottomGradient";
 import { useCandidates } from "@/context/CandidatesContext";
@@ -17,13 +15,13 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Swal from "sweetalert2";
 import toast from "react-hot-toast";
-import { Briefcase, MailIcon, Tag } from "lucide-react";
+import { Briefcase, MailIcon, Tag, User } from "lucide-react";
 import AssignTagButton from "@/components/backOffice/AssignTagButton";
 import CandidateHistory from "@/components/backOffice/CandidateHistory";
 import PreviewResume from "@/components/ui/PreviewResume";
 import AssignJobToCandidatesButton from "@/components/backOffice/AssignJobToCandidatesButton";
 
-const Example = ({ data }) => {
+const Example = ({ data, canEditCandidate, canDeleteCandidate }) => {
   const columns = useMemo(
     () => [
       // Application Details
@@ -404,66 +402,60 @@ const Example = ({ data }) => {
       },
     },
 
-    renderRowActionMenuItems: ({ closeMenu, row }) => [
-      // Edit Candidate
-      <MenuItem
-        key={0}
-        onClick={() => {
-          // Access candidate.id here
-          // const candidate = row.original; // Get candidate.id from row.original
-          closeMenu();
-        }}
-        sx={{ m: 0 }}
-      >
-        <Link
-          href={`${baseUrl}/dashboard/candidates/update/${row.original.id}`}
-        >
-          <ListItemIcon>
-            <AccountCircle />
-          </ListItemIcon>
-          Edit Candidate
-        </Link>
-      </MenuItem>,
-      // Delete Candidate
-      <MenuItem
-        key={1}
-        onClick={() => {
-          Swal.fire({
-            title: "Are you sure?",
-            text: "You won't be able to revert this!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, delete it!",
-          }).then(async (result) => {
-            if (result.isConfirmed) {
-              // console.log("Yes have been clicked", endpoint);
-              const res = await fetch(
-                `${baseUrl}/api/candidates/${row.original.id}`,
-                {
-                  method: "DELETE",
+    renderRowActionMenuItems: ({ closeMenu, row }) =>
+      [
+        canEditCandidate && (
+          <MenuItem key="edit" onClick={closeMenu} sx={{ m: 0 }}>
+            <Link
+              href={`${baseUrl}/dashboard/candidates/update/${row.original.id}`}
+              className="flex items-center"
+            >
+              <ListItemIcon>
+                <User />
+              </ListItemIcon>
+              Edit Candidate
+            </Link>
+          </MenuItem>
+        ),
+        canDeleteCandidate && (
+          <MenuItem
+            key="delete"
+            onClick={() => {
+              Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!",
+              }).then(async (result) => {
+                if (result.isConfirmed) {
+                  const res = await fetch(
+                    `${baseUrl}/api/candidates/${row.original.id}`,
+                    {
+                      method: "DELETE",
+                    }
+                  );
+
+                  if (res.ok) {
+                    router.refresh();
+                    toast.success("Candidate Deleted Successfully");
+                  }
                 }
-              );
-              // console.log(res);
-              if (res.ok) {
-                router.refresh();
-                toast.success(`Candidate Deleted Successfully`);
-              }
-            } else {
-              // console.log("No has been clicked");
-            }
-          });
-          closeMenu();
-        }}
-        sx={{ m: 0 }}
-      >
-        <ListItemIcon>
-          <Delete />
-        </ListItemIcon>
-        Delete Candidate
-      </MenuItem>,
-    ],
+              });
+
+              closeMenu();
+            }}
+            sx={{ m: 0 }}
+          >
+            <ListItemIcon>
+              <Delete />
+            </ListItemIcon>
+            Delete Candidate
+          </MenuItem>
+        ),
+      ].filter(Boolean), // Remove `false` or `undefined` values from the array
   });
 
   // Update filtered row count whenever filters or global filter change
@@ -648,9 +640,17 @@ const Example = ({ data }) => {
   );
 };
 
-const CandidateMasterTable = ({ data }) => (
+const CandidateMasterTable = ({
+  data,
+  canEditCandidate,
+  canDeleteCandidate,
+}) => (
   <LocalizationProvider dateAdapter={AdapterDayjs}>
-    <Example data={data} />
+    <Example
+      data={data}
+      canEditCandidate={canEditCandidate}
+      canDeleteCandidate={canDeleteCandidate}
+    />
   </LocalizationProvider>
 );
 

@@ -7,7 +7,7 @@ import {
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { ListItemIcon, MenuItem } from "@mui/material";
-import { AccountCircle, Delete, Send } from "@mui/icons-material";
+import { Delete } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Swal from "sweetalert2";

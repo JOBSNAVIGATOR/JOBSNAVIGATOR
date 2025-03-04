@@ -108,6 +108,7 @@ async function main() {
         "editCandidate",
         "addClient",
         "editClient",
+        "deleteCandidate",
         "deleteClient",
         "addMailTemplate",
         "editMailTemplate",
