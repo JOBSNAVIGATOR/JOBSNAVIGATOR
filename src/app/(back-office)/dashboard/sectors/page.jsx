@@ -5,8 +5,6 @@ import useSWR from "swr";
 import { fetcher } from "@/lib/fetcher";
 import Link from "next/link";
 import AnimatedBoxes from "@/components/ui/AnimatedBoxes";
-import DataTable from "@/components/data-table-components/DataTable";
-import { columns } from "./columns";
 import { useSession } from "next-auth/react";
 import useHasPermission from "@/hooks/useHasPermission";
 import SectorMasterTable from "./SectorMasterTable";
@@ -65,7 +63,6 @@ export default function Page() {
 
       {/* table */}
       <div className="py-8">
-        {/* <DataTable data={transformedData} columns={columns} /> */}
         <SectorMasterTable
           data={transformedData}
           canEditSector={canEditSector}

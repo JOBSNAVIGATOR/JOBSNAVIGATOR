@@ -1,12 +1,7 @@
 "use client";
 import React from "react";
-import DataTable from "@/components/data-table-components/DataTable";
-import { columns } from "./columns";
-import Heading from "@/components/backOffice/Heading";
 import useSWR from "swr";
 import { fetcher } from "@/lib/fetcher";
-import Link from "next/link";
-import DownloadCSV from "@/components/backOffice/DownloadCsv";
 import PageHeader from "@/components/backOffice/PageHeader";
 import AnimatedBoxes from "@/components/ui/AnimatedBoxes";
 import { useSession } from "next-auth/react";
@@ -51,10 +46,6 @@ export default function Page() {
         linkTitle={"Add Company"}
         canUseFeature={canAddCompany}
       />
-
-      {/* <div className="flex justify-end">
-        <DownloadExcel data={companiesData} fileName="companies.xlsx" />
-      </div> */}
 
       {/* table */}
       <div className="py-8">
