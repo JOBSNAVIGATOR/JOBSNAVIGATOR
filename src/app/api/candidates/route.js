@@ -180,7 +180,12 @@ export async function GET(req) {
       });
     }
     // If user is an ADMIN, fetch all candidates
-    if (session.user.role === "ADMIN") {
+    console.log("consultantRole", session?.user?.profileType);
+    const consultantRole = session?.user?.profileType;
+    if (
+      session.user.role === "ADMIN" ||
+      consultantRole === "Admin Consultant"
+    ) {
       const allCandidates = await db.candidateProfile.findMany({
         include: {
           user: true,

@@ -69,36 +69,16 @@ export const authOptions = {
           // console.log("Pass 3 Checked");
 
           // Determine user type & set profile ID
-          let profileId = null;
-          let profileType = null;
-          let permissions = [];
-
-          if (existingUser.consultantProfile) {
-            profileId = existingUser.consultantProfile.id;
-            profileType = "consultant";
-            // Extract permission names into an array
-            permissions =
-              existingUser.consultantProfile.role?.permissions.map(
-                (p) => p.permission.name
-              ) || [];
-          } else if (existingUser.candidateProfile) {
-            profileId = existingUser.candidateProfile.id;
-            profileType = "candidate";
-          } else if (existingUser.clientProfile) {
-            profileId = existingUser.clientProfile.id;
-            profileType = "client";
-          }
+          const profileType = existingUser?.consultantProfile?.role?.name || "";
+          // console.log("profileType", profileType);
 
           const user = {
             id: existingUser.id,
             name: existingUser.name,
             email: existingUser.email,
             role: existingUser.role,
-            // image: existingUser.image,
             emailVerified: existingUser.emailVerified,
-            profileId, // Store the profile ID dynamically
             profileType, // Store the profile type (consultant, candidate, or client)
-            permissions, // Add extracted permissions
           };
           //
           // console.log("User Compiled");
@@ -123,9 +103,7 @@ export const authOptions = {
         session.user.role = token.role;
         // session.user.image = token.picture;
         session.user.emailVerified = token.emailVerified;
-        session.user.profileId = token.profileId; // Add profileId to session
         session.user.profileType = token.profileType; // Add profileType to session
-        session.user.permissions = token.permissions; // Add permissions
       }
       // console.log(`session:${session.user}`);
       return session;
@@ -136,11 +114,8 @@ export const authOptions = {
         token.name = user.name;
         token.email = user.email;
         token.role = user.role;
-        // token.image = user.picture;
         token.emailVerified = user.emailVerified;
-        token.profileId = user.profileId; // Add profileId to JWT
         token.profileType = user.profileType; // Add profileType to JWT
-        token.permissions = user.permissions; // Add permissions
       }
       // console.log(`token:${token}`);
       //   this token is sent to session now

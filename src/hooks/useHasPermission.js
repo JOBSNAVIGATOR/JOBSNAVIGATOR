@@ -12,7 +12,7 @@ export default function useHasPermission(permission) {
       refreshInterval: 5000, // Refetch data every 5 seconds
     }
   );
-  console.log("latestData", updatedRole);
+  // console.log("latestData", updatedRole);
   // 🔥 Fix: Handle case when `updatedRole` is undefined
   if (!updatedRole || !updatedRole.permissions) {
     return false; // Default to no permission if data is not yet loaded
