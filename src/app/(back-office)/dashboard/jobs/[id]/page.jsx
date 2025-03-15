@@ -48,6 +48,7 @@ export default function Page({ params: { id } }) {
         currentJobLocation: applicant?.candidateProfile?.currentJobLocation,
         currentCompany: applicant?.candidateProfile?.currentCompany,
         status: applicant?.status,
+        statusUpdateTime: applicant?.updatedAt,
         resume: applicant?.candidateProfile?.resume,
         jobId: id,
         jobApplicantId: applicant?.id,

@@ -139,6 +139,20 @@ const Example = ({ data }) => {
         header: "Status",
         columns: [
           {
+            accessorFn: (row) => new Date(row.statusUpdateTime), //convert to Date for sorting and filtering
+            // accessorKey: 'Date_Of_Birth', //accessorKey used to define `data` column. `id` gets set to accessorKey automatically
+            filterVariant: "date",
+            header: "Status Update Time",
+            sortingFn: "datetime",
+            Cell: ({ cell }) => {
+              const date = cell.getValue();
+              return date ? date.toLocaleString() : ""; // Renders both date and time
+            },
+            size: 240,
+            // enableClickToCopy: true,
+            // filterVariant: 'autocomplete',
+          },
+          {
             accessorKey: "status", //accessorKey used to define `data` column. `id` gets set to accessorKey automatically
             enableClickToCopy: true,
             filterVariant: "autocomplete",

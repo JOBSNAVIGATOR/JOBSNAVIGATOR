@@ -119,16 +119,18 @@ export default function AssignJobToCandidatesButton({ candidates }) {
             {/* Display selected job details */}
             {selectedJob && (
               <>
-                <div className="grid grid-cols-3 gap-4">
+                {/* <div className="grid grid-cols-3 gap-4"> */}
+                <div className="flex items-center justify-center gap-4">
                   <div className="font-bold">Job Code</div>
-                  <div className="font-bold">Job Sector</div>
-                  <div className="font-bold">Job Domain</div>
+                  {/* <div className="font-bold">Job Sector</div>
+                  <div className="font-bold">Job Domain</div> */}
                 </div>
 
-                <div className="grid grid-cols-3 gap-4">
+                {/* <div className="grid grid-cols-3 gap-4"> */}
+                <div className="flex items-center justify-center gap-4">
                   <div>{selectedJob.jobCode}</div>
-                  <div>{selectedJob.jobSector}</div>
-                  <div>{selectedJob.jobDomain}</div>
+                  {/* <div>{selectedJob.jobSector}</div>
+                  <div>{selectedJob.jobDomain}</div> */}
                 </div>
               </>
             )}
