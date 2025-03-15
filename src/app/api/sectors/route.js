@@ -25,7 +25,12 @@ export async function POST(request) {
     }
     const { user } = session;
     const { role } = user;
-    if (role === "ADMIN" || role === "DEVELOPER") {
+    const consultantRole = session?.user?.profileType;
+    if (
+      role === "ADMIN" ||
+      role === "DEVELOPER" ||
+      consultantRole === "Admin Consultant"
+    ) {
       //Check if the sector Already exists in the db with same name
       const existingSector = await db.sector.findFirst({
         where: {

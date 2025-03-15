@@ -61,8 +61,13 @@ export async function PUT(request) {
 
     const { user } = session;
     const { role } = user;
+    const consultantRole = session?.user?.profileType;
 
-    if (role !== "ADMIN" && role !== "DEVELOPER") {
+    if (
+      role !== "ADMIN" &&
+      role !== "DEVELOPER" &&
+      consultantRole !== "Admin Consultant"
+    ) {
       return NextResponse.json(
         { message: "You do not have permission to update sectors and domains" },
         { status: 403 }
