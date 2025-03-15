@@ -14,8 +14,16 @@ export default function TextInput({
   min,
   max,
   placeholder,
+  validation = {},
   disabled = false, // Add this prop
+  maxLength = "",
+  minLength = "",
 }) {
+  const dynamicPlaceholder = placeholder || " ";
+  const defaultValidation = isRequired
+    ? { required: `${label} is required` }
+    : {};
+  const combinedValidation = { ...defaultValidation, ...validation };
   return (
     <div className={className}>
       <LabelInputContainer>
@@ -27,7 +35,7 @@ export default function TextInput({
         </Label>
         {/* <div className="mt-2"> */}
         <Input
-          {...register(`${name}`, { required: isRequired })}
+          {...register(name, combinedValidation)}
           type={type}
           name={name}
           id={name}
@@ -38,11 +46,15 @@ export default function TextInput({
           min={type === "date" ? min : undefined}
           max={type === "date" ? max : undefined}
           disabled={disabled} // Set the disabled prop here
+          maxLength={maxLength}
+          minLength={minLength}
         />
       </LabelInputContainer>
 
-      {errors[`${name}`] && (
-        <small className="text-sm text-red-600 ">{label} is required</small>
+      {errors[name] && (
+        <span className="text-sm text-red-600">
+          {errors[name]?.message || `${label} is required`}
+        </span>
       )}
       {/* </div> */}
     </div>
