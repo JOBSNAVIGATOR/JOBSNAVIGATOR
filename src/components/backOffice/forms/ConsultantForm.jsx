@@ -91,6 +91,24 @@ export default function ConsultantForm({ user, updateData = {} }) {
           errors={errors}
           className="w-full"
           disabled={!!id} // Disable if updating
+          type="text"
+          maxLength="50"
+          minLength="2"
+          validation={{
+            required: "Full Name is Required",
+            pattern: {
+              value: /^[A-Za-z\s]{2,50}$/,
+              message: "Only letters & spaces (2-50 chars)",
+            },
+            maxLength: {
+              value: 50,
+              message: "Maximum 50 characters allowed",
+            },
+            minLength: {
+              value: 2,
+              message: "At least 2 characters required",
+            },
+          }}
         />
         <TextInput
           label="Contact Number"
@@ -100,6 +118,18 @@ export default function ConsultantForm({ user, updateData = {} }) {
           errors={errors}
           className="w-full"
           disabled={!!id} // Disable if updating
+          maxLength="10"
+          validation={{
+            pattern: {
+              // value: /^\s*\d{10}\s*$/, // Allows spaces but ensures exactly 10 digits
+              value: /^[0-9]{10}$/, // Regex to allow only 6 digits
+              message: "Mobile number must be exactly 10 digits",
+            },
+            maxLength: {
+              value: 10, // Restricts input length to 6
+              message: "Mobile number cannot exceed 10 digits",
+            },
+          }}
         />
         <TextInput
           label="Emergency Contact Number"
@@ -108,6 +138,19 @@ export default function ConsultantForm({ user, updateData = {} }) {
           register={register}
           errors={errors}
           className="w-full"
+          isRequired={false}
+          maxLength="10"
+          validation={{
+            pattern: {
+              // value: /^\s*\d{10}\s*$/, // Allows spaces but ensures exactly 10 digits
+              value: /^[0-9]{10}$/, // Regex to allow only 6 digits
+              message: "Mobile number must be exactly 10 digits",
+            },
+            maxLength: {
+              value: 10, // Restricts input length to 6
+              message: "Mobile number cannot exceed 10 digits",
+            },
+          }}
         />
         <TextInput
           label="Email Address"

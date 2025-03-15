@@ -209,6 +209,21 @@ export default function JobForm({ updateData = {} }) {
           errors={errors}
           className="w-full"
           placeholder="Positions"
+          maxLength="2"
+          validation={{
+            pattern: {
+              value: /^[0-9]{1,2}$/, // Allows only 1-2 digit numbers
+              message: "Vacancies must be 1 or 2 digits",
+            },
+            maxLength: {
+              value: 2,
+              message: "Vacancies cannot exceed 2 digits",
+            },
+            min: {
+              value: 1,
+              message: "Vacancies must be at least 1",
+            },
+          }}
         />
         <TextInput
           label="Remaining Vacancies"
@@ -218,6 +233,24 @@ export default function JobForm({ updateData = {} }) {
           errors={errors}
           className="w-full"
           placeholder="Positions Remaining"
+          maxLength="2"
+          validation={{
+            pattern: {
+              value: /^[0-9]{1,2}$/,
+              message: "Remaining Vacancies must be 1 or 2 digits",
+            },
+            maxLength: {
+              value: 2,
+              message: "Remaining Vacancies cannot exceed 2 digits",
+            },
+            validate: (value) => {
+              const totalVacancies = watch("jobVacancies");
+              if (Number(value) > Number(totalVacancies)) {
+                return "Remaining Vacancies cannot be more than Total Vacancies";
+              }
+              return true;
+            },
+          }}
         />
         <TextInput
           label="Location"
@@ -234,6 +267,14 @@ export default function JobForm({ updateData = {} }) {
           register={register}
           errors={errors}
           className="w-full"
+          maxLength="5"
+          validation={{
+            pattern: {
+              value: /^[0-9]{1,2}(\.[0-9]{1,2})?$/, // Allows 1 or 2 digits optionally followed by a dot and a single digit
+              message:
+                "CTC must be a valid number (e.g., 1, 1.2, 1.23, 21, 21.99)",
+            },
+          }}
         />
 
         <ArrayItemsInput

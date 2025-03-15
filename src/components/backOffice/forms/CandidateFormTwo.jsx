@@ -362,7 +362,7 @@ export default function CandidateFormTwo({ updateData = {} }) {
             pattern: {
               // value: /^\s*\d{10}\s*$/, // Allows spaces but ensures exactly 10 digits
               value: /^[0-9]{1,2}$/, // Regex to allow only 6 digits
-              message: "Experience must must be 1 or 2 digits",
+              message: "Experience must be 1 or 2 digits",
             },
             maxLength: {
               value: 2, // Restricts input length to 4
