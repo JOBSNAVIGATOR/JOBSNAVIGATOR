@@ -229,6 +229,18 @@ export default function CandidateForm({ user, updateData = {} }) {
           errors={errors}
           className="w-full"
           isRequired={false}
+          maxLength="10"
+          validation={{
+            pattern: {
+              // value: /^\s*\d{10}\s*$/, // Allows spaces but ensures exactly 10 digits
+              value: /^[0-9]{10}$/, // Regex to allow only 6 digits
+              message: "Mobile number must be exactly 10 digits",
+            },
+            maxLength: {
+              value: 10, // Restricts input length to 6
+              message: "Mobile number cannot exceed 10 digits",
+            },
+          }}
         />
         <SelectInputThree
           label="Gender"
@@ -270,6 +282,24 @@ export default function CandidateForm({ user, updateData = {} }) {
           register={register}
           errors={errors}
           className="w-full"
+          type="text"
+          maxLength="20"
+          minLength="2"
+          validation={{
+            required: "Designation is Required",
+            pattern: {
+              value: /^[A-Za-z\s]{2,20}$/,
+              message: "Only letters & spaces (2-50 chars)",
+            },
+            maxLength: {
+              value: 20,
+              message: "Maximum 20 characters allowed",
+            },
+            minLength: {
+              value: 2,
+              message: "At least 2 characters required",
+            },
+          }}
         />
         <TextInput
           label="Current Company"
@@ -277,6 +307,24 @@ export default function CandidateForm({ user, updateData = {} }) {
           register={register}
           errors={errors}
           className="w-full"
+          type="text"
+          maxLength="20"
+          minLength="2"
+          validation={{
+            required: "Company is Required",
+            pattern: {
+              value: /^[A-Za-z\s]{2,20}$/,
+              message: "Only letters & spaces (2-50 chars)",
+            },
+            maxLength: {
+              value: 20,
+              message: "Maximum 20 characters allowed",
+            },
+            minLength: {
+              value: 2,
+              message: "At least 2 characters required",
+            },
+          }}
         />
         <TextInput
           label="Previous Companies (Separated by Comma)"
@@ -298,6 +346,18 @@ export default function CandidateForm({ user, updateData = {} }) {
           register={register}
           errors={errors}
           className="w-full"
+          maxLength="2"
+          validation={{
+            pattern: {
+              // value: /^\s*\d{10}\s*$/, // Allows spaces but ensures exactly 10 digits
+              value: /^[0-9]{1,2}$/, // Regex to allow only 6 digits
+              message: "Experience must must be 1 or 2 digits",
+            },
+            maxLength: {
+              value: 2, // Restricts input length to 4
+              message: "Experience cannot exceed 2 digits",
+            },
+          }}
         />
         <TextInput
           label="Current CTC"
@@ -305,6 +365,14 @@ export default function CandidateForm({ user, updateData = {} }) {
           register={register}
           errors={errors}
           className="w-full"
+          maxLength="5"
+          validation={{
+            pattern: {
+              value: /^[0-9]{1,2}(\.[0-9]{1,2})?$/, // Allows 1 or 2 digits optionally followed by a dot and a single digit
+              message:
+                "CTC must be a valid number (e.g., 1, 1.2, 1.23, 21, 21.99)",
+            },
+          }}
         />
         <TextInput
           label="Degree"
@@ -326,6 +394,17 @@ export default function CandidateForm({ user, updateData = {} }) {
           register={register}
           errors={errors}
           className="w-full"
+          validation={{
+            pattern: {
+              // value: /^\s*\d{10}\s*$/, // Allows spaces but ensures exactly 10 digits
+              value: /^[0-9]{4}$/, // Regex to allow only 6 digits
+              message: "Year must be exactly 4 digits",
+            },
+            maxLength: {
+              value: 4, // Restricts input length to 4
+              message: "Year cannot exceed 4 digits",
+            },
+          }}
         />
         <ArrayItemsInput
           itemTitle="Skills"
