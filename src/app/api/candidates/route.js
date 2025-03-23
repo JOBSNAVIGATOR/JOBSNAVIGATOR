@@ -23,6 +23,10 @@ export async function POST(request) {
       sectorName,
       domain,
       domainName,
+      state,
+      state_name,
+      district,
+      district_name,
       designation,
       currentCompany,
       previousCompanyName,
@@ -106,7 +110,7 @@ export async function POST(request) {
       currentCtc,
       sectorName,
       domainName,
-      currentJobLocation,
+      district_name,
     };
 
     const candidateCode = generateCandidateCode(candidateData, sequenceNumber);
@@ -134,6 +138,12 @@ export async function POST(request) {
         },
         domain: {
           connect: { id: domain }, // Linking candidate profile to the existing user
+        },
+        state: {
+          connect: { id: state }, // Linking candidate profile to the existing user
+        },
+        district: {
+          connect: { id: district }, // Linking candidate profile to the existing user
         },
         user: {
           connect: { id: newUser.id }, // Linking candidate profile to the existing user

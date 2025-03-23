@@ -37,6 +37,14 @@ export default function ClientFormTwo({ user, updateData = {} }) {
   const [selectedSector, setSelectedSector] = useState(
     updateData?.clientProfile?.sector?.id ?? ""
   );
+  const [states, setStates] = useState([]);
+  const [districts, setDistricts] = useState([]);
+  const [selectedDistrict, setSelectedDistrict] = useState(
+    updateData?.clientProfile?.district?.id ?? ""
+  );
+  const [selectedState, setSelectedState] = useState(
+    updateData?.clientProfile?.state?.id ?? ""
+  );
 
   const isActive = watch("isActive");
   // initial mount of sector and companies
@@ -87,7 +95,6 @@ export default function ClientFormTwo({ user, updateData = {} }) {
 
   const genderOptions = genderData;
   const functionalAreaOptions = functionalAreaOptionsData;
-
 
   async function onSubmit(data) {
     const sector = sectors.find((s) => s.id === selectedSector);

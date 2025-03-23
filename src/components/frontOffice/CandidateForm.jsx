@@ -61,7 +61,7 @@ export default function CandidateForm({ user, updateData = {} }) {
     fetch("/api/sectors")
       .then((res) => res.json())
       .then((data) => setSectorsData(data))
-      .catch((err) => console.error("Error fetching companies:", err));
+      .catch((err) => console.error("Error fetching sectors:", err));
 
     fetch("/api/states")
       .then((res) => res.json())

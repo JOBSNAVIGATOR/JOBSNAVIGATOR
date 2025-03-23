@@ -22,6 +22,10 @@ export default function CandidateFormTwo({ updateData = {} }) {
   const [selectedSector, setSelectedSector] = useState("");
   const [selectedDomain, setSelectedDomain] = useState("");
   const [domainOptions, setDomainOptions] = useState([]);
+  const [statesData, setStatesData] = useState([]);
+  const [selectedState, setSelectedState] = useState("");
+  const [selectedDistrict, setSelectedDistrict] = useState("");
+  const [districtOptions, setDistrictOptions] = useState([]);
   const {
     register,
     reset,
@@ -35,13 +39,25 @@ export default function CandidateFormTwo({ updateData = {} }) {
   });
 
   // Fetch sectors and domains on component mount
+  // useEffect(() => {
+  //   async function fetchSectors() {
+  //     const response = await fetch("/api/sectors");
+  //     const data = await response.json();
+  //     setSectorsData(data);
+  //   }
+  //   fetchSectors();
+  // }, []);
+
   useEffect(() => {
-    async function fetchSectors() {
-      const response = await fetch("/api/sectors");
-      const data = await response.json();
-      setSectorsData(data);
-    }
-    fetchSectors();
+    fetch("/api/sectors")
+      .then((res) => res.json())
+      .then((data) => setSectorsData(data))
+      .catch((err) => console.error("Error fetching sectors:", err));
+
+    fetch("/api/states")
+      .then((res) => res.json())
+      .then((data) => setStatesData(data))
+      .catch((err) => console.error("Error fetching states:", err));
   }, []);
   // console.log(sectorsData);
 
@@ -54,10 +70,23 @@ export default function CandidateFormTwo({ updateData = {} }) {
     const sector = sectorsData.find((s) => s.id === selectedSectorId);
     setDomainOptions(sector ? sector.domains : []);
   };
+  // Handle state change and update districts
+  const handleStateChange = (event) => {
+    const selectedStateId = event.target.value;
+    setSelectedState(selectedStateId);
 
-  // Handle domain change
+    // Find districts for the selected sector
+    const state = statesData.find((s) => s.id === selectedStateId);
+    setDistrictOptions(state ? state.districts : []);
+  };
+
   const handleDomainChange = (event) => {
     setSelectedDomain(event.target.value);
+  };
+
+  // Handle district change
+  const handleDistrictChange = (event) => {
+    setSelectedDistrict(event.target.value);
   };
 
   const genderOptions = genderData;
@@ -145,6 +174,15 @@ export default function CandidateFormTwo({ updateData = {} }) {
     const domain = domainOptions.find((d) => d.id === selectedDomain);
     data.sectorName = sector?.sectorName;
     data.domainName = domain?.name;
+
+    const state = statesData.find((s) => s.id === selectedState);
+    const district = districtOptions.find((d) => d.id === selectedDistrict);
+    // Only pass IDs for sector and domain, not the entire object
+    data.state = selectedState;
+    data.district = selectedDistrict;
+    data.state_name = state?.state_name;
+    data.district_name = district?.district_name;
+
     data.resume = resume;
     data.skills = skills;
 
@@ -283,6 +321,32 @@ export default function CandidateFormTwo({ updateData = {} }) {
             label: domain.name,
           }))}
           onChange={handleDomainChange}
+        />
+        <SelectInputThree
+          label="State"
+          name="state"
+          register={register("state", { required: true })} // Ensure gender is registered
+          errors={errors}
+          className="w-full"
+          options={statesData.map((state) => ({
+            value: state.id,
+            label: state.state_name,
+          }))}
+          onChange={handleStateChange}
+        />
+        <SelectInputThree
+          label="District"
+          name="district"
+          // register={register}
+          register={register("district", { required: true })} // Ensure gender is registered
+          errors={errors}
+          className="w-full"
+          // options={domainOptions}
+          options={districtOptions.map((districtOption) => ({
+            value: districtOption.id,
+            label: districtOption.district_name,
+          }))}
+          onChange={handleDistrictChange}
         />
         <TextInput
           label="Designation"
