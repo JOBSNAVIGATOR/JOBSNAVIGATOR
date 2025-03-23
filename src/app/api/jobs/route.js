@@ -23,6 +23,10 @@ export async function POST(request) {
       sectorName,
       domain,
       domainName,
+      state,
+      state_name,
+      district,
+      district_name,
     } = await request.json();
     //Check if the user Already exists in the db
     const existingJob = await db.job.findFirst({
@@ -32,6 +36,8 @@ export async function POST(request) {
         clientSpoc: { id: clientId },
         sector: { id: sector },
         domain: { id: domain },
+        state: { id: state },
+        district: { id: district },
         jobLocation,
         jobSalary: parseFloat(jobSalary), // Ensure jobSalary is a Float
         isActive,
@@ -58,7 +64,7 @@ export async function POST(request) {
       sectorName,
       domainName,
       jobSalary,
-      jobLocation,
+      district_name,
       vacanciesInt,
     };
 
@@ -87,6 +93,12 @@ export async function POST(request) {
         },
         domain: {
           connect: { id: domain }, // Linking candidate profile to the existing user
+        },
+        state: {
+          connect: { id: state }, // Linking candidate profile to the existing user
+        },
+        district: {
+          connect: { id: district }, // Linking candidate profile to the existing user
         },
         jobDescription,
         jobLocation,
@@ -137,6 +149,8 @@ export async function GET(req) {
           clientSpoc: { include: { user: true } },
           sector: true,
           domain: true,
+          state: true,
+          district: true,
         },
       });
     } else {
@@ -176,6 +190,8 @@ export async function GET(req) {
             clientSpoc: { include: { user: true } },
             sector: true,
             domain: true,
+            state: true,
+            district: true,
           },
         });
       } else if (role === "CONSULTANT" && userRole === "Admin Consultant") {
@@ -187,6 +203,8 @@ export async function GET(req) {
             clientSpoc: { include: { user: true } },
             sector: true,
             domain: true,
+            state: true,
+            district: true,
           },
         });
       } else if (role === "CONSULTANT" && userRole === "Team Leader") {
@@ -207,6 +225,8 @@ export async function GET(req) {
             clientSpoc: { include: { user: true } },
             sector: true,
             domain: true,
+            state: true,
+            district: true,
           },
         });
       } else if (role === "CONSULTANT" && userRole === "Consultant") {
@@ -222,6 +242,8 @@ export async function GET(req) {
             clientSpoc: { include: { user: true } },
             sector: true,
             domain: true,
+            state: true,
+            district: true,
           },
         });
       } else {

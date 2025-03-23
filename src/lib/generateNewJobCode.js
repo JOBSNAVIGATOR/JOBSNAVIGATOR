@@ -12,7 +12,9 @@ export function generateNewJobCode(jobData, sequenceNumber = "") {
   const level = remainder === 0 ? quotient : quotient + 1;
 
   // 4. Location shorthand (e.g., "Delhi" -> "DLI")
-  const locationInitials = jobData.jobLocation.substring(0, 3).toUpperCase();
+  const location = jobData.district_name.toUpperCase();
+  const locationInitials =
+    location.length >= 6 ? location.substring(0, 6) : location;
 
   // 5. Total Vacancies
   const vacancy = jobData.vacanciesInt;

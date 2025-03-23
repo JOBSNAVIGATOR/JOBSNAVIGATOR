@@ -31,6 +31,14 @@ export default function JobForm({ updateData = {} }) {
     updateData?.domain?.id ?? ""
   );
   const [domainOptions, setDomainOptions] = useState([]);
+  const [statesData, setStatesData] = useState([]);
+  const [selectedState, setSelectedState] = useState(
+    updateData?.state?.id ?? ""
+  );
+  const [selectedDistrict, setSelectedDistrict] = useState(
+    updateData?.district?.id ?? ""
+  );
+  const [districtOptions, setDistrictOptions] = useState([]);
   const {
     register,
     reset,
@@ -45,14 +53,26 @@ export default function JobForm({ updateData = {} }) {
   });
   const isActive = watch("isActive");
   // Fetch sectors and domains on component mount
+  // useEffect(() => {
+  //   async function fetchSectors() {
+  //     const response = await fetch("/api/sectors");
+  //     const data = await response.json();
+  //     setSectorsData(data);
+  //   }
+  //   fetchSectors();
+  // }, [updateData]);
+
   useEffect(() => {
-    async function fetchSectors() {
-      const response = await fetch("/api/sectors");
-      const data = await response.json();
-      setSectorsData(data);
-    }
-    fetchSectors();
-  }, [updateData]);
+    fetch("/api/sectors")
+      .then((res) => res.json())
+      .then((data) => setSectorsData(data))
+      .catch((err) => console.error("Error fetching sectors:", err));
+
+    fetch("/api/states")
+      .then((res) => res.json())
+      .then((data) => setStatesData(data))
+      .catch((err) => console.error("Error fetching states:", err));
+  }, []);
 
   const handleSectorChange = (event) => {
     const selectedSectorId = event.target.value;
@@ -65,6 +85,16 @@ export default function JobForm({ updateData = {} }) {
     // setSectorName(sector?.sectorName);
     setDomainOptions(sector ? sector.domains : []);
   };
+  // Handle state change and update districts
+  const handleStateChange = (event) => {
+    const selectedStateId = event.target.value;
+    setSelectedState(selectedStateId);
+    setSelectedDistrict("");
+
+    // Find districts for the selected sector
+    const state = statesData.find((s) => s.id === selectedStateId);
+    setDistrictOptions(state ? state.districts : []);
+  };
 
   // Automatically update domain options when sector is set or updated
   useEffect(() => {
@@ -73,11 +103,21 @@ export default function JobForm({ updateData = {} }) {
       setDomainOptions(sector ? sector.domains : []);
     }
   }, [selectedSector, sectorsData]);
+  useEffect(() => {
+    if (selectedState && statesData.length > 0) {
+      const state = statesData.find((s) => s.id === selectedState);
+      setDistrictOptions(state ? state.districts : []);
+    }
+  }, [selectedSector, sectorsData]);
 
   // Handle domain change
   const handleDomainChange = (event) => {
     setSelectedDomain(event.target.value);
     // setDomainName(event.target.name);
+  };
+  // Handle district change
+  const handleDistrictChange = (event) => {
+    setSelectedDistrict(event.target.value);
   };
 
   const { data: companies, error } = useSWR("/api/companies", fetcher, {
@@ -117,21 +157,26 @@ export default function JobForm({ updateData = {} }) {
     // Find sector and domain names based on selected IDs
     const sector = sectorsData.find((s) => s.id === selectedSector);
     const domain = domainOptions.find((d) => d.id === selectedDomain);
-
     data.sector = selectedSector;
     data.domain = selectedDomain;
-    // data.sectorName = sectorName;
-    // data.domainName = domainName;
     data.sectorName = sector?.sectorName;
     data.domainName = domain?.name;
-    // console.log(data);
+
+    const state = statesData.find((s) => s.id === selectedState);
+    const district = districtOptions.find((d) => d.id === selectedDistrict);
+    // Only pass IDs for sector and domain, not the entire object
+    data.state = selectedState;
+    data.district = selectedDistrict;
+    data.state_name = state?.state_name;
+    data.district_name = district?.district_name;
+    console.log(data);
     // Handle form submission logic
     if (id) {
       // make put request (update)
       makePutRequest(setLoading, `api/jobs/${id}`, data, "Job", reset);
       router.back();
     } else {
-      makePostRequest(setLoading, "api/jobs", data, "Jobs", reset);
+      makePostRequest(setLoading, "api/jobs", data, "Job", reset);
       router.back();
     }
   }
@@ -189,6 +234,32 @@ export default function JobForm({ updateData = {} }) {
           }))}
           onChange={handleDomainChange}
           value={selectedDomain}
+        />
+        <SelectInputThree
+          label="State"
+          name="state"
+          register={register("state", { required: true })} // Ensure gender is registered
+          errors={errors}
+          className="w-full"
+          options={statesData.map((state) => ({
+            value: state.id,
+            label: state.state_name,
+          }))}
+          onChange={handleStateChange}
+          value={selectedState}
+        />
+        <SelectInputThree
+          label="District"
+          name="district"
+          register={register("district", { required: true })} // Ensure gender is registered
+          errors={errors}
+          className="w-full"
+          options={districtOptions.map((district) => ({
+            value: district.id,
+            label: district.district_name,
+          }))}
+          onChange={handleDistrictChange}
+          value={selectedDistrict}
         />
         <SelectInputThree
           label="Client SPOC"

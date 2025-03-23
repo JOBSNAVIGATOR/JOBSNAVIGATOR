@@ -64,6 +64,10 @@ export async function PUT(request) {
       sectorName,
       domain,
       domainName,
+      state,
+      state_name,
+      district,
+      district_name,
     } = await request.json();
 
     const job = await db.job.findUnique({
@@ -106,7 +110,7 @@ export async function PUT(request) {
       sectorName,
       domainName,
       jobSalary,
-      jobLocation,
+      district_name,
       vacanciesInt,
     };
     const updatedCodePart = generateNewJobCode(jobData);
@@ -129,6 +133,12 @@ export async function PUT(request) {
         domain: {
           connect: { id: domain }, // Linking candidate profile to the existing user
         },
+        state: {
+          connect: { id: state }, // Linking candidate profile to the existing user
+        },
+        district: {
+          connect: { id: district }, // Linking candidate profile to the existing user
+        },
         jobDescription,
         // jobSector,
         // jobDomain,
@@ -148,6 +158,7 @@ export async function PUT(request) {
     return NextResponse.json(updatedJob);
   } catch (error) {
     // console.log(error);
+    console.error(error);
     return NextResponse.json(
       {
         message: "Failed to Update Job",

@@ -65,6 +65,20 @@ const Example = ({ data, canEditJob, canDeleteJob }) => {
             size: 220,
           },
           {
+            accessorKey: "state", //accessorKey used to define `data` column. `id` gets set to accessorKey automatically
+            enableClickToCopy: true,
+            filterVariant: "autocomplete",
+            header: "State",
+            size: 220,
+          },
+          {
+            accessorKey: "district", //accessorKey used to define `data` column. `id` gets set to accessorKey automatically
+            enableClickToCopy: true,
+            filterVariant: "autocomplete",
+            header: "District",
+            size: 220,
+          },
+          {
             accessorKey: "jobLocation", //accessorKey used to define `data` column. `id` gets set to accessorKey automatically
             enableClickToCopy: true,
             filterVariant: "autocomplete",

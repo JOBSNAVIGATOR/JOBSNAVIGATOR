@@ -242,6 +242,12 @@ model Job {
   domain   Domain? @relation("jobDomain", fields: [domainId], references: [id], onDelete: SetNull)
   domainId String? @db.ObjectId
 
+  state   State?  @relation("jobState", fields: [stateId], references: [id], onDelete: SetNull)
+  stateId String? @db.ObjectId
+
+  district   District? @relation("jobDistrict", fields: [districtId], references: [id], onDelete: SetNull)
+  districtId String?   @db.ObjectId
+
   journeys CandidateJourney[] // Ensure the relation is properly defined on both sides
 
   isActive Boolean @default(true)
@@ -409,6 +415,7 @@ model State {
   state_name        String
   districts         District[] // One-to-Many Relationship
   candidateProfiles CandidateProfile[] @relation("CandidateState")
+  jobs              Job[]              @relation("jobState")
 }
 
 model District {
@@ -417,4 +424,5 @@ model District {
   stateId           String             @db.ObjectId
   state             State              @relation(fields: [stateId], references: [id]) // Many-to-One
   candidateProfiles CandidateProfile[] @relation("CandidateDistrict")
+  jobs              Job[]              @relation("jobDistrict")
 }
