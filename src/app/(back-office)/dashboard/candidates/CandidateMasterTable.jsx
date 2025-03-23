@@ -102,6 +102,20 @@ const Example = ({ data, canEditCandidate, canDeleteCandidate }) => {
             header: "Alternate Contact Number",
             size: 200,
           },
+          {
+            accessorKey: "state", //accessorKey used to define `data` column. `id` gets set to accessorKey automatically
+            // enableClickToCopy: true,
+            // filterVariant: "autocomplete",
+            header: "State",
+            size: 200,
+          },
+          {
+            accessorKey: "district", //accessorKey used to define `data` column. `id` gets set to accessorKey automatically
+            // enableClickToCopy: true,
+            // filterVariant: "autocomplete",
+            header: "District",
+            size: 200,
+          },
         ],
       },
       // employment details

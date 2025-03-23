@@ -385,6 +385,7 @@ export default function CandidateForm({ user, updateData = {} }) {
           type="text"
           maxLength="20"
           minLength="2"
+          isRequired={false}
           validation={{
             required: "Company is Required",
             pattern: {
@@ -405,6 +406,7 @@ export default function CandidateForm({ user, updateData = {} }) {
           label="Previous Companies (Separated by Comma)"
           name="previousCompanyName"
           register={register}
+          isRequired={false}
           errors={errors}
           className="w-full"
         />
@@ -412,6 +414,7 @@ export default function CandidateForm({ user, updateData = {} }) {
           label="Current Job Location"
           name="currentJobLocation"
           register={register}
+          isRequired={false}
           errors={errors}
           className="w-full"
         />
@@ -421,16 +424,16 @@ export default function CandidateForm({ user, updateData = {} }) {
           register={register}
           errors={errors}
           className="w-full"
-          maxLength="2"
+          maxLength="4"
           validation={{
             pattern: {
-              // value: /^\s*\d{10}\s*$/, // Allows spaces but ensures exactly 10 digits
-              value: /^[0-9]{1,2}$/, // Regex to allow only 6 digits
-              message: "Experience must must be 1 or 2 digits",
+              value: /^(?:\d{1,2})(?:\.\d{1,2})?$/, // Allows 0.1, 1.2, 99.45 but not 99.45.2
+              message:
+                "Experience must be a valid number (e.g., 0.1, 1.2, 99.45)",
             },
             maxLength: {
-              value: 2, // Restricts input length to 4
-              message: "Experience cannot exceed 2 digits",
+              value: 3, // Restricts input length to 4
+              message: "Experience cannot exceed 4 digits",
             },
           }}
         />
@@ -455,11 +458,13 @@ export default function CandidateForm({ user, updateData = {} }) {
           register={register}
           errors={errors}
           className="w-full"
+          isRequired={false}
         />
         <TextInput
           label="College Name"
           name="collegeName"
           register={register}
+          isRequired={false}
           errors={errors}
           className="w-full"
         />
@@ -468,6 +473,7 @@ export default function CandidateForm({ user, updateData = {} }) {
           name="graduationYear"
           register={register}
           errors={errors}
+          isRequired={false}
           className="w-full"
           validation={{
             pattern: {

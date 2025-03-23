@@ -201,6 +201,8 @@ export async function GET(req) {
           user: true,
           sector: true,
           domain: true,
+          state: true,
+          district: true,
         },
       });
 
@@ -241,6 +243,8 @@ export async function GET(req) {
         user: true,
         sector: true,
         domain: true,
+        state: true,
+        district: true,
       },
     });
     // Map the data to include only the necessary fields
@@ -298,6 +302,8 @@ function formatCandidates(candidates) {
     emergencyContactNumber: candidate.emergencyContactNumber,
     sector: candidate.sector.sectorName,
     domain: candidate.domain.name,
+    state: candidate.state.state_name,
+    district: candidate.district.district_name,
     currentCtc: candidate.currentCtc,
     designation: candidate.designation,
     currentCompany: candidate.currentCompany,
