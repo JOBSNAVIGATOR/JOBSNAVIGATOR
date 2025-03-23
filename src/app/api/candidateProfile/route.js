@@ -14,6 +14,10 @@ export async function PUT(request) {
       sectorName,
       domain,
       domainName,
+      state,
+      state_name,
+      district,
+      district_name,
       designation,
       currentCompany,
       previousCompanyName,
@@ -60,7 +64,7 @@ export async function PUT(request) {
       sectorName,
       domainName,
       currentCtc,
-      currentJobLocation,
+      district_name,
     };
     const updatedCodePart = generateNewCandidateCode(candidateData);
 
@@ -93,6 +97,12 @@ export async function PUT(request) {
         },
         domain: {
           connect: { id: domain }, // Linking candidate profile to the existing user
+        },
+        state: {
+          connect: { id: state },
+        },
+        district: {
+          connect: { id: district },
         },
       },
     });

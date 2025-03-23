@@ -14,6 +14,10 @@ export async function POST(request) {
       sectorName,
       domain,
       domainName,
+      state,
+      state_name,
+      district,
+      district_name,
       currentCtc,
       designation,
       currentCompany,
@@ -48,7 +52,8 @@ export async function POST(request) {
       currentCtc,
       sectorName,
       domainName,
-      currentJobLocation,
+      // currentJobLocation,
+      district_name,
     };
 
     const candidateCode = generateCandidateCode(candidateData, sequenceNumber);
@@ -70,7 +75,7 @@ export async function POST(request) {
         previousCompanyName,
         resume, // URL or file path to the resume
         skills,
-        
+
         candidateCode, // Storing the generated candidate code
         sector: {
           connect: { id: sector }, // Linking candidate profile to the existing user
@@ -80,6 +85,12 @@ export async function POST(request) {
         },
         user: {
           connect: { id: existingUser.id }, // Linking candidate profile to the existing user
+        },
+        state: {
+          connect: { id: state },
+        },
+        district: {
+          connect: { id: district },
         },
       },
     });

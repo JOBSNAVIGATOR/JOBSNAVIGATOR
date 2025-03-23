@@ -34,10 +34,9 @@ export function generateCandidateCode(candidateData, sequenceNumber = "") {
   const level = remainder === 0 ? quotient : quotient + 1;
 
   // 8. Location shorthand (e.g., "Delhi" -> "DLI")
-  const locationInitials = candidateData.currentJobLocation
-    .substring(0, 3)
-    .toUpperCase();
-
+  const location = candidateData.district_name.toUpperCase();
+  const locationInitials =
+    location.length >= 6 ? location.substring(0, 6) : location;
   // Combine all parts to generate the candidate code
   const candidateCode = `${prefix}-${date}-${nameInitials}-${sequence}-${sector}-${domainInitials}-${level}-${locationInitials}`;
 

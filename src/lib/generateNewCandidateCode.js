@@ -15,9 +15,9 @@ export function generateNewCandidateCode(candidateData) {
   const level = remainder === 0 ? quotient : quotient + 1;
 
   // 8. Location shorthand (e.g., "Delhi" -> "DLI")
-  const locationInitials = candidateData.currentJobLocation
-    .substring(0, 3)
-    .toUpperCase();
+  const location = candidateData.district_name.toUpperCase();
+  const locationInitials =
+    location.length >= 6 ? location.substring(0, 6) : location;
 
   // Combine the updated parts (Sector, Domain, Level, Location)
   const updatedCandidateCodePart = `${sector}-${domainInitials}-${level}-${locationInitials}`;

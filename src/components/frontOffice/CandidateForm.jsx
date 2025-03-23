@@ -197,12 +197,12 @@ export default function CandidateForm({ user, updateData = {} }) {
     data.domainName = domain?.name;
     // Find state and district names based on selected IDs
     const state = statesData.find((s) => s.id === selectedState);
-    const district = districtOptions.find((d) => d.id === selectedDomain);
+    const district = districtOptions.find((d) => d.id === selectedDistrict);
     // Only pass IDs for sector and domain, not the entire object
     data.state = selectedState;
-    data.district = selectedDomain;
+    data.district = selectedDistrict;
     data.state_name = state?.state_name;
-    data.domain_name = district?.district_name;
+    data.district_name = district?.district_name;
 
     data.resume = resume;
     data.skills = skills;
@@ -213,29 +213,29 @@ export default function CandidateForm({ user, updateData = {} }) {
     }
     console.log("data", data);
 
-    // if (id) {
-    //   // make put request (update)
-    //   makePutRequest(
-    //     setLoading,
-    //     "api/candidateProfile",
-    //     data,
-    //     "Candidate Profile"
-    //   );
-    //   // setPdfUrl("");
-    //   router.back();
-    // } else {
-    //   // make post request (create)
-    //   data.userId = user.id;
-    //   makePostRequest(
-    //     setLoading,
-    //     "api/onboarding",
-    //     data,
-    //     "Candidate Profile"
-    //     // reset
-    //   );
-    //   // setPdfUrl("");
-    //   router.back();
-    // }
+    if (id) {
+      // make put request (update)
+      makePutRequest(
+        setLoading,
+        "api/candidateProfile",
+        data,
+        "Candidate Profile"
+      );
+      // setPdfUrl("");
+      router.back();
+    } else {
+      // make post request (create)
+      data.userId = user.id;
+      makePostRequest(
+        setLoading,
+        "api/onboarding",
+        data,
+        "Candidate Profile"
+        // reset
+      );
+      // setPdfUrl("");
+      router.back();
+    }
   }
 
   return (
@@ -348,8 +348,8 @@ export default function CandidateForm({ user, updateData = {} }) {
             value: district.id,
             label: district.district_name,
           }))}
-          onChange={handleDomainChange}
-          value={selectedDomain}
+          onChange={handleDistrictChange}
+          value={selectedDistrict}
         />
         <TextInput
           label="Designation"
