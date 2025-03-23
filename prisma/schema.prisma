@@ -398,3 +398,17 @@ model JobAssignment {
 
   @@unique([consultantId, jobId]) // Ensure unique combination of candidate and tag
 }
+
+model State {
+  id         String     @id @default(auto()) @map("_id") @db.ObjectId
+  state_code String
+  state_name String
+  districts  District[] // One-to-Many Relationship
+}
+
+model District {
+  id            String @id @default(auto()) @map("_id") @db.ObjectId
+  district_name String
+  stateId       String @db.ObjectId
+  state         State  @relation(fields: [stateId], references: [id]) // Many-to-One
+}

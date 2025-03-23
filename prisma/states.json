@@ -1,0 +1,298 @@
+[
+  {
+    "id": "1",
+    "state_code": "01",
+    "state_name": "Andaman and Nicobar Island (UT)",
+    "updated_by": "1",
+    "updated_on": "2020-05-26 05:34:21",
+    "is_deleted": "0"
+  },
+  {
+    "id": "2",
+    "state_code": "2",
+    "state_name": "Andhra Pradesh",
+    "updated_by": "1",
+    "updated_on": "2019-07-19 01:01:43",
+    "is_deleted": "0"
+  },
+  {
+    "id": "3",
+    "state_code": "3",
+    "state_name": "Arunachal Pradesh",
+    "updated_by": "1",
+    "updated_on": "2019-07-19 01:01:43",
+    "is_deleted": "0"
+  },
+  {
+    "id": "4",
+    "state_code": "4",
+    "state_name": "Assam",
+    "updated_by": "1",
+    "updated_on": "2019-07-19 01:01:43",
+    "is_deleted": "0"
+  },
+  {
+    "id": "5",
+    "state_code": "5",
+    "state_name": "Bihar",
+    "updated_by": "1",
+    "updated_on": "2019-07-19 01:01:43",
+    "is_deleted": "0"
+  },
+  {
+    "id": "6",
+    "state_code": "6",
+    "state_name": "Chandigarh (UT)",
+    "updated_by": "1",
+    "updated_on": "2019-07-19 01:01:43",
+    "is_deleted": "0"
+  },
+  {
+    "id": "7",
+    "state_code": "7",
+    "state_name": "Chhattisgarh",
+    "updated_by": "1",
+    "updated_on": "2019-07-19 01:01:43",
+    "is_deleted": "0"
+  },
+  {
+    "id": "8",
+    "state_code": "8",
+    "state_name": "Daman Diu & Dadra Nagar Haveli ",
+    "updated_by": "1",
+    "updated_on": "2020-05-26 05:32:13",
+    "is_deleted": "0"
+  },
+  {
+    "id": "9",
+    "state_code": "9",
+    "state_name": "Daman and Diu (UT)",
+    "updated_by": "1",
+    "updated_on": "2019-07-19 01:01:43",
+    "is_deleted": "1"
+  },
+  {
+    "id": "10",
+    "state_code": "10",
+    "state_name": "Delhi (UT)",
+    "updated_by": "1",
+    "updated_on": "2020-05-26 05:36:37",
+    "is_deleted": "0"
+  },
+  {
+    "id": "11",
+    "state_code": "11",
+    "state_name": "Goa",
+    "updated_by": "1",
+    "updated_on": "2019-07-19 01:01:43",
+    "is_deleted": "0"
+  },
+  {
+    "id": "12",
+    "state_code": "12",
+    "state_name": "Gujarat",
+    "updated_by": "1",
+    "updated_on": "2019-07-19 01:01:43",
+    "is_deleted": "0"
+  },
+  {
+    "id": "13",
+    "state_code": "13",
+    "state_name": "Haryana",
+    "updated_by": "1",
+    "updated_on": "2019-07-19 01:01:43",
+    "is_deleted": "0"
+  },
+  {
+    "id": "14",
+    "state_code": "14",
+    "state_name": "Himachal Pradesh",
+    "updated_by": "1",
+    "updated_on": "2019-07-19 01:01:43",
+    "is_deleted": "0"
+  },
+  {
+    "id": "15",
+    "state_code": "15",
+    "state_name": "Jammu and Kashmir (UT)",
+    "updated_by": "1",
+    "updated_on": "2019-07-19 01:01:43",
+    "is_deleted": "0"
+  },
+  {
+    "id": "16",
+    "state_code": "16",
+    "state_name": "Jharkhand",
+    "updated_by": "1",
+    "updated_on": "2019-07-19 01:01:43",
+    "is_deleted": "0"
+  },
+  {
+    "id": "17",
+    "state_code": "17",
+    "state_name": "Karnataka",
+    "updated_by": "1",
+    "updated_on": "2019-07-19 01:01:43",
+    "is_deleted": "0"
+  },
+  {
+    "id": "18",
+    "state_code": "18",
+    "state_name": "Kerala",
+    "updated_by": "1",
+    "updated_on": "2019-07-19 01:01:43",
+    "is_deleted": "0"
+  },
+  {
+    "id": "19",
+    "state_code": "19",
+    "state_name": "Lakshadweep (UT)",
+    "updated_by": "1",
+    "updated_on": "2019-07-19 01:01:43",
+    "is_deleted": "0"
+  },
+  {
+    "id": "20",
+    "state_code": "20",
+    "state_name": "Madhya Pradesh",
+    "updated_by": "1",
+    "updated_on": "2019-07-19 01:01:43",
+    "is_deleted": "0"
+  },
+  {
+    "id": "21",
+    "state_code": "21",
+    "state_name": "Maharashtra",
+    "updated_by": "1",
+    "updated_on": "2019-07-19 01:01:43",
+    "is_deleted": "0"
+  },
+  {
+    "id": "22",
+    "state_code": "22",
+    "state_name": "Manipur",
+    "updated_by": "1",
+    "updated_on": "2019-07-19 01:01:43",
+    "is_deleted": "0"
+  },
+  {
+    "id": "23",
+    "state_code": "23",
+    "state_name": "Meghalaya",
+    "updated_by": "1",
+    "updated_on": "2019-07-19 01:01:43",
+    "is_deleted": "0"
+  },
+  {
+    "id": "24",
+    "state_code": "24",
+    "state_name": "Mizoram",
+    "updated_by": "1",
+    "updated_on": "2019-07-19 01:01:43",
+    "is_deleted": "0"
+  },
+  {
+    "id": "25",
+    "state_code": "25",
+    "state_name": "Nagaland",
+    "updated_by": "1",
+    "updated_on": "2019-07-19 01:01:43",
+    "is_deleted": "0"
+  },
+  {
+    "id": "26",
+    "state_code": "26",
+    "state_name": "Odisha",
+    "updated_by": "1",
+    "updated_on": "2019-07-19 01:01:43",
+    "is_deleted": "0"
+  },
+  {
+    "id": "27",
+    "state_code": "27",
+    "state_name": "Puducherry (UT)",
+    "updated_by": "1",
+    "updated_on": "2019-07-19 01:01:43",
+    "is_deleted": "0"
+  },
+  {
+    "id": "28",
+    "state_code": "28",
+    "state_name": "Punjab",
+    "updated_by": "1",
+    "updated_on": "2019-07-19 01:01:43",
+    "is_deleted": "0"
+  },
+  {
+    "id": "29",
+    "state_code": "29",
+    "state_name": "Rajasthan",
+    "updated_by": "1",
+    "updated_on": "2019-07-19 01:01:43",
+    "is_deleted": "0"
+  },
+  {
+    "id": "30",
+    "state_code": "30",
+    "state_name": "Sikkim",
+    "updated_by": "1",
+    "updated_on": "2019-07-19 01:01:43",
+    "is_deleted": "0"
+  },
+  {
+    "id": "31",
+    "state_code": "31",
+    "state_name": "Tamil Nadu",
+    "updated_by": "1",
+    "updated_on": "2019-07-19 01:01:43",
+    "is_deleted": "0"
+  },
+  {
+    "id": "32",
+    "state_code": "32",
+    "state_name": "Telangana",
+    "updated_by": "1",
+    "updated_on": "2019-07-19 01:01:43",
+    "is_deleted": "0"
+  },
+  {
+    "id": "33",
+    "state_code": "33",
+    "state_name": "Tripura",
+    "updated_by": "1",
+    "updated_on": "2019-07-19 01:01:43",
+    "is_deleted": "0"
+  },
+  {
+    "id": "34",
+    "state_code": "34",
+    "state_name": "Uttarakhand",
+    "updated_by": "1",
+    "updated_on": "2019-07-19 01:01:43",
+    "is_deleted": "0"
+  },
+  {
+    "id": "35",
+    "state_code": "35",
+    "state_name": "Uttar Pradesh",
+    "updated_by": "1",
+    "updated_on": "2019-07-19 01:01:43",
+    "is_deleted": "0"
+  },
+  {
+    "id": "36",
+    "state_code": "36",
+    "state_name": "West Bengal",
+    "updated_by": "1",
+    "updated_on": "2019-07-19 06:31:43",
+    "is_deleted": "0"
+  },
+  {
+    "id": "37",
+    "state_code": "37",
+    "state_name": "Ladakh (UT)",
+    "updated_by": "1",
+    "updated_on": "2019-07-19 06:31:43",
+    "is_deleted": "0"
+  }
+]
