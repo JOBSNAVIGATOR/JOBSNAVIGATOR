@@ -144,6 +144,10 @@ model CandidateProfile {
   domain   Domain? @relation("CandidateDomain", fields: [domainId], references: [id], onDelete: SetNull)
   domainId String? @db.ObjectId
 
+  state            State?    @relation("CandidateState", fields: [stateId], references: [id], onDelete: SetNull)
+  stateId          String?   @db.ObjectId
+  district         District? @relation("CandidateDistrict", fields: [districtId], references: [id], onDelete: SetNull)
+  districtId       String?   @db.ObjectId
   // New communication status fields
   mailSent         String?   @default("No") // To track if the email was sent
   mailSentDate     DateTime? // To store the date when the email was sent
@@ -400,15 +404,17 @@ model JobAssignment {
 }
 
 model State {
-  id         String     @id @default(auto()) @map("_id") @db.ObjectId
-  state_code String
-  state_name String
-  districts  District[] // One-to-Many Relationship
+  id                String             @id @default(auto()) @map("_id") @db.ObjectId
+  state_code        String
+  state_name        String
+  districts         District[] // One-to-Many Relationship
+  candidateProfiles CandidateProfile[] @relation("CandidateState")
 }
 
 model District {
-  id            String @id @default(auto()) @map("_id") @db.ObjectId
-  district_name String
-  stateId       String @db.ObjectId
-  state         State  @relation(fields: [stateId], references: [id]) // Many-to-One
+  id                String             @id @default(auto()) @map("_id") @db.ObjectId
+  district_name     String
+  stateId           String             @db.ObjectId
+  state             State              @relation(fields: [stateId], references: [id]) // Many-to-One
+  candidateProfiles CandidateProfile[] @relation("CandidateDistrict")
 }

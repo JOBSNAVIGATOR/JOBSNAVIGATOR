@@ -20,13 +20,21 @@ export default function CandidateForm({ user, updateData = {} }) {
   const [skills, setSkills] = useState(initialSkills);
   const [resume, setResume] = useState(initialResumeUrl); // State for resume upload
   const [sectorsData, setSectorsData] = useState([]);
+  const [statesData, setStatesData] = useState([]);
   const [selectedSector, setSelectedSector] = useState(
     updateData?.candidateProfile?.sector?.id ?? ""
+  );
+  const [selectedState, setSelectedState] = useState(
+    updateData?.candidateProfile?.state?.id ?? ""
   );
   const [selectedDomain, setSelectedDomain] = useState(
     updateData?.candidateProfile?.domain?.id ?? ""
   );
+  const [selectedDistrict, setSelectedDistrict] = useState(
+    updateData?.candidateProfile?.district?.id ?? ""
+  );
   const [domainOptions, setDomainOptions] = useState([]);
+  const [districtOptions, setDistrictOptions] = useState([]);
   const {
     register,
     reset,
@@ -40,13 +48,24 @@ export default function CandidateForm({ user, updateData = {} }) {
     },
   });
   // Fetch sectors and domains on component mount
+  // useEffect(() => {
+  //   async function fetchSectors() {
+  //     const response = await fetch("/api/sectors");
+  //     const data = await response.json();
+  //     setSectorsData(data);
+  //   }
+  //   fetchSectors();
+  // }, [updateData]);
+
   useEffect(() => {
-    async function fetchSectors() {
-      const response = await fetch("/api/sectors");
-      const data = await response.json();
-      setSectorsData(data);
-    }
-    fetchSectors();
+    fetch("/api/sectors")
+      .then((res) => res.json())
+      .then((data) => setSectorsData(data))
+      .catch((err) => console.error("Error fetching companies:", err));
+
+    fetch("/api/states")
+      .then((res) => res.json())
+      .then((data) => setStatesData(data));
   }, [updateData]);
   // console.log(sectorsData);
   // Handle sector change and update domains
@@ -58,6 +77,15 @@ export default function CandidateForm({ user, updateData = {} }) {
     const sector = sectorsData.find((s) => s.id === selectedSectorId);
     setDomainOptions(sector ? sector.domains : []);
   };
+  // Handle state change and update districts
+  const handleStateChange = (event) => {
+    const selectedStateId = event.target.value;
+    setSelectedState(selectedStateId);
+
+    // Find domains for the selected sector
+    const state = statesData.find((s) => s.id === selectedStateId);
+    setDistrictOptions(state ? state.districts : []);
+  };
   // Automatically update domain options when sector is set or updated
   useEffect(() => {
     if (selectedSector) {
@@ -66,9 +94,21 @@ export default function CandidateForm({ user, updateData = {} }) {
     }
   }, [selectedSector, sectorsData]);
 
+  // Automatically update districts options when state is set or updated
+  useEffect(() => {
+    if (selectedState) {
+      const state = statesData.find((s) => s.id === selectedState);
+      setDistrictOptions(state ? state.districts : []);
+    }
+  }, [selectedState, statesData]);
+
   // Handle domain change
   const handleDomainChange = (event) => {
     setSelectedDomain(event.target.value);
+  };
+  // Handle district change
+  const handleDistrictChange = (event) => {
+    setSelectedDistrict(event.target.value);
   };
 
   const genderOptions = genderData;
@@ -155,6 +195,14 @@ export default function CandidateForm({ user, updateData = {} }) {
     data.domain = selectedDomain;
     data.sectorName = sector?.sectorName;
     data.domainName = domain?.name;
+    // Find state and district names based on selected IDs
+    const state = statesData.find((s) => s.id === selectedState);
+    const district = districtOptions.find((d) => d.id === selectedDomain);
+    // Only pass IDs for sector and domain, not the entire object
+    data.state = selectedState;
+    data.district = selectedDomain;
+    data.state_name = state?.state_name;
+    data.domain_name = district?.district_name;
 
     data.resume = resume;
     data.skills = skills;
@@ -163,30 +211,31 @@ export default function CandidateForm({ user, updateData = {} }) {
       const watermarkedResume = await addWatermarkToPdf(resume);
       data.resume = watermarkedResume; // Update the resume with the watermarked version
     }
+    console.log("data", data);
 
-    if (id) {
-      // make put request (update)
-      makePutRequest(
-        setLoading,
-        "api/candidateProfile",
-        data,
-        "Candidate Profile"
-      );
-      // setPdfUrl("");
-      router.back();
-    } else {
-      // make post request (create)
-      data.userId = user.id;
-      makePostRequest(
-        setLoading,
-        "api/onboarding",
-        data,
-        "Candidate Profile"
-        // reset
-      );
-      // setPdfUrl("");
-      router.back();
-    }
+    // if (id) {
+    //   // make put request (update)
+    //   makePutRequest(
+    //     setLoading,
+    //     "api/candidateProfile",
+    //     data,
+    //     "Candidate Profile"
+    //   );
+    //   // setPdfUrl("");
+    //   router.back();
+    // } else {
+    //   // make post request (create)
+    //   data.userId = user.id;
+    //   makePostRequest(
+    //     setLoading,
+    //     "api/onboarding",
+    //     data,
+    //     "Candidate Profile"
+    //     // reset
+    //   );
+    //   // setPdfUrl("");
+    //   router.back();
+    // }
   }
 
   return (
@@ -272,6 +321,32 @@ export default function CandidateForm({ user, updateData = {} }) {
           options={domainOptions.map((domain) => ({
             value: domain.id,
             label: domain.name,
+          }))}
+          onChange={handleDomainChange}
+          value={selectedDomain}
+        />
+        <SelectInputThree
+          label="State"
+          name="state"
+          register={register("state", { required: true })} // Ensure gender is registered
+          errors={errors}
+          className="w-full"
+          options={statesData.map((state) => ({
+            value: state.id,
+            label: state.state_name,
+          }))}
+          onChange={handleStateChange}
+          value={selectedState}
+        />
+        <SelectInputThree
+          label="District"
+          name="district"
+          register={register("district", { required: true })} // Ensure gender is registered
+          errors={errors}
+          className="w-full"
+          options={districtOptions.map((district) => ({
+            value: district.id,
+            label: district.district_name,
           }))}
           onChange={handleDomainChange}
           value={selectedDomain}
