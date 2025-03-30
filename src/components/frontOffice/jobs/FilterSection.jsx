@@ -11,7 +11,9 @@ export default function FilterSection({ jobs, setFilteredJobs }) {
   const maxSalary = Math.max(...jobs.map((job) => job.jobSalary));
   const [selectedSectors, setSelectedSectors] = useState([]);
   const [selectedDomains, setSelectedDomains] = useState([]);
-  const [selectedLocations, setSelectedLocations] = useState([]);
+  // const [selectedLocations, setSelectedLocations] = useState([]);
+  const [selectedStates, setSelectedStates] = useState([]);
+  const [selectedDistricts, setSelectedDistricts] = useState([]);
   const [searchSkills, setSearchSkills] = useState("");
   const [salaryRange, setSalaryRange] = useState([minSalary, maxSalary]);
   const [isFilterVisible, setIsFilterVisible] = useState(false); // State to manage filter visibility
@@ -31,6 +33,22 @@ export default function FilterSection({ jobs, setFilteredJobs }) {
       ])
     ).values(),
   ];
+  const jobStates = [
+    ...new Map(
+      jobs.map((job) => [
+        job.state.id,
+        { value: job.state.id, label: job.state.state_name },
+      ])
+    ).values(),
+  ];
+  const jobDistricts = [
+    ...new Map(
+      jobs.map((job) => [
+        job.district.id,
+        { value: job.district.id, label: job.district.district_name },
+      ])
+    ).values(),
+  ];
 
   // const jobDomains = [...new Set(jobs.map((job) => job.jobDomain))]
   //   .sort()
@@ -47,12 +65,12 @@ export default function FilterSection({ jobs, setFilteredJobs }) {
     ).values(),
   ];
 
-  const jobLocations = [...new Set(jobs.map((job) => job.jobLocation))]
-    .sort()
-    .map((location) => ({
-      value: location,
-      label: location,
-    }));
+  // const jobLocations = [...new Set(jobs.map((job) => job.jobLocation))]
+  //   .sort()
+  //   .map((location) => ({
+  //     value: location,
+  //     label: location,
+  //   }));
 
   useEffect(() => {
     const filtered = jobs.filter((job) => {
@@ -64,11 +82,19 @@ export default function FilterSection({ jobs, setFilteredJobs }) {
         ? // ? selectedDomains.some((domain) => job.jobDomain === domain.value)
           selectedDomains.some((domain) => job.domain.id === domain.value)
         : true;
-      const locationMatch = selectedLocations.length
-        ? selectedLocations.some(
-            (location) => job.jobLocation === location.value
+      const stateMatch = selectedStates.length
+        ? selectedStates.some((state) => job.state.id === state.value)
+        : true;
+      const districtMatch = selectedDistricts.length
+        ? selectedDistricts.some(
+            (district) => job.district.id === district.value
           )
         : true;
+      // const locationMatch = selectedLocations.length
+      //   ? selectedLocations.some(
+      //       (location) => job.jobLocation === location.value
+      //     )
+      //   : true;
       const skillsMatch = searchSkills
         ? job.skillsRequired.some((skill) =>
             skill.toLowerCase().includes(searchSkills.toLowerCase())
@@ -80,7 +106,9 @@ export default function FilterSection({ jobs, setFilteredJobs }) {
       return (
         sectorMatch &&
         domainMatch &&
-        locationMatch &&
+        stateMatch &&
+        districtMatch &&
+        // locationMatch &&
         skillsMatch &&
         salaryMatch
       );
@@ -89,8 +117,10 @@ export default function FilterSection({ jobs, setFilteredJobs }) {
   }, [
     selectedSectors,
     selectedDomains,
+    selectedStates,
+    selectedDistricts,
     // selectedCompanies, // Commented out
-    selectedLocations,
+    // selectedLocations,
     searchSkills,
     salaryRange,
     jobs,
@@ -148,10 +178,20 @@ export default function FilterSection({ jobs, setFilteredJobs }) {
         <div className="mb-4">
           <Select
             isMulti
-            value={selectedLocations}
-            onChange={setSelectedLocations}
-            options={jobLocations}
-            placeholder="Select Locations"
+            value={selectedStates}
+            onChange={setSelectedStates}
+            options={jobStates}
+            placeholder="Select States"
+            className="w-full rounded-xl dark:text-black"
+          />
+        </div>
+        <div className="mb-4">
+          <Select
+            isMulti
+            value={selectedDistricts}
+            onChange={setSelectedDistricts}
+            options={jobDistricts}
+            placeholder="Select Districts"
             className="w-full rounded-xl dark:text-black"
           />
         </div>
