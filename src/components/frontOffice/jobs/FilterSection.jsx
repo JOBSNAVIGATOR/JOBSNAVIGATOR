@@ -162,7 +162,7 @@ export default function FilterSection({ jobs, setFilteredJobs }) {
             onChange={setSelectedSectors}
             options={jobSectors}
             placeholder="Select Sectors"
-            className="w-full rounded-xl dark:text-black"
+            className="w-full rounded-xl dark:text-black z-40"
           />
         </div>
         <div className="mb-4">
@@ -172,7 +172,7 @@ export default function FilterSection({ jobs, setFilteredJobs }) {
             onChange={setSelectedDomains}
             options={jobDomains}
             placeholder="Select Domains"
-            className="w-full rounded-xl dark:text-black"
+            className="w-full rounded-xl dark:text-black z-30"
           />
         </div>
         <div className="mb-4">
@@ -182,7 +182,7 @@ export default function FilterSection({ jobs, setFilteredJobs }) {
             onChange={setSelectedStates}
             options={jobStates}
             placeholder="Select States"
-            className="w-full rounded-xl dark:text-black"
+            className="w-full rounded-xl dark:text-black z-20"
           />
         </div>
         <div className="mb-4">
@@ -192,7 +192,7 @@ export default function FilterSection({ jobs, setFilteredJobs }) {
             onChange={setSelectedDistricts}
             options={jobDistricts}
             placeholder="Select Districts"
-            className="w-full rounded-xl dark:text-black"
+            className="w-full rounded-xl dark:text-black z-10"
           />
         </div>
 
