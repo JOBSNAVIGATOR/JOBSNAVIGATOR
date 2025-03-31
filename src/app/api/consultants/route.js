@@ -170,9 +170,19 @@ export async function GET(req) {
             sector: { select: { id: true, sectorName: true } }, // Fetch sector details
           },
         },
+        assignedStates: {
+          include: {
+            state: { select: { id: true, state_name: true } }, // Fetch state details
+          },
+        },
         assignedDomains: {
           include: {
             domain: { select: { id: true, name: true } }, // Fetch domain details
+          },
+        },
+        assignedDistricts: {
+          include: {
+            district: { select: { id: true, district_name: true } }, // Fetch district details
           },
         },
       },
@@ -188,13 +198,22 @@ export async function GET(req) {
       role: consultant.role
         ? { id: consultant.role.id, name: consultant.role.name }
         : null, // ✅ Include Role
+      assignedLevel: consultant.assignedLevel || "N/A",
       assignedSectors: consultant.assignedSectors.map((s) => ({
         id: s.sector.id,
         sectorName: s.sector.sectorName,
       })),
+      assignedStates: consultant.assignedStates.map((s) => ({
+        id: s.state.id,
+        state_name: s.state.state_name,
+      })),
       assignedDomains: consultant.assignedDomains.map((d) => ({
         id: d.domain.id,
         name: d.domain.name,
+      })),
+      assignedDistricts: consultant.assignedDistricts.map((d) => ({
+        id: d.district.id,
+        district_name: d.district.district_name,
       })),
       assignedJobs: consultant.assignedJobs.map((j) => ({
         jobId: j.jobId,

@@ -215,7 +215,7 @@ export async function GET(req) {
     // Find the consultant profile of the logged-in user
     const consultant = await db.consultantProfile.findUnique({
       where: { userId: session.user.id },
-      include: { assignedDomains: true },
+      include: { assignedDomains: true, assignedDistricts: true },
     });
 
     if (!consultant) {
@@ -228,6 +228,12 @@ export async function GET(req) {
     const assignedDomainIds = consultant.assignedDomains.map(
       (assignedDomain) => assignedDomain.domainId
     );
+    // Get the district IDs assigned to the consultant
+    const assignedDistrictIds = consultant.assignedDistricts.map(
+      (assignedDistrict) => assignedDistrict.districtId
+    );
+
+    console.log("backedbdbjbx", assignedDistrictIds);
 
     if (assignedDomainIds.length === 0) {
       return new Response(
@@ -235,10 +241,27 @@ export async function GET(req) {
         { status: 200 }
       );
     }
+    if (assignedDistrictIds.length === 0) {
+      return new Response(
+        JSON.stringify({ message: "No assigned districts found" }),
+        { status: 200 }
+      );
+    }
 
+    // Convert assignedLevel to a number
+    const assignedLevel = Number(consultant.assignedLevel);
+
+    // Calculate max CTC allowed
+    const maxCtcAllowed = assignedLevel * 5;
     // Fetch candidates whose domainId matches any of the consultant's assigned domains
     const candidates = await db.candidateProfile.findMany({
-      where: { domainId: { in: assignedDomainIds } },
+      where: {
+        domainId: { in: assignedDomainIds },
+        districtId: { in: assignedDistrictIds },
+        currentCtc: {
+          lte: maxCtcAllowed.toString(), // Convert back to string for Prisma query
+        },
+      },
       include: {
         user: true,
         sector: true,
@@ -282,7 +305,7 @@ export async function GET(req) {
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
-    // console.error("Error fetching candidates:", error);
+    console.error("Error fetching candidates:", error);
     return new Response(
       JSON.stringify({ message: "Failed to fetch candidates", error }),
       { status: 500 }

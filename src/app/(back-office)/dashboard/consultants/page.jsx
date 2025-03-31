@@ -14,6 +14,8 @@ export default function Page() {
     refreshInterval: 5000, // refetch data every 5 seconds
   }); // replace with your API endpoint
 
+  console.log("data", data);
+
   const { data: session, status } = useSession();
   const hasPermissionToAddConsultant = useHasPermission("addConsultant");
   const hasPermissionToEditConsultant = useHasPermission("editConsultant");

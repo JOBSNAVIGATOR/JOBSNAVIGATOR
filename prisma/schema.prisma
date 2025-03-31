@@ -103,6 +103,10 @@ model ConsultantProfile {
   assignedSectors ConsultantAssignedSectors[]
   assignedDomains ConsultantAssignedDomains[]
 
+  assignedStates    ConsultantAssignedStates[]
+  assignedDistricts ConsultantAssignedDistricts[]
+  assignedLevel     String?
+
   journeys CandidateJourney[] // Ensure the relation is properly defined on both sides
 
   role   Role   @relation(fields: [roleId], references: [id])
@@ -369,6 +373,20 @@ model ConsultantAssignedSectors {
   @@unique([consultantId, sectorId]) // Composite key for uniqueness
 }
 
+model ConsultantAssignedStates {
+  id           String            @id @default(auto()) @map("_id") @db.ObjectId
+  consultantId String            @db.ObjectId
+  consultant   ConsultantProfile @relation(fields: [consultantId], references: [id], onDelete: Cascade)
+
+  stateId String @db.ObjectId
+  state   State  @relation(fields: [stateId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([consultantId, stateId]) // Composite key for uniqueness
+}
+
 model ConsultantAssignedDomains {
   id           String            @id @default(auto()) @map("_id") @db.ObjectId
   consultantId String            @db.ObjectId
@@ -381,6 +399,20 @@ model ConsultantAssignedDomains {
   updatedAt DateTime @updatedAt
 
   @@unique([consultantId, domainId]) // Composite key for uniqueness
+}
+
+model ConsultantAssignedDistricts {
+  id           String            @id @default(auto()) @map("_id") @db.ObjectId
+  consultantId String            @db.ObjectId
+  consultant   ConsultantProfile @relation(fields: [consultantId], references: [id], onDelete: Cascade)
+
+  districtId String   @db.ObjectId
+  district   District @relation(fields: [districtId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([consultantId, districtId]) // Composite key for uniqueness
 }
 
 model CandidateJourney {
@@ -416,6 +448,8 @@ model State {
   districts         District[] // One-to-Many Relationship
   candidateProfiles CandidateProfile[] @relation("CandidateState")
   jobs              Job[]              @relation("jobState")
+
+  consultantAssignments ConsultantAssignedStates[]
 }
 
 model District {
@@ -425,4 +459,6 @@ model District {
   state             State              @relation(fields: [stateId], references: [id]) // Many-to-One
   candidateProfiles CandidateProfile[] @relation("CandidateDistrict")
   jobs              Job[]              @relation("jobDistrict")
+
+  consultantAssignments ConsultantAssignedDistricts[]
 }
