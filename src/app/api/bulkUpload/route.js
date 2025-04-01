@@ -48,6 +48,7 @@ export async function POST(request) {
 
     // Get initial sequence number for candidate codes
     const initialSequenceNumber = await db.candidateProfile.count();
+    const startSequenceNumber = initialSequenceNumber + 1;
     const failedRows = [];
 
     const validData = data.filter((row, index) => {
@@ -59,7 +60,7 @@ export async function POST(request) {
           domainName,
           state_name,
           district_name,
-          initialSequenceNumber + index
+          startSequenceNumber + index
         );
         return true;
       } catch (err) {
