@@ -233,7 +233,7 @@ export async function GET(req) {
       (assignedDistrict) => assignedDistrict.districtId
     );
 
-    console.log("backedbdbjbx", assignedDistrictIds);
+    // console.log("backedbdbjbx", assignedDistrictIds);
 
     if (assignedDomainIds.length === 0) {
       return new Response(

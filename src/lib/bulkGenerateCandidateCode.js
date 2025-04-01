@@ -1,4 +1,11 @@
-export function bulkGenerateCandidateCode(candidateData, sequenceNumber = "") {
+export function bulkGenerateCandidateCode(
+  candidateData,
+  sectorName,
+  domainName,
+  state_name,
+  district_name,
+  sequenceNumber = ""
+) {
   // 1. Fixed part of the code
   const prefix = "JOBSNVG";
 
@@ -19,10 +26,10 @@ export function bulkGenerateCandidateCode(candidateData, sequenceNumber = "") {
   const sequence = sequenceNumber;
 
   // 5. Sector
-  const sector = candidateData.existingSectorName;
+  const sector = sectorName;
 
   // 6. Domain initials (e.g., "Software Development" -> "SD")
-  const domainInitials = candidateData?.existingDomainName
+  const domainInitials = domainName
     .split(" ")
     .map((word) => word.charAt(0).toUpperCase())
     .join("");
@@ -34,9 +41,10 @@ export function bulkGenerateCandidateCode(candidateData, sequenceNumber = "") {
   const level = remainder === 0 ? quotient : quotient + 1;
 
   // 8. Location shorthand (e.g., "Delhi" -> "DLI")
-  const locationInitials = candidateData.currentJobLocation
-    .substring(0, 3)
-    .toUpperCase();
+  const location = district_name.toUpperCase();
+  const locationInitials =
+    location.length >= 6 ? location.substring(0, 6) : location;
+  // Combine all parts to generate the candidate code
 
   // Combine all parts to generate the candidate code
   const candidateCode = `${prefix}-${date}-${nameInitials}-${sequence}-${sector}-${domainInitials}-${level}-${locationInitials}`;

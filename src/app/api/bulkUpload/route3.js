@@ -8,6 +8,8 @@ import { bulkGenerateCandidateCode } from "@/lib/bulkGenerateCandidateCode";
 
 export async function POST(request) {
   try {
+    // Parse the incoming form data
+    // const { sector, domain, state, district, file } = await request.json();
     const formData = await request.formData();
     const file = formData.get("file");
     const sector = formData.get("sector");
@@ -18,7 +20,6 @@ export async function POST(request) {
     const state_name = formData.get("state_name");
     const district = formData.get("district");
     const district_name = formData.get("district_name");
-    const consultantName = formData.get("consultantName");
 
     // Validate file input
     if (!file) {
@@ -50,10 +51,25 @@ export async function POST(request) {
     const initialSequenceNumber = await db.candidateProfile.count();
     const failedRows = [];
 
-    const validData = data.filter((row, index) => {
+    // Validate and process each row
+    const validData = data.filter(async (row, index) => {
       try {
         validateRow(row); // Custom function to validate individual rows
-        row.candidateCode = bulkGenerateCandidateCode(
+        // console.log(row);
+        return true;
+      } catch (error) {
+        // console.error("Error in bulk upload:", error);
+        failedRows.push({ row: index + 1, error: error.message });
+        return false;
+      }
+    });
+
+    // Filter out any rows that were invalid (null) and then proceed with bulk user creation
+    const results = await db.$transaction(
+      validData.map(async (row, index) => {
+        const password = generateRandomPassword(); // Generate unique password
+        const hashedPassword = bcrypt.hashSync(password, 10); // Hash the unique password
+        const candidateCode = bulkGenerateCandidateCode(
           row,
           sectorName,
           domainName,
@@ -61,70 +77,65 @@ export async function POST(request) {
           district_name,
           initialSequenceNumber + index
         );
-        return true;
-      } catch (err) {
-        console.log(err);
-        failedRows.push({ row: index + 1, error: err.message });
-        return false;
-      }
-    });
-
-    // Filter out any rows that were invalid (null) and then proceed with bulk user creation
-    const results = await db.$transaction(
-      validData.map((row) => {
-        const password = generateRandomPassword(); // Generate unique password
-        const hashedPassword = bcrypt.hashSync(password, 10); // Hash the unique password
-        return db.user.create({
-          data: {
-            name: row.name,
-            email: row.email,
-            contactNumber: row.contactNumber,
-            password, // Store the plaintext password (if needed to send to the user)
-            hashedPassword, // Store the hashed password for authentication
-            role: "CANDIDATE",
-            verificationToken: base64url.encode(uuidv4()),
-            candidateProfile: {
-              create: {
-                gender: row.gender || null,
-                emergencyContactNumber: row.emergencyContactNumber || null,
-                sector: {
-                  connect: { id: sector },
-                },
-                domain: {
-                  connect: { id: domain },
-                },
-                state: {
-                  connect: { id: state },
-                },
-                district: {
-                  connect: { id: district },
-                },
-                currentCtc: row.currentCtc || null,
-                designation: row.designation || null,
-                currentCompany: row.currentCompany || null,
-                currentJobLocation: row.currentJobLocation || null,
-                totalWorkingExperience: row.totalWorkingExperience || null,
-                degree: row.degree || null,
-                collegeName: row.collegeName || null,
-                graduationYear: row.graduationYear || null,
-                previousCompanyName: row.previousCompanyName || null,
-                resume: row.resume || null,
-                skills: row.skills
-                  ? row.skills.split(",").map((skill) => skill.trim())
-                  : [],
-                candidateCode: row.candidateCode,
-                bulkUpload: true,
-                journeys: {
-                  create: {
-                    eventType: "PROFILE_CREATED", // Event type: Profile Created
-                    remarks: `Candidate ${row.name} profile created using Bulk Upload by consultant - ${consultantName}.`,
-                    createdAt: new Date(), // Current timestamp
+        return db.user
+          .create({
+            data: {
+              name: row.name,
+              email: row.email,
+              contactNumber: row.contactNumber,
+              password, // Store the plaintext password (if needed to send to the user)
+              hashedPassword, // Store the hashed password for authentication
+              role: "CANDIDATE",
+              verificationToken: base64url.encode(uuidv4()),
+              candidateProfile: {
+                create: {
+                  gender: row.gender || null,
+                  emergencyContactNumber: row.emergencyContactNumber || null,
+                  // sector: row.sector || null,
+                  // domain: row.domain || null,
+                  sector: {
+                    connect: { id: sector }, // Linking candidate profile to the existing user
                   },
+                  domain: {
+                    connect: { id: domain }, // Linking candidate profile to the existing user
+                  },
+                  state: {
+                    connect: { id: state }, // Linking candidate profile to the existing user
+                  },
+                  district: {
+                    connect: { id: district }, // Linking candidate profile to the existing user
+                  },
+                  currentCtc: row.currentCtc || null,
+                  designation: row.designation || null,
+                  currentCompany: row.currentCompany || null,
+                  currentJobLocation: row.currentJobLocation || null,
+                  totalWorkingExperience: row.totalWorkingExperience || null,
+                  degree: row.degree || null,
+                  collegeName: row.collegeName || null,
+                  graduationYear: row.graduationYear || null,
+                  previousCompanyName: row.previousCompanyName || null,
+                  resume: row.resume || null,
+                  skills: row.skills
+                    ? row.skills.split(",").map((skill) => skill.trim())
+                    : [],
+                  candidateCode: candidateCode,
+                  bulkUpload: true,
                 },
               },
             },
-          },
-        });
+          })
+          .then(async (user) => {
+            // Explicitly fetch the candidate profile after user creation
+            const candidateProfile = await db.candidateProfile.findUnique({
+              where: { userId: user.id }, // Make sure to fetch by the correct relation
+            });
+
+            // Now that we have the candidate profile, create the candidate journey
+            if (candidateProfile) {
+              await createCandidateJourney(candidateProfile.id, user.name);
+            }
+            return user;
+          });
       })
     );
 
@@ -166,6 +177,17 @@ function validateRow(row) {
   if (!row.name || !row.email || !row.contactNumber) {
     throw new Error("Missing required fields: name, email, or contactNumber");
   }
+}
+// Function to create candidate journey
+async function createCandidateJourney(candidateProfileId, name) {
+  await db.candidateJourney.create({
+    data: {
+      candidateId: candidateProfileId,
+      eventType: "PROFILE_CREATED", // Event type: Profile Created
+      remarks: `Candidate ${name} profile created.`,
+      createdAt: new Date(), // Current timestamp
+    },
+  });
 }
 
 export async function GET(req) {
