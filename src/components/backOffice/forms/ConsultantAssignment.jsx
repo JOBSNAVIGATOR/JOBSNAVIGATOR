@@ -160,7 +160,7 @@ export default function ConsultantAssignment({ consultant }) {
   const handleRemoveDistrict = (districtId) => {
     // Step 1: Find the district that is being removed and its associated stateId
     const districtToRemove = statesData.flatMap((state) =>
-      state.districts.filter((state) => district.id === districtId)
+      state.districts.filter((district) => district.id === districtId)
     )[0];
     // console.log("districtToRemove", districtToRemove);
 

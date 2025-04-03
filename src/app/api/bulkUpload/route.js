@@ -103,7 +103,7 @@ export async function POST(request) {
                 currentCtc: row.currentCtc || null,
                 designation: row.designation || null,
                 currentCompany: row.currentCompany || null,
-                currentJobLocation: row.currentJobLocation || null,
+                // currentJobLocation: row.currentJobLocation || null,
                 totalWorkingExperience: row.totalWorkingExperience || null,
                 degree: row.degree || null,
                 collegeName: row.collegeName || null,

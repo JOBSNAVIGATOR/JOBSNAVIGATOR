@@ -29,8 +29,6 @@ export default function Page() {
   const canDeleteJob =
     session?.user?.role === "ADMIN" ? true : hasPermissionToDeleteJob;
 
-  console.log(canPostJob);
-
   if (error) return <div>Error loading jobs.</div>;
   if (!jobs)
     return (
