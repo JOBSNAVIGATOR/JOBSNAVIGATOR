@@ -40,14 +40,20 @@ export async function POST(request) {
     }
 
     // Add validation before processing
-    if (
-      !isValidObjectId(sector) ||
-      !isValidObjectId(domain) ||
-      !isValidObjectId(state) ||
-      !isValidObjectId(district)
-    ) {
+    // if (
+    //   !isValidObjectId(sector) ||
+    //   !isValidObjectId(domain) ||
+    //   !isValidObjectId(state) ||
+    //   !isValidObjectId(district)
+    // ) {
+    //   return NextResponse.json(
+    //     { message: "Invalid relationship ID format" },
+    //     { status: 400 }
+    //   );
+    // }
+    if (![sector, domain, state, district].every(isValidObjectId)) {
       return NextResponse.json(
-        { message: "Invalid relationship ID format" },
+        { message: "Invalid ID format" },
         { status: 400 }
       );
     }
