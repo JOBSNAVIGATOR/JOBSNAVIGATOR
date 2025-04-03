@@ -27,6 +27,30 @@ export async function POST(request) {
         { status: 400 }
       );
     }
+    if (!sector || !domain || !state || !district) {
+      return NextResponse.json(
+        { message: "Missing required relationship IDs" },
+        { status: 400 }
+      );
+    }
+
+    // Add this validation function
+    function isValidObjectId(id) {
+      return /^[0-9a-fA-F]{24}$/.test(id);
+    }
+
+    // Add validation before processing
+    if (
+      !isValidObjectId(sector) ||
+      !isValidObjectId(domain) ||
+      !isValidObjectId(state) ||
+      !isValidObjectId(district)
+    ) {
+      return NextResponse.json(
+        { message: "Invalid relationship ID format" },
+        { status: 400 }
+      );
+    }
 
     // Convert the file buffer into a CSV string
     const buffer = await file.arrayBuffer();
