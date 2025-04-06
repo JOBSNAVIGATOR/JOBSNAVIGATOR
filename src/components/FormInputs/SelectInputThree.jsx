@@ -28,6 +28,7 @@ const SelectInputThree = ({
       className="border rounded px-2 py-1 dark:bg-zinc-600 bg-gray-300"
       disabled={disabled}
     >
+      <option value="">Select {label}</option> {/* Placeholder option */}
       {options.map((option) => (
         <option
           key={option.value}

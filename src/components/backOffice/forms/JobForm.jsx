@@ -16,13 +16,13 @@ import { set, useForm } from "react-hook-form";
 import useSWR from "swr";
 
 export default function JobForm({ updateData = {} }) {
+  console.log("iupdateData", updateData);
+
   const initialSkills = updateData?.skillsRequired ?? [];
   const [skillsRequired, setSkillsRequired] = useState(initialSkills);
   const id = updateData?.id ?? "";
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  // const [sectorName, setSectorName] = useState("");
-  // const [domainName, setDomainName] = useState("");
   const [sectorsData, setSectorsData] = useState([]);
   const [selectedSector, setSelectedSector] = useState(
     updateData?.sector?.id ?? ""
@@ -39,6 +39,13 @@ export default function JobForm({ updateData = {} }) {
     updateData?.district?.id ?? ""
   );
   const [districtOptions, setDistrictOptions] = useState([]);
+  const [selectedCompany, setSelectedCompany] = useState(
+    updateData?.jobCompany?.id ?? ""
+  );
+  const [selectedClient, setSelectedClient] = useState(
+    updateData?.clientSpoc?.id ?? ""
+  );
+
   const {
     register,
     reset,
@@ -52,15 +59,6 @@ export default function JobForm({ updateData = {} }) {
     },
   });
   const isActive = watch("isActive");
-  // Fetch sectors and domains on component mount
-  // useEffect(() => {
-  //   async function fetchSectors() {
-  //     const response = await fetch("/api/sectors");
-  //     const data = await response.json();
-  //     setSectorsData(data);
-  //   }
-  //   fetchSectors();
-  // }, [updateData]);
 
   useEffect(() => {
     fetch("/api/sectors")
@@ -103,12 +101,13 @@ export default function JobForm({ updateData = {} }) {
       setDomainOptions(sector ? sector.domains : []);
     }
   }, [selectedSector, sectorsData]);
+  // Automatically update district options when state is set or updated
   useEffect(() => {
     if (selectedState && statesData.length > 0) {
       const state = statesData.find((s) => s.id === selectedState);
       setDistrictOptions(state ? state.districts : []);
     }
-  }, [selectedSector, sectorsData]);
+  }, [selectedState, statesData]);
 
   // Handle domain change
   const handleDomainChange = (event) => {
@@ -118,6 +117,14 @@ export default function JobForm({ updateData = {} }) {
   // Handle district change
   const handleDistrictChange = (event) => {
     setSelectedDistrict(event.target.value);
+  };
+  // Handle company change
+  const handleCompanyChange = (event) => {
+    setSelectedCompany(event.target.value);
+  };
+  // Handle client change
+  const handleClientChange = (event) => {
+    setSelectedClient(event.target.value);
   };
 
   const { data: companies, error } = useSWR("/api/companies", fetcher, {
@@ -156,10 +163,10 @@ export default function JobForm({ updateData = {} }) {
     data.postedBy = session?.user?.id;
     // Find sector and domain names based on selected IDs
     const sector = sectorsData.find((s) => s.id === selectedSector);
-    const domain = domainOptions.find((d) => d.id === selectedDomain);
     data.sector = selectedSector;
-    data.domain = selectedDomain;
     data.sectorName = sector?.sectorName;
+    data.domain = selectedDomain;
+    const domain = domainOptions.find((d) => d.id === selectedDomain);
     data.domainName = domain?.name;
 
     const state = statesData.find((s) => s.id === selectedState);
@@ -169,12 +176,15 @@ export default function JobForm({ updateData = {} }) {
     data.district = selectedDistrict;
     data.state_name = state?.state_name;
     data.district_name = district?.district_name;
-    console.log(data);
+
+    data.jobCompany = selectedCompany;
+    data.clientId = selectedClient;
     // Handle form submission logic
     if (id) {
+      console.log("submitted", data);
       // make put request (update)
       makePutRequest(setLoading, `api/jobs/${id}`, data, "Job", reset);
-      router.back();
+      // router.back();
     } else {
       makePostRequest(setLoading, "api/jobs", data, "Job", reset);
       router.back();
@@ -195,13 +205,23 @@ export default function JobForm({ updateData = {} }) {
           errors={errors}
           className="w-full"
         />
-        <SelectInput
+        {/* <SelectInput
           label="Company"
           name="jobCompany"
           register={register}
           errors={errors}
           className="w-full"
           options={companyOptions || []}
+        /> */}
+        <SelectInputThree
+          label="Company"
+          name="jobCompany"
+          register={register("jobCompany", { required: true })}
+          errors={errors}
+          className="w-full"
+          options={companyOptions}
+          onChange={handleCompanyChange}
+          value={selectedCompany}
         />
         <TextAreaInput
           label="Job Description"
@@ -212,7 +232,7 @@ export default function JobForm({ updateData = {} }) {
         <SelectInputThree
           label="Sector"
           name="sector"
-          register={register("sector", { required: true })} // Ensure gender is registered
+          register={register("sector", { required: true })}
           errors={errors}
           className="w-full"
           options={sectorsData.map((sector) => ({
@@ -225,7 +245,7 @@ export default function JobForm({ updateData = {} }) {
         <SelectInputThree
           label="Domain"
           name="domain"
-          register={register("domain", { required: true })} // Ensure gender is registered
+          register={register("domain", { required: true })}
           errors={errors}
           className="w-full"
           options={domainOptions.map((domain) => ({
@@ -238,7 +258,7 @@ export default function JobForm({ updateData = {} }) {
         <SelectInputThree
           label="State"
           name="state"
-          register={register("state", { required: true })} // Ensure gender is registered
+          register={register("state", { required: true })}
           errors={errors}
           className="w-full"
           options={statesData.map((state) => ({
@@ -251,7 +271,7 @@ export default function JobForm({ updateData = {} }) {
         <SelectInputThree
           label="District"
           name="district"
-          register={register("district", { required: true })} // Ensure gender is registered
+          register={register("district", { required: true })}
           errors={errors}
           className="w-full"
           options={districtOptions.map((district) => ({
@@ -264,12 +284,12 @@ export default function JobForm({ updateData = {} }) {
         <SelectInputThree
           label="Client SPOC"
           name="clientId"
-          register={register("clientId", { required: true })} // Ensure gender is registered
+          register={register("clientId", { required: true })}
           errors={errors}
           className="w-full"
           options={clientOptions || []}
-          // onChange={handleDomainChange}
-          value={updateData?.clientSpoc?.user?.name ?? ""}
+          onChange={handleClientChange}
+          value={selectedClient}
         />
 
         <TextInput

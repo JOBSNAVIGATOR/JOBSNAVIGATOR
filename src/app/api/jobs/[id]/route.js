@@ -50,6 +50,7 @@ export async function PUT(request) {
       jobCode,
       jobTitle,
       jobCompany,
+      clientId,
       jobDescription,
       // jobSector,
       // jobDomain,
@@ -126,6 +127,9 @@ export async function PUT(request) {
         jobTitle,
         jobCompany: {
           connect: { id: jobCompany }, // Use connect to link with the Company
+        },
+        clientSpoc: {
+          connect: { id: clientId },
         },
         sector: {
           connect: { id: sector }, // Linking candidate profile to the existing user
