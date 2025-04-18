@@ -68,12 +68,10 @@ export default function Page({ params: { id } }) {
     <div className="min-h-screen gap-4">
       {/* Job Detail Section */}
       <div
-        className={`bg-slate-200 dark:bg-zinc-800 rounded-xl ${
-          isDesktop ? "flex gap-4" : "flex flex-col gap-4"
-        } py-4 px-4`}
+        className={`bg-slate-200 dark:bg-zinc-800 rounded-xl flex flex-col py-4 px-4`}
       >
         {/* Company Icon and Job Title */}
-        <div className="w-full md:w-1/3 flex flex-col items-center justify-between gap-2 space-y-1.5 text-center sm:text-left">
+        <div className="w-full flex items-center justify-center gap-2 space-y-1.5 text-center sm:text-left">
           <Image
             src={job?.jobCompany?.companyLogo || "/bankLogo/dcbbank.jpeg"}
             alt={job?.jobCompany?.companyName || "Company Logo"}
@@ -86,7 +84,7 @@ export default function Page({ params: { id } }) {
         </div>
 
         {/* Other Job Details */}
-        <div className="w-full md:w-2/3 overflow-auto">
+        <div className="w-full h-[200px] overflow-y-scroll overflow-auto">
           <JobDetail
             title="Company Name"
             detail={job?.jobCompany?.companyName}
