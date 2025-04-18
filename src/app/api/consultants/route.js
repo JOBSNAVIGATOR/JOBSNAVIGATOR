@@ -95,7 +95,8 @@ export async function POST(request) {
           joiningDate: validJoiningDate,
           isActive,
           role: {
-            connect: { id: "67c722d2fc258d7ac0bdcb07" }, // by default making as basic consultant
+            // connect: { id: "67c722d2fc258d7ac0bdcb07" }, // by default making as basic consultant development
+            connect: { id: "6801e86236656f4d86cdd430" }, // by default making as basic consultant production
           },
           // userId: newUser.id, // Link the ConsultantProfile to the newly created user
           user: {

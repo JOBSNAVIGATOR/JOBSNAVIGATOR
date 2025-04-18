@@ -20,7 +20,7 @@ const Example = ({ data, canEditCompany, canDeleteCompany }) => {
       // cmpany Details
       {
         id: "clientCompanyDetails", //id used to define `group` column
-        header: "companyDetails",
+        header: "Company Details",
         columns: [
           {
             accessorKey: "companyName", //accessorKey used to define `data` column. `id` gets set to accessorKey automatically

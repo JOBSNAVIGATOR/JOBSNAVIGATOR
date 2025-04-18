@@ -74,20 +74,27 @@ export default function Page() {
             </button>
           </Link>
         )}
-        <label className="bg-gradient-to-br group/btn from-black dark:from-lime-200 dark:to-lime-900 to-neutral-600  dark:bg-zinc-800 w-80 font-bold text-white dark:text-slate-900 rounded-xl h-10 text-center items-center justify-center shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset] flex">
+        {/* <label className="bg-gradient-to-br group/btn from-black dark:from-lime-200 dark:to-lime-900 to-neutral-600  dark:bg-zinc-800 w-80 font-bold text-white dark:text-slate-900 rounded-xl h-10 text-center items-center justify-center shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset] flex">
           Filter by Tag:
-        </label>
+        </label> */}
         <select
           value={selectedTag}
           onChange={(e) => setSelectedTag(e.target.value)}
           className="p-2 border rounded-md"
         >
-          <option value="">All</option>
-          {tags.map((tag) => (
+          <option value="">All Candidates</option>
+          {/* {tags.map((tag) => (
             <option key={tag.id} value={tag.id}>
               {tag.name}
             </option>
-          ))}
+          ))} */}
+          {tags &&
+            tags.length > 0 &&
+            tags.map((tag) => (
+              <option key={tag.id} value={tag.id}>
+                {tag.name}
+              </option>
+            ))}
         </select>
       </div>
 

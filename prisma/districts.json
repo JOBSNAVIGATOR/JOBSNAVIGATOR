@@ -4824,15 +4824,6 @@
     "is_deleted": "0"
   },
   {
-    "id": "537",
-    "district_code": null,
-    "district_name": "Delhi",
-    "ref_state_id": "10",
-    "updated_by": "1",
-    "updated_on": "2019-07-19 01:01:43",
-    "is_deleted": "0"
-  },
-  {
     "id": "538",
     "district_code": null,
     "district_name": "Neyveli (TS)",

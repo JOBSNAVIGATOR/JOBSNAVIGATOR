@@ -71,10 +71,10 @@ export default function SignupForm({ role = "CANDIDATE" }) {
         defaultValue={role}
         register={register}
         errors={errors}
-        className="sm:col-span-2 mb-3"
+        className="sm:col-span-2 "
       />
 
-      <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
+      <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 ">
         {/* first name */}
         <TextInput
           label="Full Name"
@@ -125,7 +125,8 @@ export default function SignupForm({ role = "CANDIDATE" }) {
         loadingButtonTitle="Creating Please Wait"
       />
       <div className="flex gap-2 justify-between">
-        <p className="text-[0.75rem] font-light text-gray-500 dark:text-gray-400 py-4">
+        {/* <p className="text-[0.75rem] font-light text-gray-500 dark:text-gray-400 py-4"> */}
+        <p className="text-md font-light text-gray-500 dark:text-gray-400 py-4">
           Already have an account ?{" "}
           <Link
             href="/login"
@@ -134,7 +135,7 @@ export default function SignupForm({ role = "CANDIDATE" }) {
             Login
           </Link>
         </p>
-        {role === "CANDIDATE" ? (
+        {/* {role === "CANDIDATE" ? (
           <p className="text-[0.75rem] font-light text-gray-500 dark:text-gray-400 py-4">
             Are you a Recruiter ?{" "}
             <Link
@@ -154,7 +155,7 @@ export default function SignupForm({ role = "CANDIDATE" }) {
               Register here
             </Link>
           </p>
-        )}
+        )} */}
       </div>
     </form>
   );
