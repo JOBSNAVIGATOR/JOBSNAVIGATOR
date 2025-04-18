@@ -38,19 +38,6 @@ export async function POST(request) {
     function isValidObjectId(id) {
       return /^[0-9a-fA-F]{24}$/.test(id);
     }
-
-    // Add validation before processing
-    // if (
-    //   !isValidObjectId(sector) ||
-    //   !isValidObjectId(domain) ||
-    //   !isValidObjectId(state) ||
-    //   !isValidObjectId(district)
-    // ) {
-    //   return NextResponse.json(
-    //     { message: "Invalid relationship ID format" },
-    //     { status: 400 }
-    //   );
-    // }
     if (![sector, domain, state, district].every(isValidObjectId)) {
       return NextResponse.json(
         { message: "Invalid ID format" },
@@ -76,12 +63,38 @@ export async function POST(request) {
       );
     }
 
+    // Step 1: Collect all emails from the CSV data
+    const allEmails = data.map((row) => row.email);
+
+    // Step 2: Query the database for existing emails
+    const existingUsers = await db.user.findMany({
+      where: {
+        email: {
+          in: allEmails,
+        },
+      },
+      select: {
+        email: true,
+      },
+    });
+
+    // Create a Set of existing emails for quick lookup
+    const existingEmailsSet = new Set(existingUsers.map((user) => user.email));
+
+    // Initialize an array to store duplicate emails
+    const duplicateEmails = [];
+
     // Get initial sequence number for candidate codes
     const initialSequenceNumber = await db.candidateProfile.count();
     const startSequenceNumber = initialSequenceNumber + 1;
     const failedRows = [];
 
     const validData = data.filter((row, index) => {
+      if (existingEmailsSet.has(row.email)) {
+        // Step 4: Log or store the duplicate email
+        duplicateEmails.push({ row: index + 1, email: row.email });
+        return false; // Skip this entry
+      }
       try {
         validateRow(row); // Custom function to validate individual rows
         row.candidateCode = bulkGenerateCandidateCode(
@@ -160,21 +173,22 @@ export async function POST(request) {
     );
 
     // Return a response, including any failed rows
-    if (failedRows.length) {
-      return NextResponse.json(
-        {
-          message: "Bulk upload partially successful",
-          failedRows,
-        },
-        { status: 207 } // Multi-Status for partial success
-      );
-    }
+    // if (failedRows.length) {
+    //   return NextResponse.json(
+    //     {
+    //       message: "Bulk upload partially successful",
+    //       failedRows,
+    //     },
+    //     { status: 207 } // Multi-Status for partial success
+    //   );
+    // }
 
     return NextResponse.json(
       {
         success: true,
-        message: "Bulk upload successful",
+        message: "Bulk upload completed with some duplicates",
         createdUsers: results,
+        duplicateEmails,
       },
       { status: 201 }
     );

@@ -160,6 +160,14 @@ export default function Page() {
       setLoading(false);
       toast.success(`New Candidates Created Successfully`);
       setUploadedData(finalData.candidates); // Update the state with uploaded candidate data
+      // Check for duplicate emails
+      if (finalData.duplicateEmails && finalData.duplicateEmails.length > 0) {
+        // Display duplicate emails in a toast or modal
+        const duplicates = finalData.duplicateEmails
+          .map((entry) => `Row ${entry.row}: ${entry.email}`)
+          .join("\n");
+        toast.error(`Duplicate Emails Found:\n${duplicates}`);
+      }
     } else {
       setLoading(false);
       toast.error(
